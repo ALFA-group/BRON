@@ -1,0 +1,20 @@
+,tactic,technique,capec,cwe,cve,risk_score,cpe,attack,Node Type
+0,set(),set(),"{'capec_00975', 'capec_00577', 'capec_01017', 'capec_00930', 'capec_00924', 'capec_00931'}",{'cwe_00578'},{'cve_01059'},5.199999999999999,{'cpe_01060'},,connected
+1,set(),set(),set(),set(),{'cve_01061'},0.0,set(),,connected
+2,set(),set(),set(),set(),{'cve_01062'},0.0,set(),,connected
+3,set(),set(),set(),set(),{'cve_01063'},0.0,set(),,connected
+4,set(),set(),set(),set(),{'cve_01064'},0.0,set(),,connected
+5,set(),set(),set(),set(),{'cve_01065'},0.0,set(),,connected
+6,set(),set(),set(),set(),{'cve_01066'},0.0,set(),,connected
+7,set(),set(),set(),set(),{'cve_01067'},0.0,set(),,connected
+8,set(),set(),set(),set(),{'cve_01068'},0.0,set(),,connected
+9,set(),set(),set(),set(),{'cve_01069'},0.0,set(),,connected
+10,set(),set(),set(),set(),{'cve_01070'},0.0,set(),,connected
+11,set(),set(),set(),set(),{'cve_01071'},0.0,set(),,connected
+12,set(),set(),set(),set(),{'cve_01072'},0.0,set(),,connected
+13,set(),set(),set(),set(),{'cve_01073'},0.0,set(),,connected
+14,set(),set(),{'capec_01027'},{'cwe_01028'},{'cve_01074'},4.9,{'cpe_01075'},,connected
+15,set(),set(),set(),{'cwe_01078'},{'cve_01076'},6.25,{'cpe_01077'},,connected
+16,set(),set(),"{'capec_00388', 'capec_00941', 'capec_00780', 'capec_01021', 'capec_00486'}",{'cwe_00390'},{'cve_01079'},9.9,{'cpe_01080'},,connected
+17,{'tactic_00012'},{'technique_00036'},"{'capec_00392', 'capec_00459', 'capec_01011', 'capec_00999', 'capec_00291', 'capec_00368', 'capec_00975', 'capec_00780', 'capec_00829', 'capec_00608', 'capec_01008', 'capec_00885', 'capec_00990', 'capec_00456', 'capec_01007', 'capec_00801', 'capec_00634', 'capec_00769', 'capec_00794', 'capec_01009', 'capec_00983', 'capec_00693', 'capec_00596', 'capec_00825', 'capec_00616', 'capec_00388', 'capec_00607', 'capec_00876', 'capec_00667', 'capec_00467', 'capec_00996', 'capec_01015', 'capec_00649', 'capec_00379', 'capec_00447', 'capec_00577', 'capec_01023', 'capec_01017', 'capec_01021', 'capec_00924', 'capec_00418', 'capec_00989', 'capec_01010', 'capec_00611', 'capec_00994', 'capec_00497', 'capec_00998', 'capec_00397', 'capec_00352', 'capec_00681', 'capec_00537'}",{'cwe_00359'},{'cve_01081'},8.3,{'cpe_01082'},,connected
+18,12,266,519,251,217,1013.9999999999999,277,0.0,Total Number

@@ -1,0 +1,5 @@
+,tactic,technique,capec,cwe,cve,risk_score,cpe,attack,Node Type
+0,set(),set(),"{'capec_00924', 'capec_00931', 'capec_00577', 'capec_00930', 'capec_00975', 'capec_01017'}",{'cwe_00578'},{'cve_01055'},5.199999999999999,{'cpe_01056'},,connected
+1,set(),set(),"{'capec_00924', 'capec_00931', 'capec_00577', 'capec_00930', 'capec_00975', 'capec_01017'}",{'cwe_00578'},{'cve_01057'},5.199999999999999,{'cpe_01056'},,connected
+2,set(),set(),set(),set(),{'cve_01058'},0.0,set(),,connected
+3,12,266,519,251,217,1013.9999999999999,277,0.0,Total Number

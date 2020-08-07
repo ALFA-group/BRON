@@ -1,0 +1,2293 @@
+{
+    "CVE-2014-7173": {
+        "cpes": [],
+        "cwes": [],
+        "description": "FarLinX X25 Gateway through 2014-09-25 allows command injection via shell metacharacters to sysSaveMonitorData.php, fsx25MonProxy.php, syseditdate.php, iframeupload.php, or sysRestoreX25Cplt.php.",
+        "score": 8.65
+    },
+    "CVE-2014-7174": {
+        "cpes": [],
+        "cwes": [],
+        "description": "FarLinX X25 Gateway through 2014-09-25 allows directory traversal via the log-handling feature.",
+        "score": 5.15
+    },
+    "CVE-2014-7175": {
+        "cpes": [],
+        "cwes": [],
+        "description": "FarLinX X25 Gateway through 2014-09-25 allows attackers to write arbitrary data to fsUI.xyz via fsSaveUIPersistence.php.",
+        "score": 8.65
+    },
+    "CVE-2014-8937": {
+        "cpes": [
+            "cpe:2.3:a:piwigo:lexiglot:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "400"
+        ],
+        "description": "Lexiglot through 2014-11-20 allows denial of service because api/update.php launches svn update operations that use a great deal of resources.",
+        "score": 6.25
+    },
+    "CVE-2014-8938": {
+        "cpes": [
+            "cpe:2.3:a:piwigo:lexiglot:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "522"
+        ],
+        "description": "Lexiglot through 2014-11-20 allows local users to obtain sensitive information by listing a process because the username and password are on the command line.",
+        "score": 4.95
+    },
+    "CVE-2014-8939": {
+        "cpes": [
+            "cpe:2.3:a:piwigo:lexiglot:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "22"
+        ],
+        "description": "Lexiglot through 2014-11-20 allows remote attackers to obtain sensitive information (full path) via an include/smarty/plugins/modifier.date_format.php request if PHP has a non-recommended configuration that produces warning messages.",
+        "score": 4.8
+    },
+    "CVE-2014-8940": {
+        "cpes": [
+            "cpe:2.3:a:piwigo:lexiglot:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "Lexiglot through 2014-11-20 allows remote attackers to obtain sensitive information (names and details of projects) by visiting the /update.log URI.",
+        "score": 5.15
+    },
+    "CVE-2014-8941": {
+        "cpes": [
+            "cpe:2.3:a:piwigo:lexiglot:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "89"
+        ],
+        "description": "Lexiglot through 2014-11-20 allows SQL injection via an admin.php?page=users&from_id= or admin.php?page=history&limit= URI.",
+        "score": 8.65
+    },
+    "CVE-2014-8942": {
+        "cpes": [
+            "cpe:2.3:a:piwigo:lexiglot:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "352"
+        ],
+        "description": "Lexiglot through 2014-11-20 allows CSRF.",
+        "score": 7.800000000000001
+    },
+    "CVE-2014-8943": {
+        "cpes": [
+            "cpe:2.3:a:piwigo:lexiglot:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "918"
+        ],
+        "description": "Lexiglot through 2014-11-20 allows SSRF via the admin.php?page=projects svn_url parameter.",
+        "score": 7.65
+    },
+    "CVE-2014-8944": {
+        "cpes": [
+            "cpe:2.3:a:piwigo:lexiglot:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "Lexiglot through 2014-11-20 allows XSS (Reflected) via the username, or XSS (Stored) via the admin.php?page=config install_name, intro_message, or new_file_content parameter.",
+        "score": 4.45
+    },
+    "CVE-2014-8945": {
+        "cpes": [
+            "cpe:2.3:a:piwigo:lexiglot:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "78"
+        ],
+        "description": "admin.php?page=projects in Lexiglot through 2014-11-20 allows command injection via username and password fields.",
+        "score": 8.65
+    },
+    "CVE-2014-9702": {
+        "cpes": [],
+        "cwes": [],
+        "description": "system/classes/DbPDO.php in Cmfive through 2015-03-15, when database connectivity malfunctions, allows remote attackers to obtain sensitive information (username and password) via any request, such as a password reset request.",
+        "score": 0
+    },
+    "CVE-2018-18623": {
+        "cpes": [
+            "cpe:2.3:a:grafana:grafana:5.3.1:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "Grafana 5.3.1 has XSS via the \"Dashboard > Text Panel\" screen. NOTE: this issue exists because of an incomplete fix for CVE-2018-12099.",
+        "score": 5.199999999999999
+    },
+    "CVE-2018-18624": {
+        "cpes": [
+            "cpe:2.3:a:grafana:grafana:5.3.1:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "Grafana 5.3.1 has XSS via a column style on the \"Dashboard > Table Panel\" screen. NOTE: this issue exists because of an incomplete fix for CVE-2018-12099.",
+        "score": 5.199999999999999
+    },
+    "CVE-2018-18625": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Grafana 5.3.1 has XSS via a link on the \"Dashboard > All Panels > General\" screen. NOTE: this issue exists because of an incomplete fix for CVE-2018-12099.",
+        "score": 0
+    },
+    "CVE-2019-11843": {
+        "cpes": [
+            "cpe:2.3:a:mailpoet:mailpoet:*:*:*:*:*:wordpress:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "The MailPoet plugin before 3.23.2 for WordPress allows remote attackers to inject arbitrary web script or HTML using extra parameters in the URL (Reflective Server-Side XSS).",
+        "score": 5.199999999999999
+    },
+    "CVE-2019-14038": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Buffer over-read in ADSP parse function due to lack of check for availability of sufficient data payload received in command response in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon IoT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables in APQ8009, APQ8053, APQ8098, MDM9206, MDM9207C, MDM9607, MDM9640, MDM9650, MSM8905, MSM8909W, MSM8917, MSM8953, QCS605, SDA660, SDA845, SDM429, SDM429W, SDM439, SDM670, SDM710, SDM845, SDX20, SDX24",
+        "score": 0
+    },
+    "CVE-2019-14039": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Out of bound read in adm call back function due to incorrect boundary check for payload in command response in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables in APQ8053, APQ8098, MDM9206, MDM9207C, MDM9607, MDM9640, MDM9650, MSM8905, MSM8909W, MSM8917, MSM8953, QCS605, SDA660, SDA845, SDM429, SDM429W, SDM439, SDM670, SDM710, SDM845, SDX20, SDX24",
+        "score": 0
+    },
+    "CVE-2019-14042": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Out of bound read in in fingerprint application due to requested data assigned to a local buffer without length check in Snapdragon Auto, Snapdragon Compute, Snapdragon Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wired Infrastructure and Networking in Kamorta, MDM9205, Nicobar, QCS404, QCS405, QCS605, Rennell, SA415M, SA6155P, SC7180, SC8180X, SDM670, SDM710, SDM845, SDM850, SDX24, SDX55, SM6150, SM7150, SM8150, SM8250, SXR1130, SXR2130",
+        "score": 0
+    },
+    "CVE-2019-14043": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Out of bound read in Fingerprint application due to requested data is being used without length check in Snapdragon Auto, Snapdragon Compute, Snapdragon Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wired Infrastructure and Networking in Kamorta, MDM9150, MDM9205, MDM9650, MSM8998, Nicobar, QCS404, QCS405, QCS605, Rennell, SA415M, SA6155P, SC7180, SC8180X, SDA660, SDM630, SDM636, SDM660, SDM670, SDM710, SDM845, SDM850, SDX24, SDX55, SM6150, SM7150, SM8150, SM8250, SXR1130, SXR2130",
+        "score": 0
+    },
+    "CVE-2019-14053": {
+        "cpes": [],
+        "cwes": [],
+        "description": "When attempting to create a new XFRM policy, a stack out-of-bounds read will occur if the user provides a template where the mode is set to a value that does not resolve to a valid XFRM mode in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer Electronics Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon IoT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables, Snapdragon Wired Infrastructure and Networking in APQ8009, APQ8053, APQ8096AU, APQ8098, IPQ4019, IPQ8074, MDM9206, MDM9207C, MDM9607, MDM9640, MDM9650, MSM8905, MSM8909W, MSM8917, MSM8953, MSM8996AU, QCA4531, QCN7605, QCS605, QM215, SA415M, SC8180X, SDA660, SDA845, SDM429, SDM429W, SDM439, SDM450, SDM630, SDM632, SDM636, SDM660, SDM845, SDX20, SDX24, SDX55, SM6150, SM7150, SM8150, SM8250, SXR2130",
+        "score": 0
+    },
+    "CVE-2019-14054": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Improper permissions in XBL_SEC region enable user to update XBL_SEC code and data and divert the RAM dump path to normal cold boot path in Snapdragon Compute, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Wired Infrastructure and Networking in Kamorta, MSM8998, QCS404, QCS605, SDA660, SDA845, SDM630, SDM636, SDM660, SDM670, SDM710, SDM845, SDM850, SM8150, SXR1130, SXR2130",
+        "score": 0
+    },
+    "CVE-2019-14066": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Integer overflow in calculating estimated output buffer size when getting a list of installed Feature IDs, Serial Numbers or checking Feature ID status in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wired Infrastructure and Networking in Kamorta, MDM9205, MDM9607, Nicobar, QCS404, QCS405, Rennell, SA6155P, SC7180, SC8180X, SDX55, SM6150, SM7150, SXR2130",
+        "score": 0
+    },
+    "CVE-2019-14067": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Using non-time-constant functions like memcmp to compare sensitive data can lead to information leakage through timing side channel issue. in Snapdragon Auto, Snapdragon Compute, Snapdragon Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon IoT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables, Snapdragon Wired Infrastructure and Networking in APQ8009, APQ8017, APQ8053, APQ8096, APQ8096AU, APQ8098, Kamorta, MDM9150, MDM9205, MDM9206, MDM9607, MDM9650, MSM8909, MSM8909W, MSM8917, MSM8920, MSM8937, MSM8940, MSM8953, MSM8996, MSM8996AU, MSM8998, Nicobar, QCM2150, QCS404, QCS405, QCS605, QM215, Rennell, SA415M, SA6155P, SC7180, SC8180X, SDA660, SDA845, SDM429, SDM429W, SDM439, SDM450, SDM630, SDM632, SDM636, SDM660, SDM670, SDM710, SDM845, SDM850, SDX24, SDX55, SM6150, SM7150, SM8150, SXR1130, SXR2130",
+        "score": 0
+    },
+    "CVE-2019-14077": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Out of bound memory access while processing ese transmit command due to passing Response buffer received from user in Snapdragon Auto, Snapdragon Compute, Snapdragon Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wired Infrastructure and Networking in APQ8009, APQ8098, IPQ6018, Kamorta, MDM9150, MDM9205, MDM9607, MDM9650, MSM8909, MSM8998, Nicobar, QCS404, QCS405, QCS605, Rennell, SA415M, SA6155P, SC7180, SC8180X, SDA660, SDA845, SDM630, SDM636, SDM660, SDM670, SDM710, SDM845, SDM850, SDX24, SDX55, SM6150, SM7150, SM8150, SM8250, SXR1130, SXR2130",
+        "score": 0
+    },
+    "CVE-2019-14078": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Out of bound memory access while processing qpay due to not validating length of the response buffer provided by User. in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wired Infrastructure and Networking in APQ8009, APQ8098, MSM8909, MSM8998, SDA660, SDA845, SDM630, SDM636, SDM660, SDM845",
+        "score": 0
+    },
+    "CVE-2019-14087": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Failure in buffer management while accessing handle for HDR blit when color modes not supported by display in Snapdragon Consumer IOT, Snapdragon Mobile, Snapdragon Wearables in MSM8909W, QCS605",
+        "score": 0
+    },
+    "CVE-2019-15709": {
+        "cpes": [],
+        "cwes": [],
+        "description": "An improper input validation in FortiAP-S/W2 6.2.0 to 6.2.2, 6.0.5 and below, FortiAP-U 6.0.1 and below CLI admin console may allow unauthorized administrators to overwrite system files via specially crafted tcpdump commands in the CLI.",
+        "score": 0
+    },
+    "CVE-2019-17603": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Ene.sys in Asus Aura Sync through 1.07.71 does not properly validate input to IOCTL 0x80102044, 0x80102050, and 0x80102054, which allows local users to cause a denial of service (system crash) or gain privileges via IOCTL requests using crafted kernel addresses that trigger memory corruption.",
+        "score": 0
+    },
+    "CVE-2019-20805": {
+        "cpes": [
+            "cpe:2.3:a:upx_project:upx:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "190"
+        ],
+        "description": "p_lx_elf.cpp in UPX before 3.96 has an integer overflow during unpacking via crafted values in a PT_DYNAMIC segment.",
+        "score": 4.9
+    },
+    "CVE-2019-20806": {
+        "cpes": [
+            "cpe:2.3:o:linux:linux_kernel:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "476"
+        ],
+        "description": "An issue was discovered in the Linux kernel before 5.2. There is a NULL pointer dereference in tw5864_handle_frame() in drivers/media/pci/tw5864/tw5864-video.c, which may cause denial of service, aka CID-2e7682ebfc75.",
+        "score": 6.25
+    },
+    "CVE-2019-20807": {
+        "cpes": [
+            "cpe:2.3:a:vim:vim:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "78"
+        ],
+        "description": "In Vim before 8.1.0881, users can circumvent the rvim restricted mode and execute arbitrary OS commands via scripting interfaces (e.g., Python, Ruby, or Lua).",
+        "score": 9.9
+    },
+    "CVE-2019-6342": {
+        "cpes": [
+            "cpe:2.3:a:drupal:drupal:8.7.4:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "20"
+        ],
+        "description": "An access bypass vulnerability exists when the experimental Workspaces module in Drupal 8 core is enabled. This can be mitigated by disabling the Workspaces module. It does not affect any release other than Drupal 8.7.4.",
+        "score": 8.3
+    },
+    "CVE-2020-10136": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Multiple products that implement the IP Encapsulation within IP standard (RFC 2003, STD 1) decapsulate and route IP-in-IP traffic without any validation, which could allow an unauthenticated remote attacker to route arbitrary traffic via an exposed network interface and lead to spoofing, access control bypass, and other unexpected network behaviors.",
+        "score": 0
+    },
+    "CVE-2020-10703": {
+        "cpes": [
+            "cpe:2.3:a:redhat:libvirt:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "476"
+        ],
+        "description": "A NULL pointer dereference was found in the libvirt API responsible introduced in upstream version 3.10.0, and fixed in libvirt 6.0.0, for fetching a storage pool based on its target path. In more detail, this flaw affects storage pools created without a target path such as network-based pools like gluster and RBD. Unprivileged users with a read-only connection could abuse this flaw to crash the libvirt daemon, resulting in a potential denial of service.",
+        "score": 5.25
+    },
+    "CVE-2020-10719": {
+        "cpes": [
+            "cpe:2.3:a:redhat:undertow:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "444"
+        ],
+        "description": "A flaw was found in Undertow in versions before 2.1.1.Final, regarding the processing of invalid HTTP requests with large chunk sizes. This flaw allows an attacker to take advantage of HTTP request smuggling.",
+        "score": 6.45
+    },
+    "CVE-2020-10737": {
+        "cpes": [
+            "cpe:2.3:a:redhat:oddjob:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "22"
+        ],
+        "description": "A race condition was found in the mkhomedir tool shipped with the oddjob package in versions before 0.34.5 and 0.34.6 wherein, during the home creation, mkhomedir copies the /etc/skel directory into the newly created home and changes its ownership to the home's user without properly checking the homedir path. This flaw allows an attacker to leverage this issue by creating a symlink point to a target folder, which then has its ownership transferred to the new home directory's unprivileged user.",
+        "score": 5.0
+    },
+    "CVE-2020-10739": {
+        "cpes": [
+            "cpe:2.3:a:istio:istio:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "476"
+        ],
+        "description": "Istio 1.4.x before 1.4.9 and Istio 1.5.x before 1.5.4 contain the following vulnerability when telemetry v2 is enabled: by sending a specially crafted packet, an attacker could trigger a Null Pointer Exception resulting in a Denial of Service. This could be sent to the ingress gateway or a sidecar, triggering a null pointer exception which results in a denial of service. This also affects servicemesh-proxy where a null pointer exception flaw was found in servicemesh-proxy. When running Telemetry v2 (not on by default in version 1.4.x), an attacker could send a specially crafted packet to the ingress gateway or proxy sidecar, triggering a denial of service.",
+        "score": 6.25
+    },
+    "CVE-2020-10751": {
+        "cpes": [
+            "cpe:2.3:a:kernel:selinux:*:*:*:*:*:*:*:*",
+            "cpe:2.3:o:redhat:enterprise_linux_server:8.0:*:*:*:*:*:*:*",
+            "cpe:2.3:o:redhat:enterprise_linux_server:7.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "345"
+        ],
+        "description": "A flaw was found in the Linux kernels SELinux LSM hook implementation before version 5.7, where it incorrectly assumed that an skb would only contain a single netlink message. The hook would incorrectly only validate the first netlink message in the skb and allow or deny the rest of the messages within the skb with the granted permission without further processing.",
+        "score": 4.85
+    },
+    "CVE-2020-10936": {
+        "cpes": [
+            "cpe:2.3:a:sympa:sympa:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "269"
+        ],
+        "description": "Sympa before 6.2.56 allows privilege escalation.",
+        "score": 7.5
+    },
+    "CVE-2020-10945": {
+        "cpes": [
+            "cpe:2.3:a:centreon:centreon:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:centreon:widget-host-monitoring:19.10.0:*:*:*:*:*:*:*",
+            "cpe:2.3:a:centreon:widget-host-monitoring:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "Centreon before 19.10.7 exposes Session IDs in server responses.",
+        "score": 3.8
+    },
+    "CVE-2020-10946": {
+        "cpes": [
+            "cpe:2.3:a:centreon:centreon_service-monitoring_widget:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:centreon:centreon_host-monitoring_widget:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:centreon:centreon_tactical-overview_widget:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "Cross-site scripting (XSS) vulnerability allows remote attackers to inject arbitrary web script or HTML via the page parameter to service-monitoring/src/index.php. This vulnerability is fixed in versions 1.6.4, 18.10.3, 19.04.3, and 19.0.1 of the Centreon host-monitoring widget; 1.6.4, 18.10.5, 19.04.3, 19.10.2 of the Centreon service-monitoring widget; and 1.0.3, 18.10.1, 19.04.1, 19.10.1 of the Centreon tactical-overview widget.",
+        "score": 5.199999999999999
+    },
+    "CVE-2020-10959": {
+        "cpes": [
+            "cpe:2.3:a:mediawiki:mediawiki:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "601"
+        ],
+        "description": "resources/src/mediawiki.page.ready/ready.js in MediaWiki before 1.35 allows remote attackers to force a logout and external redirection via HTML content in a MediaWiki page.",
+        "score": 5.949999999999999
+    },
+    "CVE-2020-11017": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "415"
+        ],
+        "description": "In FreeRDP less than or equal to 2.0.0, by providing manipulated input a malicious client can create a double free condition and crash the server. This is fixed in version 2.1.0.",
+        "score": 6.25
+    },
+    "CVE-2020-11018": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "125"
+        ],
+        "description": "In FreeRDP less than or equal to 2.0.0, a possible resource exhaustion vulnerability can be performed. Malicious clients could trigger out of bound reads causing memory allocation with random size. This has been fixed in 2.1.0.",
+        "score": 5.25
+    },
+    "CVE-2020-11019": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "125"
+        ],
+        "description": "In FreeRDP less than or equal to 2.0.0, when running with logger set to \"WLOG_TRACE\", a possible crash of application could occur due to a read of an invalid array index. Data could be printed as string to local terminal. This has been fixed in 2.1.0.",
+        "score": 5.75
+    },
+    "CVE-2020-11038": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "190"
+        ],
+        "description": "In FreeRDP less than or equal to 2.0.0, an Integer Overflow to Buffer Overflow exists. When using /video redirection, a manipulated server can instruct the client to allocate a buffer with a smaller size than requested due to an integer overflow in size calculation. With later messages, the server can manipulate the client to write data out of bound to the previously allocated buffer. This has been patched in 2.1.0.",
+        "score": 8.65
+    },
+    "CVE-2020-11039": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "190"
+        ],
+        "description": "In FreeRDP less than or equal to 2.0.0, when using a manipulated server with USB redirection enabled (nearly) arbitrary memory can be read and written due to integer overflows in length checks. This has been patched in 2.1.0.",
+        "score": 8.55
+    },
+    "CVE-2020-11040": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "125"
+        ],
+        "description": "In FreeRDP less than or equal to 2.0.0, there is an out-of-bound data read from memory in clear_decompress_subcode_rlex, visualized on screen as color. This has been patched in 2.1.0.",
+        "score": 3.35
+    },
+    "CVE-2020-11041": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "129"
+        ],
+        "description": "In FreeRDP less than or equal to 2.0.0, an outside controlled array index is used unchecked for data used as configuration for sound backend (alsa, oss, pulse, ...). The most likely outcome is a crash of the client instance followed by no or distorted sound or a session disconnect. If a user cannot upgrade to the patched version, a workaround is to disable sound for the session. This has been patched in 2.1.0.",
+        "score": 3.35
+    },
+    "CVE-2020-11043": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "125"
+        ],
+        "description": "In FreeRDP less than or equal to 2.0.0, there is an out-of-bounds read in rfx_process_message_tileset. Invalid data fed to RFX decoder results in garbage on screen (as colors). This has been patched in 2.1.0.",
+        "score": 3.85
+    },
+    "CVE-2020-11059": {
+        "cpes": [
+            "cpe:2.3:a:aegir_project:aegir:*:*:*:*:*:node.js:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "In AEgir greater than or equal to 21.7.0 and less than 21.10.1, aegir publish and aegir build may leak secrets from environment variables in the browser bundle published to npm. This has been fixed in 21.10.1.",
+        "score": 6.25
+    },
+    "CVE-2020-11075": {
+        "cpes": [],
+        "cwes": [],
+        "description": "In Anchore Engine version 0.7.0, a specially crafted container image manifest, fetched from a registry, can be used to trigger a shell escape flaw in the anchore engine analyzer service during an image analysis process. The image analysis operation can only be executed by an authenticated user via a valid API request to anchore engine, or if an already added image that anchore is monitoring has its manifest altered to exploit the same flaw. A successful attack can be used to execute commands that run in the analyzer environment, with the same permissions as the user that anchore engine is run as - including access to the credentials that Engine uses to access its own database which have read-write ability, as well as access to the running engien analyzer service environment. By default Anchore Engine is released and deployed as a container where the user is non-root, but if users run Engine directly or explicitly set the user to 'root' then that level of access may be gained in the execution environment where Engine runs. This issue is fixed in version 0.7.1.",
+        "score": 0
+    },
+    "CVE-2020-11079": {
+        "cpes": [
+            "cpe:2.3:a:node-dns-sync_project:node-dns-sync:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "94"
+        ],
+        "description": "node-dns-sync (npm module dns-sync) through 0.2.0 allows execution of arbitrary commands . This issue may lead to remote code execution if a client of the library calls the vulnerable method with untrusted input. This has been fixed in 0.2.1.",
+        "score": 8.65
+    },
+    "CVE-2020-11082": {
+        "cpes": [
+            "cpe:2.3:a:kaminari_project:kaminari:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "In Kaminari before 1.2.1, there is a vulnerability that would allow an attacker to inject arbitrary code into pages with pagination links. This has been fixed in 1.2.1.",
+        "score": 5.199999999999999
+    },
+    "CVE-2020-11085": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "125"
+        ],
+        "description": "In FreeRDP before 2.1.0, there is an out-of-bounds read in cliprdr_read_format_list. Clipboard format data read (by client or server) might read data out-of-bounds. This has been fixed in 2.1.0.",
+        "score": 5.5
+    },
+    "CVE-2020-11086": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "125"
+        ],
+        "description": "In FreeRDP less than or equal to 2.0.0, there is an out-of-bound read in ntlm_read_ntlm_v2_client_challenge that reads up to 28 bytes out-of-bound to an internal structure. This has been fixed in 2.1.0.",
+        "score": 5.45
+    },
+    "CVE-2020-11087": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "125"
+        ],
+        "description": "In FreeRDP less than or equal to 2.0.0, there is an out-of-bound read in ntlm_read_AuthenticateMessage. This has been fixed in 2.1.0.",
+        "score": 5.45
+    },
+    "CVE-2020-11088": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "125"
+        ],
+        "description": "In FreeRDP less than or equal to 2.0.0, there is an out-of-bound read in ntlm_read_NegotiateMessage. This has been fixed in 2.1.0.",
+        "score": 5.45
+    },
+    "CVE-2020-11089": {
+        "cpes": [
+            "cpe:2.3:a:freerdp:freerdp:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "125"
+        ],
+        "description": "In FreeRDP before 2.1.0, there is an out-of-bound read in irp functions (parallel_process_irp_create, serial_process_irp_create, drive_process_irp_write, printer_process_irp_write, rdpei_recv_pdu, serial_process_irp_write). This has been fixed in 2.1.0.",
+        "score": 7.65
+    },
+    "CVE-2020-11844": {
+        "cpes": [],
+        "cwes": [],
+        "description": "There is an Incorrect Authorization vulnerability in Micro Focus Service Management Automation (SMA) product affecting version 2018.05 to 2020.02. The vulnerability could be exploited to provide unauthorized access to the Container Deployment Foundation.",
+        "score": 0
+    },
+    "CVE-2020-11949": {
+        "cpes": [],
+        "cwes": [],
+        "description": "testserver.cgi of the web service on VIVOTEK Network Cameras before XXXXX-VVTK-2.2002.xx.01x (and before XXXXX-VVTK-0XXXX_Beta2) allows an authenticated user to obtain arbitrary files from a camera's local filesystem. For example, this affects IT9388-HT devices.",
+        "score": 3.8
+    },
+    "CVE-2020-11950": {
+        "cpes": [],
+        "cwes": [],
+        "description": "VIVOTEK Network Cameras before XXXXX-VVTK-2.2002.xx.01x (and before XXXXX-VVTK-0XXXX_Beta2) allows an authenticated user to upload and execute a script (with resultant execution of OS commands). For example, this affects IT9388-HT devices.",
+        "score": 8.9
+    },
+    "CVE-2020-12017": {
+        "cpes": [],
+        "cwes": [],
+        "description": "GE Grid Solutions Reason RT Clocks, RT430, RT431, and RT434, all firmware versions prior to 08A05. The device\u2019s vulnerability in the web application could allow multiple unauthenticated attacks that could cause serious impact. The vulnerability may allow an unauthenticated attacker to execute arbitrary commands and send a request to a specific URL that could cause the device to become unresponsive. The unauthenticated attacker may change the password of the 'configuration' user account, allowing the attacker to modify the configuration of the device via the web interface using the new password. This vulnerability may also allow an unauthenticated attacker to bypass the authentication required to configure the device and reboot the system.",
+        "score": 0
+    },
+    "CVE-2020-12062": {
+        "cpes": [],
+        "cwes": [],
+        "description": "** DISPUTED ** The scp client in OpenSSH 8.2 incorrectly sends duplicate responses to the server upon a utimes system call failure, which allows a malicious unprivileged user on the remote server to overwrite arbitrary files in the client's download directory by creating a crafted subdirectory anywhere on the remote server. The victim must use the command scp -rp to download a file hierarchy containing, anywhere inside, this crafted subdirectory. NOTE: the vendor points out that \"this attack can achieve no more than a hostile peer is already able to achieve within the scp protocol\" and \"utimes does not fail under normal circumstances.\"",
+        "score": 0
+    },
+    "CVE-2020-12387": {
+        "cpes": [
+            "cpe:2.3:a:mozilla:firefox:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:mozilla:thunderbird:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:mozilla:firefox_esr:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "362"
+        ],
+        "description": "A race condition when running shutdown code for Web Worker led to a use-after-free vulnerability. This resulted in a potentially exploitable crash. This vulnerability affects Firefox ESR < 68.8, Firefox < 76, and Thunderbird < 68.8.0.",
+        "score": 7.449999999999999
+    },
+    "CVE-2020-12388": {
+        "cpes": [],
+        "cwes": [],
+        "description": "The Firefox content processes did not sufficiently lockdown access control which could result in a sandbox escape. *Note: this issue only affects Firefox on Windows operating systems.*. This vulnerability affects Firefox ESR < 68.8 and Firefox < 76.",
+        "score": 8.75
+    },
+    "CVE-2020-12389": {
+        "cpes": [],
+        "cwes": [],
+        "description": "The Firefox content processes did not sufficiently lockdown access control which could result in a sandbox escape. *Note: this issue only affects Firefox on Windows operating systems.*. This vulnerability affects Firefox ESR < 68.8 and Firefox < 76.",
+        "score": 8.75
+    },
+    "CVE-2020-12390": {
+        "cpes": [
+            "cpe:2.3:a:mozilla:firefox:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "502"
+        ],
+        "description": "Incorrect origin serialization of URLs with IPv6 addresses could lead to incorrect security checks. This vulnerability affects Firefox < 76.",
+        "score": 8.65
+    },
+    "CVE-2020-12391": {
+        "cpes": [
+            "cpe:2.3:a:mozilla:firefox:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "20"
+        ],
+        "description": "Documents formed using data: URLs in an OBJECT element failed to inherit the CSP of the creating context. This allowed the execution of scripts that should have been blocked, albeit with a unique opaque origin. This vulnerability affects Firefox < 76.",
+        "score": 6.25
+    },
+    "CVE-2020-12392": {
+        "cpes": [
+            "cpe:2.3:a:mozilla:firefox:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:mozilla:thunderbird:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:mozilla:firefox_esr:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "The 'Copy as cURL' feature of Devtools' network tab did not properly escape the HTTP POST data of a request, which can be controlled by the website. If a user used the 'Copy as cURL' feature and pasted the command into a terminal, it could have resulted in the disclosure of local files. This vulnerability affects Firefox ESR < 68.8, Firefox < 76, and Thunderbird < 68.8.0.",
+        "score": 3.8
+    },
+    "CVE-2020-12393": {
+        "cpes": [],
+        "cwes": [],
+        "description": "The 'Copy as cURL' feature of Devtools' network tab did not properly escape the HTTP method of a request, which can be controlled by the website. If a user used the 'Copy as cURL' feature and pasted the command into a terminal, it could have resulted in command injection and arbitrary command execution. *Note: this issue only affects Firefox on Windows operating systems.*. This vulnerability affects Firefox ESR < 68.8, Firefox < 76, and Thunderbird < 68.8.0.",
+        "score": 6.199999999999999
+    },
+    "CVE-2020-12394": {
+        "cpes": [
+            "cpe:2.3:a:mozilla:firefox:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "20"
+        ],
+        "description": "A logic flaw in our location bar implementation could have allowed a local attacker to spoof the current location by selecting a different origin and removing focus from the input element. This vulnerability affects Firefox < 76.",
+        "score": 2.7
+    },
+    "CVE-2020-12395": {
+        "cpes": [
+            "cpe:2.3:a:mozilla:firefox:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:mozilla:thunderbird:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:mozilla:firefox_esr:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "119"
+        ],
+        "description": "Mozilla developers and community members reported memory safety bugs present in Firefox 75 and Firefox ESR 68.7. Some of these bugs showed evidence of memory corruption and we presume that with enough effort some of these could have been exploited to run arbitrary code. This vulnerability affects Firefox ESR < 68.8, Firefox < 76, and Thunderbird < 68.8.0.",
+        "score": 9.9
+    },
+    "CVE-2020-12396": {
+        "cpes": [
+            "cpe:2.3:a:mozilla:firefox:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "119"
+        ],
+        "description": "Mozilla developers and community members reported memory safety bugs present in Firefox 75. Some of these bugs showed evidence of memory corruption and we presume that with enough effort some of these could have been exploited to run arbitrary code. This vulnerability affects Firefox < 76.",
+        "score": 8.65
+    },
+    "CVE-2020-12493": {
+        "cpes": [
+            "cpe:2.3:o:swarco:cpu_ls4000_firmware:g4:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "269"
+        ],
+        "description": "An open port used for debugging in SWARCOs CPU LS4000 Series with versions starting with G4... grants root access to the device without access control via network. A malicious user could use this vulnerability to get access to the device and disturb operations with connected devices.",
+        "score": 10.0
+    },
+    "CVE-2020-12675": {
+        "cpes": [
+            "cpe:2.3:a:mappresspro:mappress:*:*:*:*:pro:wordpress:*:*"
+        ],
+        "cwes": [
+            "434"
+        ],
+        "description": "The mappress-google-maps-for-wordpress plugin before 2.54.6 for WordPress does not correctly implement capability checks for AJAX functions related to creation/retrieval/deletion of PHP template files, leading to Remote Code Execution. NOTE: this issue exists because of an incomplete fix for CVE-2020-12077.",
+        "score": 7.65
+    },
+    "CVE-2020-12867": {
+        "cpes": [],
+        "cwes": [],
+        "description": "A NULL pointer dereference in sanei_epson_net_read in SANE Backends through 1.0.29 allows a malicious device connected to the same local network as the victim to cause a denial of service, aka GHSL-2020-075.",
+        "score": 3.8
+    },
+    "CVE-2020-13173": {
+        "cpes": [
+            "cpe:2.3:a:teradici:pcoip_graphics_agent:*:*:*:*:*:windows:*:*",
+            "cpe:2.3:a:teradici:pcoip_standard_agent:*:*:*:*:*:windows:*:*"
+        ],
+        "cwes": [
+            "269"
+        ],
+        "description": "Initialization of the pcoip_credential_provider in Teradici PCoIP Standard Agent for Windows and PCoIP Graphics Agent for Windows versions 19.11.1 and earlier creates an insecure named pipe, which allows an attacker to intercept sensitive information or possibly elevate privileges via pre-installing an application which acquires that named pipe.",
+        "score": 6.199999999999999
+    },
+    "CVE-2020-13227": {
+        "cpes": [
+            "cpe:2.3:a:sysax:multi_server:6.90:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "22"
+        ],
+        "description": "An issue was discovered in Sysax Multi Server 6.90. An attacker can determine the username (under which the web server is running) by triggering an invalid path permission error. This bypasses the fakepath protection mechanism.",
+        "score": 5.15
+    },
+    "CVE-2020-13228": {
+        "cpes": [
+            "cpe:2.3:a:sysax:multi_server:6.90:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "An issue was discovered in Sysax Multi Server 6.90. There is reflected XSS via the /scgi sid parameter.",
+        "score": 5.199999999999999
+    },
+    "CVE-2020-13229": {
+        "cpes": [
+            "cpe:2.3:a:sysax:multi_server:6.90:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "384"
+        ],
+        "description": "An issue was discovered in Sysax Multi Server 6.90. A session can be hijacked if one observes the sid value in any /scgi URI, because it is an authentication token.",
+        "score": 7.800000000000001
+    },
+    "CVE-2020-13245": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Certain NETGEAR devices are affected by Missing SSL Certificate Validation. This affects R7000 1.0.9.6_1.2.19 through 1.0.11.100_10.2.10, and possibly R6120, R7800, R6220, R8000, R6350, R9000, R6400, RAX120, R6400v2, RBR20, R6800, XR300, R6850, XR500, and R7000P.",
+        "score": 5.1
+    },
+    "CVE-2020-13253": {
+        "cpes": [
+            "cpe:2.3:a:qemu:qemu:4.2.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "125"
+        ],
+        "description": "sd_wp_addr in hw/sd/sd.c in QEMU 4.2.0 uses an unvalidated address, which leads to an out-of-bounds read during sdhci_write() operations. A guest OS user can crash the QEMU process.",
+        "score": 3.8
+    },
+    "CVE-2020-13361": {
+        "cpes": [
+            "cpe:2.3:a:qemu:qemu:4.2.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "787"
+        ],
+        "description": "In QEMU 5.0.0 and earlier, es1370_transfer_audio in hw/audio/es1370.c does not properly validate the frame count, which allows guest OS users to trigger an out-of-bounds access during an es1370_write() operation.",
+        "score": 3.5999999999999996
+    },
+    "CVE-2020-13362": {
+        "cpes": [
+            "cpe:2.3:a:qemu:qemu:4.2.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "125"
+        ],
+        "description": "In QEMU 5.0.0 and earlier, megasas_lookup_frame in hw/scsi/megasas.c has an out-of-bounds read via a crafted reply_queue_head field from a guest OS user.",
+        "score": 2.6500000000000004
+    },
+    "CVE-2020-13386": {
+        "cpes": [
+            "cpe:2.3:a:smartdraw:smartdraw_2020:27.0.0.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "732"
+        ],
+        "description": "In SmartDraw 2020 27.0.0.0, the installer gives inherited write permissions to the Authenticated Users group on the SmartDraw 2020 installation folder. Additionally, when the product is installed, two scheduled tasks are created on the machine, SDMsgUpdate (Local) and SDMsgUpdate (TE). The scheduled tasks run in the context of the user who installed the product. Both scheduled tasks attempt to run the same binary, C:\\SmartDraw 2020\\Messages\\SDNotify.exe. The folder Messages doesn't exist by default and (by extension) neither does SDNotify.exe. Due to the weak folder permissions, these can be created by any user. A malicious actor can therefore create a malicious SDNotify.exe binary, and have it automatically run, whenever the user who installed the product logs on to the machine. The malicious SDNotify.exe could, for example, create a new local administrator account on the machine.",
+        "score": 5.85
+    },
+    "CVE-2020-13401": {
+        "cpes": [
+            "cpe:2.3:a:docker:engine:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "20"
+        ],
+        "description": "An issue was discovered in Docker Engine before 19.03.11. An attacker in a container, with the CAP_NET_RAW capability, can craft IPv6 router advertisements, and consequently spoof external IPv6 hosts, obtain sensitive information, or cause a denial of service.",
+        "score": 8.65
+    },
+    "CVE-2020-13442": {
+        "cpes": [
+            "cpe:2.3:a:dext5:dext5:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "434"
+        ],
+        "description": "A Remote code execution vulnerability exists in DEXT5Upload in DEXT5 through 2.7.1402870. An attacker can upload a PHP file via dext5handler.jsp handler because the uploaded file is stored under dext5uploadeddata/.",
+        "score": 8.65
+    },
+    "CVE-2020-13448": {
+        "cpes": [
+            "cpe:2.3:a:quickbox:quickbox:*:*:*:*:community:*:*:*",
+            "cpe:2.3:a:quickbox:quickbox:*:*:*:*:pro:*:*:*"
+        ],
+        "cwes": [
+            "74"
+        ],
+        "description": "QuickBox Community Edition through 2.5.5 and Pro Edition through 2.1.8 allows an authenticated remote attacker to execute code on the server via command injection in the servicestart parameter.",
+        "score": 8.9
+    },
+    "CVE-2020-13458": {
+        "cpes": [
+            "cpe:2.3:a:verbb:image_resizer:*:*:*:*:*:craft_cms:*:*"
+        ],
+        "cwes": [
+            "352"
+        ],
+        "description": "An issue was discovered in the Image Resizer plugin before 2.0.9 for Craft CMS. There are CSRF issues with the log-clear controller action.",
+        "score": 7.800000000000001
+    },
+    "CVE-2020-13459": {
+        "cpes": [
+            "cpe:2.3:a:verbb:image_resizer:*:*:*:*:*:craft_cms:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "An issue was discovered in the Image Resizer plugin before 2.0.9 for Craft CMS. There is stored XSS in the Bulk Resize action.",
+        "score": 4.45
+    },
+    "CVE-2020-13482": {
+        "cpes": [
+            "cpe:2.3:a:em-http-request_project:em-http-request:1.1.5:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "295"
+        ],
+        "description": "EM-HTTP-Request 1.1.5 uses the library eventmachine in an insecure way that allows an attacker to perform a man-in-the-middle attack against users of the library. The hostname in a TLS server certificate is not verified.",
+        "score": 7.449999999999999
+    },
+    "CVE-2020-13485": {
+        "cpes": [
+            "cpe:2.3:a:verbb:knock_knock:*:*:*:*:*:craft_cms:*:*"
+        ],
+        "cwes": [
+            "697"
+        ],
+        "description": "The Knock Knock plugin before 1.2.8 for Craft CMS allows IP Whitelist bypass via an X-Forwarded-For HTTP header.",
+        "score": 7.75
+    },
+    "CVE-2020-13486": {
+        "cpes": [
+            "cpe:2.3:a:verbb:knock_knock:*:*:*:*:*:craft_cms:*:*"
+        ],
+        "cwes": [
+            "601"
+        ],
+        "description": "The Knock Knock plugin before 1.2.8 for Craft CMS allows malicious redirection.",
+        "score": 5.949999999999999
+    },
+    "CVE-2020-13487": {
+        "cpes": [
+            "cpe:2.3:a:bbpress:bbpress:*:*:*:*:*:wordpress:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "The bbPress plugin through 2.6.4 for WordPress has stored XSS in the Forum creation section, resulting in JavaScript execution at wp-admin/edit.php?post_type=forum (aka the Forum listing page) for all users. An administrator can exploit this at the wp-admin/post.php?action=edit URI.",
+        "score": 4.15
+    },
+    "CVE-2020-13614": {
+        "cpes": [
+            "cpe:2.3:a:axel_project:axel:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "295"
+        ],
+        "description": "An issue was discovered in ssl.c in Axel before 2.17.8. The TLS implementation lacks hostname verification.",
+        "score": 5.1
+    },
+    "CVE-2020-13615": {
+        "cpes": [
+            "cpe:2.3:a:qore:qore:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "295"
+        ],
+        "description": "lib/QoreSocket.cpp in Qore before 0.9.4.2 lacks hostname verification for X.509 certificates.",
+        "score": 5.1
+    },
+    "CVE-2020-13616": {
+        "cpes": [
+            "cpe:2.3:a:pichi_project:pichi:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "295"
+        ],
+        "description": "The boost ASIO wrapper in net/asio.cpp in Pichi before 1.3.0 lacks TLS hostname verification.",
+        "score": 5.1
+    },
+    "CVE-2020-13622": {
+        "cpes": [
+            "cpe:2.3:a:jerryscript:jerryscript:2.2.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "617"
+        ],
+        "description": "JerryScript 2.2.0 allows attackers to cause a denial of service (assertion failure) because a property key query for a Proxy object returns unintended data.",
+        "score": 6.25
+    },
+    "CVE-2020-13623": {
+        "cpes": [
+            "cpe:2.3:a:jerryscript:jerryscript:2.2.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "400"
+        ],
+        "description": "JerryScript 2.2.0 allows attackers to cause a denial of service (stack consumption) via a proxy operation.",
+        "score": 6.25
+    },
+    "CVE-2020-13627": {
+        "cpes": [
+            "cpe:2.3:a:centreon:centreon_service-monitoring_widget:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:centreon:centreon_host-monitoring_widget:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:centreon:centreon_tactical-overview_widget:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "Cross-site scripting (XSS) vulnerability allows remote attackers to inject arbitrary web script or HTML via the widgetId parameter to service-monitoring/src/index.php. This vulnerability is fixed in versions 1.6.4, 18.10.3, 19.04.3, and 19.0.1 of the Centreon host-monitoring widget; 1.6.4, 18.10.5, 19.04.3, 19.10.2 of the Centreon service-monitoring widget; and 1.0.3, 18.10.1, 19.04.1, 19.10.1 of the Centreon tactical-overview widget.",
+        "score": 5.199999999999999
+    },
+    "CVE-2020-13628": {
+        "cpes": [
+            "cpe:2.3:a:centreon:centreon_service-monitoring_widget:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:centreon:centreon_host-monitoring_widget:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:centreon:centreon_tactical-overview_widget:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "Cross-site scripting (XSS) vulnerability allows remote attackers to inject arbitrary web script or HTML via the widgetId parameter to host-monitoring/src/toolbar.php. This vulnerability is fixed in versions 1.6.4, 18.10.3, 19.04.3, and 19.0.1 of the Centreon host-monitoring widget; 1.6.4, 18.10.5, 19.04.3, 19.10.2 of the Centreon service-monitoring widget; and 1.0.3, 18.10.1, 19.04.1, 19.10.1 of the Centreon tactical-overview widget.",
+        "score": 5.199999999999999
+    },
+    "CVE-2020-13630": {
+        "cpes": [
+            "cpe:2.3:a:sqlite:sqlite:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "416"
+        ],
+        "description": "ext/fts3/fts3.c in SQLite before 3.32.0 has a use-after-free in fts3EvalNextRow, related to the snippet feature.",
+        "score": 8.65
+    },
+    "CVE-2020-13631": {
+        "cpes": [
+            "cpe:2.3:a:sqlite:sqlite:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "CWE"
+        ],
+        "description": "SQLite before 3.32.0 allows a virtual table to be renamed to the name of one of its shadow tables, related to alter.c and build.c.",
+        "score": 6.25
+    },
+    "CVE-2020-13632": {
+        "cpes": [
+            "cpe:2.3:a:sqlite:sqlite:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "476"
+        ],
+        "description": "ext/fts3/fts3_snippet.c in SQLite before 3.32.0 has a NULL pointer dereference via a crafted matchinfo() query.",
+        "score": 6.25
+    },
+    "CVE-2020-13633": {
+        "cpes": [
+            "cpe:2.3:a:fork-cms:fork_cms:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "Fork before 5.8.3 allows XSS via navigation_title or title.",
+        "score": 5.199999999999999
+    },
+    "CVE-2020-13634": {
+        "cpes": [
+            "cpe:2.3:a:youhua:windows_master:7.99.13.604:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "20"
+        ],
+        "description": "In Windows Master (aka Windows Optimization Master) 7.99.13.604, the driver file (WoptiHWDetect.SYS) allows local users to cause a denial of service (BSOD) or possibly have unspecified other impact because of not validating input values from IOCtl 0xF1002558",
+        "score": 6.949999999999999
+    },
+    "CVE-2020-13641": {
+        "cpes": [
+            "cpe:2.3:a:infolific:real-time_find_and_replace:*:*:*:*:*:wordpress:*:*"
+        ],
+        "cwes": [
+            "352"
+        ],
+        "description": "An issue was discovered in the Real-Time Find and Replace plugin before 4.0.2 for WordPress. The far_options_page function did not do any nonce verification, allowing for requests to be forged on behalf of an administrator. The find and replace rules could be updated with malicious JavaScript, allowing for that be executed later in the victims browser.",
+        "score": 7.800000000000001
+    },
+    "CVE-2020-13642": {
+        "cpes": [
+            "cpe:2.3:a:siteorigin:page_builder:*:*:*:*:*:wordpress:*:*"
+        ],
+        "cwes": [
+            "352"
+        ],
+        "description": "An issue was discovered in the SiteOrigin Page Builder plugin before 2.10.16 for WordPress. The action_builder_content function did not do any nonce verification, allowing for requests to be forged on behalf of an administrator. The panels_data $_POST variable allows for malicious JavaScript to be executed in the victim's browser.",
+        "score": 7.800000000000001
+    },
+    "CVE-2020-13643": {
+        "cpes": [
+            "cpe:2.3:a:siteorigin:page_builder:*:*:*:*:*:wordpress:*:*"
+        ],
+        "cwes": [
+            "352"
+        ],
+        "description": "An issue was discovered in the SiteOrigin Page Builder plugin before 2.10.16 for WordPress. The live editor feature did not do any nonce verification, allowing for requests to be forged on behalf of an administrator. The live_editor_panels_data $_POST variable allows for malicious JavaScript to be executed in the victim's browser.",
+        "score": 7.800000000000001
+    },
+    "CVE-2020-13644": {
+        "cpes": [
+            "cpe:2.3:a:pickplugins:accordion:*:*:*:*:*:wordpress:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "An issue was discovered in the Accordion plugin before 2.2.9 for WordPress. The unprotected AJAX wp_ajax_accordions_ajax_import_json action allowed any authenticated user with Subscriber or higher permissions the ability to import a new accordion and inject malicious JavaScript as part of the accordion.",
+        "score": 4.45
+    },
+    "CVE-2020-13645": {
+        "cpes": [
+            "cpe:2.3:a:gnome:balsa:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:gnome:glib-networking:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:gnome:balsa:2.6.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "295"
+        ],
+        "description": "In GNOME glib-networking through 2.64.2, the implementation of GTlsClientConnection skips hostname verification of the server's TLS certificate if the application fails to specify the expected server identity. This is in contrast to its intended documented behavior, to fail the certificate verification. Applications that fail to provide the server identity, including Balsa before 2.5.11 and 2.6.x before 2.6.1, accept a TLS certificate if the certificate is valid for any host.",
+        "score": 6.45
+    },
+    "CVE-2020-13649": {
+        "cpes": [
+            "cpe:2.3:a:jerryscript:jerryscript:2.2.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "476"
+        ],
+        "description": "parser/js/js-scanner.c in JerryScript 2.2.0 mishandles errors during certain out-of-memory conditions, as demonstrated by a scanner_reverse_info_list NULL pointer dereference and a scanner_scan_all assertion failure.",
+        "score": 6.25
+    },
+    "CVE-2020-13659": {
+        "cpes": [
+            "cpe:2.3:a:qemu:qemu:4.2.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "476"
+        ],
+        "description": "address_space_map in exec.c in QEMU 4.2.0 can trigger a NULL pointer dereference related to BounceBuffer.",
+        "score": 6.25
+    },
+    "CVE-2020-13660": {
+        "cpes": [
+            "cpe:2.3:a:cmsmadesimple:cms_made_simple:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "CMS Made Simple through 2.2.14 allows XSS via a crafted File Picker profile name.",
+        "score": 4.15
+    },
+    "CVE-2020-13693": {
+        "cpes": [
+            "cpe:2.3:a:bbpress:bbpress:*:*:*:*:*:wordpress:*:*"
+        ],
+        "cwes": [
+            "269"
+        ],
+        "description": "An unauthenticated privilege-escalation issue exists in the bbPress plugin before 2.6.5 for WordPress when New User Registration is enabled.",
+        "score": 8.65
+    },
+    "CVE-2020-13694": {
+        "cpes": [
+            "cpe:2.3:a:quickbox:quickbox:*:*:*:*:community:*:*:*",
+            "cpe:2.3:a:quickbox:quickbox:*:*:*:*:pro:*:*:*"
+        ],
+        "cwes": [
+            "78"
+        ],
+        "description": "In QuickBox Community Edition through 2.5.5 and Pro Edition through 2.1.8, the local www-data user can execute sudo mysql without a password, which means that the www-data user can execute arbitrary OS commands via the mysql -e option.",
+        "score": 8.9
+    },
+    "CVE-2020-13695": {
+        "cpes": [
+            "cpe:2.3:a:quickbox:quickbox:*:*:*:*:community:*:*:*",
+            "cpe:2.3:a:quickbox:quickbox:*:*:*:*:pro:*:*:*"
+        ],
+        "cwes": [
+            "269"
+        ],
+        "description": "In QuickBox Community Edition through 2.5.5 and Pro Edition through 2.1.8, the local www-data user has sudo privileges to execute grep as root without a password, which allows an attacker to obtain sensitive information via a grep of a /root/*.db or /etc/shadow file.",
+        "score": 8.1
+    },
+    "CVE-2020-13754": {
+        "cpes": [
+            "cpe:2.3:a:qemu:qemu:4.2.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "119"
+        ],
+        "description": "hw/pci/msix.c in QEMU 4.2.0 allows guest OS users to trigger an out-of-bounds access via a crafted address in an msi-x mmio operation.",
+        "score": 5.65
+    },
+    "CVE-2020-13757": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Python-RSA 4.0 ignores leading '\\0' bytes during decryption of ciphertext. This could conceivably have a security-relevant impact, e.g., by helping an attacker to infer that an application uses Python-RSA, or if the length of accepted ciphertext affects application behavior (such as by causing excessive memory allocation).",
+        "score": 0
+    },
+    "CVE-2020-13758": {
+        "cpes": [
+            "cpe:2.3:a:bitrix:bitrix24:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "modules/security/classes/general.post_filter.php/post_filter.php in the Web Application Firewall in Bitrix24 through 20.0.950 allows XSS by placing %00 before the payload.",
+        "score": 5.199999999999999
+    },
+    "CVE-2020-13759": {
+        "cpes": [],
+        "cwes": [],
+        "description": "rust-vmm vm-memory before 0.1.1 and 0.2.x before 0.2.1 allows attackers to cause a denial of service (loss of IP networking) because read_obj and write_obj do not properly access memory. This affects aarch64 (with musl or glibc) and x86_64 (with musl).",
+        "score": 0
+    },
+    "CVE-2020-1797": {
+        "cpes": [],
+        "cwes": [],
+        "description": "HUAWEI Mate 20 smartphones with versions earlier than 10.0.0.185(C00E74R3P8) have an improper authorization vulnerability. The system does not properly restrict certain operation in ADB mode, successful exploit could allow certain user break the limit of digital balance function.",
+        "score": 2.25
+    },
+    "CVE-2020-1798": {
+        "cpes": [],
+        "cwes": [],
+        "description": "HUAWEI P30 smartphones with versions earlier than 10.1.0.135(C00E135R2P11) have an improper authentication vulnerability. A logic error occurs when handling NFC work, an attacker should establish a NFC connection to the target phone, and then do a series of operations on the target phone. Successful exploit could allow a guest user do certain operation which is beyond the guest user's privilege.",
+        "score": 3.3499999999999996
+    },
+    "CVE-2020-1809": {
+        "cpes": [],
+        "cwes": [],
+        "description": "HUAWEI Mate 10 smartphones with versions earlier than 10.0.0.143(C00E143R2P4) have an information disclosure vulnerability. The attacker could wake up voice assistant then do a series of crafted voice operation, successful exploit could allow the attacker read certain files without unlock the phone leading to information disclosure.",
+        "score": 3.3499999999999996
+    },
+    "CVE-2020-1831": {
+        "cpes": [],
+        "cwes": [],
+        "description": "HUAWEI Mate 20 smartphones with versions earlier than 10.0.0.195(SP31C00E74R3P8) have an improper authorization vulnerability. The digital balance function does not sufficiently restrict the using time of certain user, successful exploit could allow the user break the limit of digital balance function after a series of operations with a PC.",
+        "score": 2.15
+    },
+    "CVE-2020-1832": {
+        "cpes": [],
+        "cwes": [],
+        "description": "E6878-370 products with versions of 10.0.3.1(H557SP27C233) and 10.0.3.1(H563SP1C00) have a stack buffer overflow vulnerability. The program copies an input buffer to an output buffer without verification. An attacker in the adjacent network could send a crafted message, successful exploit could lead to stack buffer overflow which may cause malicious code execution.",
+        "score": 7.300000000000001
+    },
+    "CVE-2020-1833": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Honor 9X smartphones with versions earlier than 9.1.1.172(C00E170R8P1) have an improper authentication vulnerability. A logic error occurs when handling clock function, an attacker should do a series of crafted operations quickly before the phone is unlocked, successful exploit could allow the attacker to access clock information without unlock the phone.",
+        "score": 2.25
+    },
+    "CVE-2020-1870": {
+        "cpes": [],
+        "cwes": [],
+        "description": "CloudEngine 12800 products with versions of V200R019C00, V200R019C10SPC800, V200R019C00SPC600, V200R019C10; and CloudEngine 6800 products with versions of V200R019C00SPC800 have a denial of service vulnerability. Due to improper memory management, memory leakage may occur in some special cases. Attackers can perform a series of operations to exploit this vulnerability. Successful exploit may cause a denial of service.",
+        "score": 6.25
+    },
+    "CVE-2020-3610": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Possibility of double free of the drawobj that is added to the drawqueue array of the context during IOCTL commands as there is no refcount taken for this object in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer Electronics Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables in APQ8009, APQ8053, APQ8096AU, APQ8098, MSM8909W, MSM8917, MSM8953, MSM8996AU, Nicobar, QCS405, QCS605, QM215, Rennell, SA415M, Saipan, SC8180X, SDA660, SDA845, SDM429, SDM429W, SDM439, SDM450, SDM630, SDM632, SDM636, SDM660, SDM670, SDM710, SDM845, SDX20, SDX24, SDX55, SM6150, SM7150, SM8150, SM8250, SXR2130",
+        "score": 0
+    },
+    "CVE-2020-3615": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Valid deauth/disassoc frames is dropped in case if RMF is enabled and some rouge peer keep on sending rogue deauth/disassoc frames due to improper enum values used to check the frame subtype in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer Electronics Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile in APQ8009, APQ8053, APQ8096AU, MDM9150, MDM9206, MDM9207C, MDM9607, MDM9650, MSM8996AU, QCA6174A, QCA6574AU, QCA9377, QCA9379, QCN7605, QCS605, SC8180X, SDM630, SDM636, SDM660, SDM845, SDX20, SDX24, SDX55, SM8150, SXR1130",
+        "score": 0
+    },
+    "CVE-2020-3616": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Buffer overflow in display function due to memory copy without checking length of size using strcpy function in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon IoT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables in APQ8017, APQ8053, APQ8096AU, APQ8098, MDM9206, MDM9207C, MDM9607, MSM8909W, MSM8917, MSM8953, MSM8996AU, QCS605, QM215, SDA660, SDA845, SDM429, SDM439, SDM450, SDM630, SDM632, SDM636, SDM660, SDM845, SDX20, SM6150, SM7150, SM8150",
+        "score": 0
+    },
+    "CVE-2020-3618": {
+        "cpes": [],
+        "cwes": [],
+        "description": "NULL exception due to accessing bad pointer while posting events on RT FIFO in Snapdragon Compute, Snapdragon Mobile, Snapdragon Wired Infrastructure and Networking in IPQ6018, IPQ8074, QCA8081, SC8180X, SXR2130",
+        "score": 0
+    },
+    "CVE-2020-3623": {
+        "cpes": [],
+        "cwes": [],
+        "description": "kernel failure due to load failures while running v1 path directly via kernel in Snapdragon Mobile in SM8250, SXR2130",
+        "score": 0
+    },
+    "CVE-2020-3625": {
+        "cpes": [],
+        "cwes": [],
+        "description": "When making query to DSP capabilities, Stack out of bounds occurs due to wrong buffer length configured for DSP attributes in Snapdragon Auto, Snapdragon Consumer IOT, Snapdragon Mobile in SM8250, SXR2130",
+        "score": 0
+    },
+    "CVE-2020-3630": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Possibility of out of bound access while processing the responses from video firmware in Snapdragon Auto, Snapdragon Compute, Snapdragon Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables in APQ8009, APQ8053, APQ8096AU, APQ8098, Kamorta, MDM9150, MDM9206, MDM9207C, MDM9607, MDM9640, MDM9650, MSM8909W, MSM8917, MSM8953, MSM8996, MSM8996AU, MSM8998, Nicobar, QCM2150, QCS405, QCS605, QM215, Rennell, SA415M, SA6155P, Saipan, SC8180X, SDA660, SDM429, SDM429W, SDM439, SDM450, SDM630, SDM632, SDM636, SDM660, SDM670, SDM710, SDM845, SDX20, SDX24, SDX55, SM6150, SM7150, SM8150, SM8250, SXR1130, SXR2130",
+        "score": 0
+    },
+    "CVE-2020-3633": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Array out of bound may occur while playing mp3 file as no check is there on offset if it is greater than the buffer allocated or not in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables in APQ8009, APQ8053, APQ8096AU, APQ8098, Kamorta, MDM9206, MDM9207C, MDM9607, MSM8905, MSM8909W, MSM8917, MSM8953, MSM8996AU, MSM8998, QCS405, QCS605, QM215, Rennell, Saipan, SDA660, SDM429, SDM429W, SDM439, SDM450, SDM630, SDM632, SDM636, SDM660, SDM670, SDM710, SDM845, SDX20, SM6150, SM7150, SM8150, SM8250, SXR2130",
+        "score": 0
+    },
+    "CVE-2020-3641": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Integer overflow may occur if atom size is less than atom offset as there is improper validation of atom size in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables in APQ8009, APQ8053, APQ8096AU, APQ8098, Kamorta, MDM9206, MDM9207C, MDM9607, MSM8905, MSM8909W, MSM8917, MSM8953, MSM8996AU, MSM8998, QCA6574AU, QCM2150, QCS405, QCS605, QM215, Rennell, SA6155P, Saipan, SDA660, SDM429, SDM429W, SDM439, SDM450, SDM630, SDM632, SDM636, SDM660, SDM845, SDX20, SM6150, SM7150, SM8150, SM8250, SXR2130",
+        "score": 0
+    },
+    "CVE-2020-3645": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Firmware will hit assert in WLAN firmware If encrypted data length in FILS IE of reassoc response is more than 528 bytes in Snapdragon Compute, Snapdragon Connectivity, Snapdragon Consumer Electronics Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wired Infrastructure and Networking in IPQ6018, IPQ8074, Kamorta, Nicobar, QCA6390, QCA8081, QCN7605, QCS404, QCS405, QCS605, Rennell, SC7180, SC8180X, SDA845, SDM670, SDM710, SDM845, SDM850, SM6150, SM7150, SM8150, SXR1130, SXR2130",
+        "score": 0
+    },
+    "CVE-2020-3680": {
+        "cpes": [],
+        "cwes": [],
+        "description": "A race condition can occur when using the fastrpc memory mapping API. in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Wearables in APQ8009, APQ8053, MSM8909W, MSM8917, MSM8953, QCS605, QM215, SA415M, SDM429, SDM429W, SDM439, SDM450, SDM632, SDM670, SDM710, SDM845, SDX24, SXR1130",
+        "score": 0
+    },
+    "CVE-2020-3811": {
+        "cpes": [
+            "cpe:2.3:a:netqmail:netqmail:1.06:*:*:*:*:*:*:*",
+            "cpe:2.3:o:debian:debian_linux:9.0:*:*:*:*:*:*:*",
+            "cpe:2.3:o:debian:debian_linux:10:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "20"
+        ],
+        "description": "qmail-verify as used in netqmail 1.06 is prone to a mail-address verification bypass vulnerability.",
+        "score": 6.25
+    },
+    "CVE-2020-3812": {
+        "cpes": [
+            "cpe:2.3:a:netqmail:netqmail:1.06:*:*:*:*:*:*:*",
+            "cpe:2.3:o:debian:debian_linux:9.0:*:*:*:*:*:*:*",
+            "cpe:2.3:o:debian:debian_linux:10:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "qmail-verify as used in netqmail 1.06 is prone to an information disclosure vulnerability. A local attacker can test for the existence of files and directories anywhere in the filesystem because qmail-verify runs as root and tests for the existence of files in the attacker's home directory, without dropping its privileges first.",
+        "score": 3.8
+    },
+    "CVE-2020-3957": {
+        "cpes": [],
+        "cwes": [],
+        "description": "VMware Fusion (11.x before 11.5.5), VMware Remote Console for Mac (11.x and prior) and VMware Horizon Client for Mac (5.x and prior) contain a local privilege escalation vulnerability due to a Time-of-check Time-of-use (TOCTOU) issue in the service opener. Successful exploitation of this issue may allow attackers with normal user privileges to escalate their privileges to root on the system where Fusion, VMRC and Horizon Client are installed.",
+        "score": 0
+    },
+    "CVE-2020-3958": {
+        "cpes": [
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707211:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904224:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904207:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908101:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912104:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201811002:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707212:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810231:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201906002:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908212:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810225:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908102:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707208:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904219:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201901001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810215:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707214:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810102:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201806001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908221:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912101:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004002:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707217:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904213:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908207:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201806001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904215:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810209:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201811001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201808001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810213:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004401:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810203:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:-:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707206:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:-:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904201:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810233:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904214:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707202:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912401:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810228:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810204:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201911402:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904223:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201811301:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912103:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201910001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201901402:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904217:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908205:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912403:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912301:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810217:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908216:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201701001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904202:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707216:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904227:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707209:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810226:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201905001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904222:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904229:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004408:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201811001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810218:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707201:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908104:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707102:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908202:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810207:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908103:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707220:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201808001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810216:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810211:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707221:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201908001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908210:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810220:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908206:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707219:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201704001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201905001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201901001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810227:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904210:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904203:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908201:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908209:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912102:*:*:*:*:*:*",
+            "cpe:2.3:a:vmware:fusion:*:*:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810230:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904228:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707207:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810201:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904221:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912401:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810205:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904226:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201710001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904211:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-20191004001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912403:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201901403:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904205:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908217:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912404:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810210:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810212:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810229:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908218:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004406:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908213:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908211:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201903001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201903001:*:*:*:*:*:*",
+            "cpe:2.3:a:vmware:workstation:*:*:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810221:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707215:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908214:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707218:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004407:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201712001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904216:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810234:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908215:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908208:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-202005001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904206:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810232:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904204:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908204:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912402:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810223:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707204:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004404:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904218:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201807001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201810001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004403:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810103:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810101:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908220:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912402:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912102:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908203:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201803001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707213:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707203:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904209:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201703002:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201911401:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201810002:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810208:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707210:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201911001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810206:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810219:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810214:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912404:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904212:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904220:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904208:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904225:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004405:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707101:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707103:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201703001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912002:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912101:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810224:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810202:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912405:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707205:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201901401:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810222:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004301:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004402:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908219:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "20"
+        ],
+        "description": "VMware ESXi (6.7 before ESXi670-202004101-SG and 6.5 before ESXi650-202005401-SG), VMware Workstation (15.x before 15.5.2) and VMware Fusion (11.x before 11.5.2) contain a denial-of-service vulnerability in the shader functionality. Successful exploitation of this issue may allow attackers with non-administrative access to a virtual machine to crash the virtual machine's vmx process leading to a denial of service condition.",
+        "score": 3.8
+    },
+    "CVE-2020-3959": {
+        "cpes": [
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707211:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904224:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904207:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908101:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912104:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201811002:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707212:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810231:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201906002:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908212:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810225:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908102:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707208:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904219:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201901001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810215:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707214:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810102:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201806001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908221:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912101:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004002:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707217:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904213:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908207:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201806001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904215:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810209:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201811001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201808001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810213:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004401:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810203:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:-:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707206:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:-:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904201:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810233:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904214:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707202:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912401:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810228:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810204:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201911402:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904223:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201811301:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912103:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201910001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201901402:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904217:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908205:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912403:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912301:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810217:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908216:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201701001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904202:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707216:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904227:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707209:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810226:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201905001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904222:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904229:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004408:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201811001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810218:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707201:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908104:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707102:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908202:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810207:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908103:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707220:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201808001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810216:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810211:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707221:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201908001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908210:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810220:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908206:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707219:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201704001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201905001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201901001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810227:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904210:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904203:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908201:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908209:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912102:*:*:*:*:*:*",
+            "cpe:2.3:a:vmware:fusion:*:*:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810230:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904228:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707207:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810201:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904221:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912401:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810205:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904226:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201710001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904211:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-20191004001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912403:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201901403:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904205:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908217:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912404:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810210:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810212:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810229:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908218:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004406:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908213:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908211:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201903001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201903001:*:*:*:*:*:*",
+            "cpe:2.3:a:vmware:workstation:*:*:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810221:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707215:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908214:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707218:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004407:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201712001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904216:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810234:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908215:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908208:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-202005001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904206:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810232:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904204:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908204:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912402:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810223:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707204:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004404:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904218:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201807001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201810001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004403:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810103:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810101:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908220:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912402:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912102:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908203:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201803001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707213:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707203:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904209:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201703002:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201911401:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201810002:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810208:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707210:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201911001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810206:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810219:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810214:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912404:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904212:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904220:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904208:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201904225:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004405:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707101:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707103:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201703001:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912002:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201912101:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810224:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810202:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201912405:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.5:650-201707205:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201901401:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201810222:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004301:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-202004402:*:*:*:*:*:*",
+            "cpe:2.3:o:vmware:esxi:6.7:670-201908219:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "119"
+        ],
+        "description": "VMware ESXi (6.7 before ESXi670-202004101-SG and 6.5 before ESXi650-202005401-SG), VMware Workstation (15.x before 15.1.0) and VMware Fusion (11.x before 11.1.0) contain a memory leak vulnerability in the VMCI module. A malicious actor with local non-administrative access to a virtual machine may be able to crash the virtual machine's vmx process leading to a partial denial of service.",
+        "score": 2.7
+    },
+    "CVE-2020-4013": {
+        "cpes": [
+            "cpe:2.3:a:atlassian:fisheye:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:atlassian:crucible:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "The review resource in Atlassian Fisheye and Crucible before version 4.8.1 allows remote attackers to inject arbitrary HTML or Javascript via a cross site scripting (XSS) vulnerability through the review objectives.",
+        "score": 4.45
+    },
+    "CVE-2020-4014": {
+        "cpes": [
+            "cpe:2.3:a:atlassian:fisheye:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:atlassian:crucible:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "863"
+        ],
+        "description": "The /profile/deleteWatch.do resource in Atlassian Fisheye and Crucible before version 4.8.1 allows remote attackers to remove another user's watching settings for a repository via an improper authorization vulnerability.",
+        "score": 4.15
+    },
+    "CVE-2020-4015": {
+        "cpes": [
+            "cpe:2.3:a:atlassian:fisheye:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:atlassian:crucible:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "The /json/fe/activeUserFinder.do resource in Altassian Fisheye and Crucible before version 4.8.1 allows remote attackers to view user user email addresses via a information disclosure vulnerability.",
+        "score": 4.15
+    },
+    "CVE-2020-4016": {
+        "cpes": [
+            "cpe:2.3:a:atlassian:fisheye:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:atlassian:crucible:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "The /plugins/servlet/jira-blockers/ resource in the crucible-jira-ril plugin in Atlassian Fisheye and Crucible before version 4.8.1 allows remote attackers to get the ID of configured Jira application links via an information disclosure vulnerability.",
+        "score": 5.15
+    },
+    "CVE-2020-4017": {
+        "cpes": [
+            "cpe:2.3:a:atlassian:fisheye:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:atlassian:crucible:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "The /rest/jira-ril/1.0/jira-rest/applinks resource in the crucible-jira-ril plugin in Atlassian Fisheye and Crucible before version 4.8.1 allows remote attackers to get information about any configured Jira application links via an information disclosure vulnerability.",
+        "score": 5.15
+    },
+    "CVE-2020-4018": {
+        "cpes": [
+            "cpe:2.3:a:atlassian:fisheye:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:atlassian:crucible:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "352"
+        ],
+        "description": "The setup resources in Atlassian Fisheye and Crucible before version 4.8.1 allows remote attackers to complete the setup process via a cross-site request forgery (CSRF) vulnerability.",
+        "score": 7.800000000000001
+    },
+    "CVE-2020-4019": {
+        "cpes": [],
+        "cwes": [],
+        "description": "The file editing functionality in the Atlassian Companion App before version 1.0.0 allows local attackers to have the app run a different executable in place of the app's cmd.exe via a untrusted search path vulnerability.",
+        "score": 0
+    },
+    "CVE-2020-4020": {
+        "cpes": [],
+        "cwes": [],
+        "description": "The file downloading functionality in the Atlassian Companion App before version 1.0.0 allows remote attackers, who control a Confluence Server instance that the Companion App is connected to, execute arbitrary .exe files via a Protection Mechanism Failure.",
+        "score": 0
+    },
+    "CVE-2020-4021": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Affected versions are: Before 8.5.5, and from 8.6.0 before 8.8.1 of Atlassian Jira Server and Data Center allow remote attackers to inject arbitrary HTML or JavaScript via a cross site scripting (XSS) vulnerability in the XML export view.",
+        "score": 0
+    },
+    "CVE-2020-4023": {
+        "cpes": [],
+        "cwes": [],
+        "description": "The review coverage resource in Atlassian Fisheye and Crucible before version 4.8.2 allows remote attackers to inject arbitrary HTML or Javascript via a cross site scripting (XSS) vulnerability through the committerFilter parameter.",
+        "score": 0
+    },
+    "CVE-2020-4226": {
+        "cpes": [
+            "cpe:2.3:a:ibm:mobilefirst_platform_foundation:8.0.0.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "IBM MobileFirst Platform Foundation 8.0.0.0 stores highly sensitive information in URL parameters. This may lead to information disclosure if unauthorized parties have access to the URLs via server logs, referrer header or browser history. IBM X-Force ID: 175207.",
+        "score": 6.25
+    },
+    "CVE-2020-4231": {
+        "cpes": [
+            "cpe:2.3:a:ibm:security_identity_governance_and_intelligence:5.2.6:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "20"
+        ],
+        "description": "IBM Security Identity Governance and Intelligence 5.2.6 could allow an authenticated user to perform unauthorized commands due to hazardous input validation. IBM X-Force ID: 175335.",
+        "score": 5.25
+    },
+    "CVE-2020-4232": {
+        "cpes": [
+            "cpe:2.3:a:ibm:security_identity_governance_and_intelligence:5.2.6:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "522"
+        ],
+        "description": "IBM Security Identity Governance and Intelligence 5.2.6 could allow an attacker to enumerate usernames to find valid login credentials which could be used to attempt further attacks against the system. IBM X-Force ID: 175336.",
+        "score": 6.25
+    },
+    "CVE-2020-4233": {
+        "cpes": [
+            "cpe:2.3:a:ibm:security_identity_governance_and_intelligence:5.2.6:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "IBM Security Identity Governance and Intelligence 5.2.6 could allow a remote attacker to obtain sensitive information, caused by the failure to set the secure flag for the session cookie in SSL mode. By intercepting its transmission within an HTTP session, an attacker could exploit this vulnerability to capture the cookie and obtain sensitive information. IBM X-Force ID: 175360.",
+        "score": 5.15
+    },
+    "CVE-2020-4244": {
+        "cpes": [
+            "cpe:2.3:a:ibm:security_identity_governance_and_intelligence:5.2.6:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "IBM Security Identity Governance and Intelligence 5.2.6 could allow an unauthorized user to obtain sensitive information through user enumeration. IBM X-Force ID: 175422.",
+        "score": 5.15
+    },
+    "CVE-2020-4245": {
+        "cpes": [
+            "cpe:2.3:a:ibm:security_identity_governance_and_intelligence:5.2.6:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "521"
+        ],
+        "description": "IBM Security Identity Governance and Intelligence 5.2.6 does not require that users should have strong passwords by default, which makes it easier for attackers to compromise user accounts. IBM X-Force ID: 175423.",
+        "score": 6.25
+    },
+    "CVE-2020-4246": {
+        "cpes": [
+            "cpe:2.3:a:ibm:security_identity_governance_and_intelligence:5.2.6:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "611"
+        ],
+        "description": "IBM Security Identity Governance and Intelligence 5.2.6 is vulnerable to an XML External Entity Injection (XXE) attack when processing XML data. A remote attacker could exploit this vulnerability to expose sensitive information or consume memory resources. IBM X-Force ID: 175481.",
+        "score": 6.3
+    },
+    "CVE-2020-4248": {
+        "cpes": [
+            "cpe:2.3:a:ibm:security_identity_governance_and_intelligence:5.2.6:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "IBM Security Identity Governance and Intelligence 5.2.6 could allow a remote attacker to obtain sensitive information when a detailed technical error message is returned in the browser. This information could be used in further attacks against the system. IBM X-Force ID: 175484.",
+        "score": 3.35
+    },
+    "CVE-2020-4249": {
+        "cpes": [
+            "cpe:2.3:a:ibm:security_identity_governance_and_intelligence:5.2.6:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "IBM Security Identity Governance and Intelligence 5.2.6 could disclose highly sensitive information to other authenticated users on the sytem due to incorrect authorization. IBM X-Force ID: 175485.",
+        "score": 5.25
+    },
+    "CVE-2020-4306": {
+        "cpes": [
+            "cpe:2.3:a:ibm:planning_analytics_local:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "IBM Planning Analytics Local 2.0.0 through 2.0.9 is vulnerable to cross-site scripting. This vulnerability allows users to embed arbitrary JavaScript code in the Web UI thus altering the intended functionality potentially leading to credentials disclosure within a trusted session. IBM X-Force ID: 176735.",
+        "score": 4.45
+    },
+    "CVE-2020-4348": {
+        "cpes": [
+            "cpe:2.3:a:ibm:spectrum_scale:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "863"
+        ],
+        "description": "IBM Spectrum Scale 4.2.0.0 through 4.2.3.21 and 5.0.0.0 through 5.0.4.4 could allow an authenticated GUI user to perform unauthorized actions due to missing function level access control. IBM X-Force ID: 178414",
+        "score": 5.25
+    },
+    "CVE-2020-4349": {
+        "cpes": [
+            "cpe:2.3:a:ibm:spectrum_scale:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "327"
+        ],
+        "description": "IBM Spectrum Scale 5.0.0.0 through 5.0.4.4 uses weaker than expected cryptographic algorithms that could allow an attacker to decrypt highly sensitive information. IBM X-Force ID: 178423.",
+        "score": 6.25
+    },
+    "CVE-2020-4350": {
+        "cpes": [
+            "cpe:2.3:a:ibm:spectrum_scale:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "327"
+        ],
+        "description": "IBM Spectrum Scale 5.0.0.0 through 5.0.4.4 uses weaker than expected cryptographic algorithms that could allow an attacker to decrypt highly sensitive information. IBM X-Force ID: 178424.",
+        "score": 6.25
+    },
+    "CVE-2020-4352": {
+        "cpes": [
+            "cpe:2.3:a:ibm:mq_for_hpe_nonstop:8.1.0:*:*:*:*:*:*:*",
+            "cpe:2.3:a:ibm:mq_for_hpe_nonstop:8.0.4:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "269"
+        ],
+        "description": "IBM MQ on HPE NonStop 8.0.4 and 8.1.0 is vulnerable to a privilege escalation attack when running in restricted mode. IBM X-Force ID: 178427.",
+        "score": 5.7
+    },
+    "CVE-2020-4357": {
+        "cpes": [
+            "cpe:2.3:a:ibm:spectrum_scale:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "IBM Spectrum Scale 5.0.0.0 through 5.0.4.4 could allow a remote attacker to obtain sensitive information when a detailed technical error message is returned in the browser. This information could be used in further attacks against the system. IBM X-Force ID: 178761.",
+        "score": 4.15
+    },
+    "CVE-2020-4358": {
+        "cpes": [
+            "cpe:2.3:a:ibm:spectrum_scale:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "IBM Spectrum Scale 5.0.0.0 through 5.0.4.4 is vulnerable to cross-site scripting. This vulnerability allows users to embed arbitrary JavaScript code in the Web UI thus altering the intended functionality potentially leading to credentials disclosure within a trusted session. IBM X-Force ID: 178762.",
+        "score": 4.45
+    },
+    "CVE-2020-4360": {
+        "cpes": [
+            "cpe:2.3:a:ibm:planning_analytics_local:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "IBM Planning Analytics Local 2.0 is vulnerable to cross-site scripting. This vulnerability allows users to embed arbitrary JavaScript code in the Web UI thus altering the intended functionality potentially leading to credentials disclosure within a trusted session. IBM X-Force ID: 178765.",
+        "score": 4.45
+    },
+    "CVE-2020-4366": {
+        "cpes": [
+            "cpe:2.3:a:ibm:planning_analytics_local:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "IBM Planning Analytics Local 2.0 is vulnerable to cross-site scripting. This vulnerability allows users to embed arbitrary JavaScript code in the Web UI thus altering the intended functionality potentially leading to credentials disclosure within a trusted session. IBM X-Force ID: 178965.",
+        "score": 5.199999999999999
+    },
+    "CVE-2020-4367": {
+        "cpes": [
+            "cpe:2.3:a:ibm:planning_analytics_local:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "327"
+        ],
+        "description": "IBM Planning Analytics Local 2.0 uses weaker than expected cryptographic algorithms that could allow an attacker to decrypt highly sensitive information. IBM X-Force ID: 179001.",
+        "score": 6.25
+    },
+    "CVE-2020-4378": {
+        "cpes": [
+            "cpe:2.3:a:ibm:spectrum_scale:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "CWE"
+        ],
+        "description": "IBM Spectrum Scale 5.0.0.0 through 5.0.4.4 could allow a privileged authenticated user to perform unauthorized actions using a specially crated HTTP POST command. IBM X-Force ID: 179157.",
+        "score": 4.45
+    },
+    "CVE-2020-4379": {
+        "cpes": [
+            "cpe:2.3:a:ibm:spectrum_scale:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "327"
+        ],
+        "description": "IBM Spectrum Scale 5.0.0.0 through 5.0.4.4 uses weaker than expected cryptographic algorithms that could allow an attacker to decrypt highly sensitive information. IBM X-Force ID: 179158.",
+        "score": 6.25
+    },
+    "CVE-2020-4419": {
+        "cpes": [
+            "cpe:2.3:a:ibm:jazz_reporting_service:6.0.6:*:*:*:*:*:*:*",
+            "cpe:2.3:a:ibm:jazz_reporting_service:6.0.6.1:*:*:*:*:*:*:*",
+            "cpe:2.3:a:ibm:jazz_reporting_service:7.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "IBM Jazz Reporting Service 6.0.6, 6.0.6.1, and 7.0 is vulnerable to cross-site scripting. This vulnerability allows users to embed arbitrary JavaScript code in the Web UI thus altering the intended functionality potentially leading to credentials disclosure within a trusted session. IBM X-Force ID: 180071.",
+        "score": 4.45
+    },
+    "CVE-2020-4431": {
+        "cpes": [
+            "cpe:2.3:a:ibm:planning_analytics_local:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "IBM Planning Analytics Local 2.0 is vulnerable to cross-site scripting. This vulnerability allows users to embed arbitrary JavaScript code in the Web UI thus altering the intended functionality potentially leading to credentials disclosure within a trusted session. IBM X-Force ID: 180761.",
+        "score": 4.45
+    },
+    "CVE-2020-4490": {
+        "cpes": [
+            "cpe:2.3:a:ibm:business_process_manager:8.5.0.0:*:*:*:*:*:*:*",
+            "cpe:2.3:a:ibm:business_automation_workflow:19.0.0.0:*:*:*:*:*:*:*",
+            "cpe:2.3:a:ibm:business_process_manager:8.0.0.0:*:*:*:*:*:*:*",
+            "cpe:2.3:a:ibm:business_automation_workflow:18.0.0.0:*:*:*:*:*:*:*",
+            "cpe:2.3:a:ibm:business_process_manager:8.6.0.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "CWE"
+        ],
+        "description": "IBM Business Automation Workflow 18 and 19, and IBM Business Process Manager 8.0, 8.5, and 8.6 could allow a remote attacker to bypass security restrictions, caused by a reverse tabnabbing flaw. An attacker could exploit this vulnerability and redirect a vitcim to a phishing site. IBM X-Force ID: 181989",
+        "score": 5.949999999999999
+    },
+    "CVE-2020-4503": {
+        "cpes": [
+            "cpe:2.3:a:ibm:planning_analytics_local:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "IBM Planning Analytics Local 2.0 is vulnerable to cross-site scripting. This vulnerability allows users to embed arbitrary JavaScript code in the Web UI thus altering the intended functionality potentially leading to credentials disclosure within a trusted session. IBM X-Force ID: 182283.",
+        "score": 5.199999999999999
+    },
+    "CVE-2020-5357": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Dell Dock Firmware Update Utilities for Dell Client Consumer and Commercial docking stations contain an Arbitrary File Overwrite vulnerability. The vulnerability is limited to the Dell Dock Firmware Update Utilities during the time window while being executed by an administrator. During this time window, a locally authenticated low-privileged malicious user could exploit this vulnerability by tricking an administrator into overwriting arbitrary files via a symlink attack. The vulnerability does not affect the actual binary payload that the update utility delivers.",
+        "score": 4.3
+    },
+    "CVE-2020-5410": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Spring Cloud Config, versions 2.2.x prior to 2.2.3, versions 2.1.x prior to 2.1.9, and older unsupported versions allow applications to serve arbitrary configuration files through the spring-cloud-config-server module. A malicious user, or attacker, can send a request using a specially crafted URL that can lead to a directory traversal attack.",
+        "score": 0
+    },
+    "CVE-2020-5537": {
+        "cpes": [
+            "cpe:2.3:a:cybozu:desktop:*:*:*:*:*:windows:*:*"
+        ],
+        "cwes": [
+            "20"
+        ],
+        "description": "Cybozu Desktop for Windows 2.0.23 to 2.2.40 allows remote code execution via unspecified vectors.",
+        "score": 8.65
+    },
+    "CVE-2020-5572": {
+        "cpes": [
+            "cpe:2.3:a:cybozu:mailwise:*:*:*:*:*:android:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "Android App 'Mailwise for Android' 1.0.0 to 1.0.1 allows an attacker to obtain credential information registered in the product via unspecified vectors.",
+        "score": 3.3499999999999996
+    },
+    "CVE-2020-5573": {
+        "cpes": [
+            "cpe:2.3:a:cybozu:kintone:*:*:*:*:*:android:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "Android App 'kintone mobile for Android' 1.0.0 to 2.5 allows an attacker to obtain credential information registered in the product via unspecified vectors.",
+        "score": 3.3499999999999996
+    },
+    "CVE-2020-6774": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Improper Access Control in the Kiosk Mode functionality of Bosch Recording Station allows a local unauthenticated attacker to escape from the Kiosk Mode and access the underlying operating system.",
+        "score": 8.0
+    },
+    "CVE-2020-6830": {
+        "cpes": [
+            "cpe:2.3:a:mozilla:firefox:*:*:*:*:*:iphone_os:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "For native-to-JS bridging, the app requires a unique token to be passed that ensures non-app code can't call the bridging functions. That token was being used for JS-to-native also, but it isn't needed in this case, and its usage was also leaking this token. This vulnerability affects Firefox for iOS < 25.",
+        "score": 6.25
+    },
+    "CVE-2020-6831": {
+        "cpes": [
+            "cpe:2.3:a:mozilla:firefox:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:mozilla:thunderbird:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:mozilla:firefox_esr:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "120"
+        ],
+        "description": "A buffer overflow could occur when parsing and validating SCTP chunks in WebRTC. This could have led to memory corruption and a potentially exploitable crash. This vulnerability affects Firefox ESR < 68.8, Firefox < 76, and Thunderbird < 68.8.0.",
+        "score": 8.65
+    },
+    "CVE-2020-6868": {
+        "cpes": [],
+        "cwes": [],
+        "description": "ZTE's PON terminal product is impacted by the access control vulnerability. Due to the system not performing correct access control on some program interfaces, an attacker could use this vulnerability to tamper with the program interface parameters to perform unauthenticated operations. This affects: <ZTE F680><V9.0.10P1N6>",
+        "score": 0
+    },
+    "CVE-2020-6937": {
+        "cpes": [
+            "cpe:2.3:a:mulesoft:mule_runtime:*:*:*:*:community:*:*:*",
+            "cpe:2.3:a:mulesoft:mule_runtime:*:*:*:*:enterprise:*:*:*"
+        ],
+        "cwes": [
+            "400"
+        ],
+        "description": "A Denial of Service vulnerability in MuleSoft Mule CE/EE 3.8.x, 3.9.x, and 4.x released before April 7, 2020, could allow remote attackers to submit data which can lead to resource exhaustion.",
+        "score": 6.25
+    },
+    "CVE-2020-7648": {
+        "cpes": [
+            "cpe:2.3:a:synk:broker:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "All versions of snyk-broker before 4.72.2 are vulnerable to Arbitrary File Read. It allows arbitrary file reads for users who have access to Snyk's internal network by appending the URL with a fragment identifier and a whitelisted path e.g. `#package.json`",
+        "score": 5.25
+    },
+    "CVE-2020-7650": {
+        "cpes": [
+            "cpe:2.3:a:synk:broker:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "All versions of snyk-broker after 4.72.0 including and before 4.73.1 are vulnerable to Arbitrary File Read. It allows arbitrary file reads to users with access to Snyk's internal network of any files ending in the following extensions: yaml, yml or json.",
+        "score": 5.25
+    },
+    "CVE-2020-7651": {
+        "cpes": [],
+        "cwes": [],
+        "description": "All versions of snyk-broker before 4.79.0 are vulnerable to Arbitrary File Read. It allows partial file reads for users who have access to Snyk's internal network via patch history from GitHub Commits API.",
+        "score": 0
+    },
+    "CVE-2020-7652": {
+        "cpes": [],
+        "cwes": [],
+        "description": "All versions of snyk-broker before 4.80.0 are vulnerable to Arbitrary File Read. It allows arbitrary file reads for users with access to Snyk's internal network via directory traversal.",
+        "score": 0
+    },
+    "CVE-2020-7653": {
+        "cpes": [
+            "cpe:2.3:a:synk:broker:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "All versions of snyk-broker before 4.80.0 are vulnerable to Arbitrary File Read. It allows arbitrary file reads for users with access to Snyk's internal network by creating symlinks to match whitelisted paths.",
+        "score": 5.25
+    },
+    "CVE-2020-7659": {
+        "cpes": [
+            "cpe:2.3:a:celluloid:reel:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "444"
+        ],
+        "description": "reel through 0.6.1 allows Request Smuggling attacks due to incorrect Content-Length and Transfer encoding header parsing. It is possible to conduct HTTP request smuggling attacks by sending the Content-Length header twice. Furthermore, invalid Transfer Encoding headers were found to be parsed as valid which could be leveraged for TE:CL smuggling attacks. Note: This project is deprecated, and is not maintained any more.",
+        "score": 6.25
+    },
+    "CVE-2020-7660": {
+        "cpes": [
+            "cpe:2.3:a:verizon:serialize-javascript:*:*:*:*:*:node.js:*:*"
+        ],
+        "cwes": [
+            "74"
+        ],
+        "description": "serialize-javascript prior to 3.1.0 allows remote attackers to inject arbitrary code via the function \"deleteFunctions\" within \"index.js\".",
+        "score": 8.65
+    },
+    "CVE-2020-7662": {
+        "cpes": [],
+        "cwes": [],
+        "description": "websocket-extensions npm module prior to 1.0.4 allows Denial of Service (DoS) via Regex Backtracking. The extension parser may take quadratic time when parsing a header containing an unclosed string parameter value whose content is a repeating two-byte sequence of a backslash and some other character. This could be abused by an attacker to conduct Regex Denial Of Service (ReDoS) on a single-threaded server by providing a malicious payload with the Sec-WebSocket-Extensions header.",
+        "score": 0
+    },
+    "CVE-2020-7663": {
+        "cpes": [],
+        "cwes": [],
+        "description": "websocket-extensions ruby module prior to 0.1.5 allows Denial of Service (DoS) via Regex Backtracking. The extension parser may take quadratic time when parsing a header containing an unclosed string parameter value whose content is a repeating two-byte sequence of a backslash and some other character. This could be abused by an attacker to conduct Regex Denial Of Service (ReDoS) on a single-threaded server by providing a malicious payload with the Sec-WebSocket-Extensions header.",
+        "score": 0
+    },
+    "CVE-2020-7812": {
+        "cpes": [],
+        "cwes": [],
+        "description": "Ezhttptrans.ocx ActiveX Control in Kaoni ezHTTPTrans 1.0.0.70 and prior versions contain a vulnerability that could allow remote attacker to download arbitrary file by setting the arguments to the activex method. This can be leveraged for code execution by rebooting the victim\u2019s PC.",
+        "score": 8.65
+    },
+    "CVE-2020-8168": {
+        "cpes": [],
+        "cwes": [],
+        "description": "We have recently released new version of AirMax AirOS firmware v6.3.0 for TI, XW and XM boards that fixes vulnerabilities found on AirMax AirOS v6.2.0 and prior TI, XW and XM boards, according to the description below:Attackers can abuse multiple end-points not protected against cross-site request forgery (CSRF), as a result authenticated users can be persuaded to visit malicious web pages, which allows attackers to perform arbitrary actions, such as downgrade the device's firmware to older versions, modify configuration, upload arbitrary firmware, exfiltrate files and tokens.Mitigation:Update to the latest AirMax AirOS firmware version available at the AirMax download page.",
+        "score": 7.800000000000001
+    },
+    "CVE-2020-8170": {
+        "cpes": [],
+        "cwes": [],
+        "description": "We have recently released new version of AirMax AirOS firmware v6.3.0 for TI, XW and XM boards that fixes vulnerabilities found on AirMax AirOS v6.2.0 and prior TI, XW and XM boards, according to the description below:Multiple end-points with parameters vulnerable to reflected cross site scripting (XSS), allowing attackers to abuse the user' session information and/or account takeover of the admin user.Mitigation:Update to the latest AirMax AirOS firmware version available at the AirMax download page.",
+        "score": 5.199999999999999
+    },
+    "CVE-2020-8171": {
+        "cpes": [],
+        "cwes": [],
+        "description": "We have recently released new version of AirMax AirOS firmware v6.3.0 for TI, XW and XM boards that fixes vulnerabilities found on AirMax AirOS v6.2.0 and prior TI, XW and XM boards, according to the description below:There are certain end-points containing functionalities that are vulnerable to command injection. It is possible to craft an input string that passes the filter check but still contains commands, resulting in remote code execution.Mitigation:Update to the latest AirMax AirOS firmware version available at the AirMax download page.",
+        "score": 8.65
+    },
+    "CVE-2020-8329": {
+        "cpes": [],
+        "cwes": [],
+        "description": "A denial of service vulnerability was reported in the firmware prior to version 1.01 used in Lenovo Printer LJ4010DN that could be triggered by a remote user sending a crafted packet to the device, causing an error to be displayed and preventing printer from functioning until the printer is rebooted.",
+        "score": 7.65
+    },
+    "CVE-2020-8330": {
+        "cpes": [],
+        "cwes": [],
+        "description": "A denial of service vulnerability was reported in the firmware prior to version 1.01 used in Lenovo Printer LJ4010DN that could be triggered by a remote user sending a crafted packet to the device, preventing subsequent print jobs until the printer is rebooted.",
+        "score": 7.65
+    },
+    "CVE-2020-8482": {
+        "cpes": [
+            "cpe:2.3:a:abb:device_library_wizard:*:*:*:*:*:*:*:*",
+            "cpe:2.3:a:abb:device_library_wizard:6.1.0:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "922"
+        ],
+        "description": "Insecure storage of sensitive information in ABB Device Library Wizard versions 6.0.X, 6.0.3.1 and 6.0.3.2 allows unauthenticated low privilege user to read file that contains confidential data",
+        "score": 3.8
+    },
+    "CVE-2020-8603": {
+        "cpes": [
+            "cpe:2.3:a:trendmicro:interscan_web_security_virtual_appliance:6.5:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "79"
+        ],
+        "description": "A cross-site scripting vulnerability (XSS) in Trend Micro InterScan Web Security Virtual Appliance 6.5 may allow a remote attacker to tamper with the web interface of affected installations. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file.",
+        "score": 5.199999999999999
+    },
+    "CVE-2020-8604": {
+        "cpes": [
+            "cpe:2.3:a:trendmicro:interscan_web_security_virtual_appliance:6.5:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "200"
+        ],
+        "description": "A vulnerability in Trend Micro InterScan Web Security Virtual Appliance 6.5 may allow remote attackers to disclose sensitive informatoin on affected installations.",
+        "score": 6.25
+    },
+    "CVE-2020-8605": {
+        "cpes": [
+            "cpe:2.3:a:trendmicro:interscan_web_security_virtual_appliance:6.5:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "78"
+        ],
+        "description": "A vulnerability in Trend Micro InterScan Web Security Virtual Appliance 6.5 may allow remote attackers to execute arbitrary code on affected installations. Authentication is required to exploit this vulnerability.",
+        "score": 7.65
+    },
+    "CVE-2020-8606": {
+        "cpes": [
+            "cpe:2.3:a:trendmicro:interscan_web_security_virtual_appliance:6.5:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "287"
+        ],
+        "description": "A vulnerability in Trend Micro InterScan Web Security Virtual Appliance 6.5 may allow remote attackers to bypass authentication on affected installations of Trend Micro InterScan Web Security Virtual Appliance.",
+        "score": 8.65
+    },
+    "CVE-2020-8816": {
+        "cpes": [
+            "cpe:2.3:a:pi-hole:pi-hole:*:*:*:*:*:*:*:*"
+        ],
+        "cwes": [
+            "CWE"
+        ],
+        "description": "Pi-hole Web v4.3.2 (aka AdminLTE) allows Remote Code Execution by privileged dashboard users via a crafted DHCP static lease.",
+        "score": 6.85
+    },
+    "CVE-2020-8967": {
+        "cpes": [],
+        "cwes": [],
+        "description": "There is an improper Neutralization of Special Elements used in an SQL Command (SQL Injection) vulnerability in php files of GESIO ERP. GESIO ERP all versions prior to 11.2 allows malicious users to retrieve all database information.",
+        "score": 0
+    },
+    "CVE-2020-9046": {
+        "cpes": [],
+        "cwes": [],
+        "description": "A vulnerability in all versions of Kantech EntraPass Editions could potentially allow an authorized low-privileged user to gain full system-level privileges by replacing critical files with specifically crafted files.",
+        "score": 0
+    },
+    "CVE-2020-9071": {
+        "cpes": [],
+        "cwes": [],
+        "description": "There is a few bytes out-of-bounds read vulnerability in some Huawei products. The software reads data past the end of the intended buffer when parsing certain message, an authenticated attacker could exploit this vulnerability by sending crafted messages to the device. Successful exploit may cause service abnormal in specific scenario.Affected product versions include:AR120-S versions V200R007C00SPC900,V200R007C00SPCa00",
+        "score": 0
+    },
+    "CVE-2020-9291": {
+        "cpes": [],
+        "cwes": [],
+        "description": "An Insecure Temporary File vulnerability in FortiClient for Windows 6.2.1 and below may allow a local user to gain elevated privileges via exhausting the pool of temporary file names combined with a symbolic link attack.",
+        "score": 0
+    }
+}

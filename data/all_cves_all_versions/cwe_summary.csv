@@ -1,0 +1,252 @@
+,name,node_name,Edges Connected to cwe,Number of Edges Connected to cwe,Number of Edges Connected to cve,Edges Connected to cve,Edges Connected to tactic,Number of Edges Connected to tactic,Edges Connected to technique,Number of Edges Connected to technique,Edges Connected to capec,Number of Edges Connected to capec,Edges Connected to cpe,Number of Edges Connected to cpe,metadata,original_id
+0,Improper Authorization,cwe_00346,set(),0,0,set(),set(),0,set(),0,"{'capec_01020', 'capec_00942', 'capec_00340', 'capec_01003', 'capec_00438', 'capec_01005', 'capec_00855', 'capec_00757', 'capec_00740', 'capec_00345', 'capec_00794', 'capec_00379', 'capec_00286', 'capec_00447', 'capec_00869', 'capec_00926'}",16,set(),0,{},285
+1,Incorrect Permission Assignment for Critical Resource,cwe_00347,set(),0,1,{'cve_01167'},set(),0,set(),0,"{'capec_00942', 'capec_00438', 'capec_00951', 'capec_00345', 'capec_00984', 'capec_00535', 'capec_00430', 'capec_00963', 'capec_00613', 'capec_00286', 'capec_00574'}",11,set(),0,{},732
+2,Incorrect Default Permissions,cwe_00348,set(),0,0,set(),set(),0,set(),0,"{'capec_01011', 'capec_00438', 'capec_00345'}",3,set(),0,{},276
+3,Protection Mechanism Failure,cwe_00349,set(),0,0,set(),set(),0,set(),0,"{'capec_00596', 'capec_00566', 'capec_00986', 'capec_00286', 'capec_00504', 'capec_00721', 'capec_00386', 'capec_00615', 'capec_01020', 'capec_00912', 'capec_00833', 'capec_00304', 'capec_00995', 'capec_01000', 'capec_00869', 'capec_00907', 'capec_00438', 'capec_00345', 'capec_00926'}",19,set(),0,{},693
+4,,cwe_00350,set(),0,0,set(),set(),0,set(),0,"{'capec_00438', 'capec_00345'}",2,set(),0,{},721
+5,Unrestricted Upload of File with Dangerous Type,cwe_00351,set(),0,2,"{'cve_01171', 'cve_01151'}",set(),0,set(),0,{'capec_00345'},1,set(),0,{},434
+6,Buffer Copy without Checking Size of Input ('Classic Buffer Overflow'),cwe_00353,set(),0,1,{'cve_01505'},set(),0,set(),0,"{'capec_01009', 'capec_01027', 'capec_00352', 'capec_00616', 'capec_00467', 'capec_00363', 'capec_00990', 'capec_00784', 'capec_00794', 'capec_00825', 'capec_01023', 'capec_00769', 'capec_00801'}",13,set(),0,{},120
+7,Authentication Bypass by Assumed-Immutable Data,cwe_00354,set(),0,0,set(),set(),0,set(),0,"{'capec_00580', 'capec_01005', 'capec_00352', 'capec_00660', 'capec_00740', 'capec_00693', 'capec_00794', 'capec_00447'}",8,set(),0,{},302
+8,Incorrect Access of Indexable Resource ('Range Error'),cwe_00355,set(),0,0,set(),set(),0,set(),0,"{'capec_01009', 'capec_00352', 'capec_00616', 'capec_00467', 'capec_01023', 'capec_00825', 'capec_00794', 'capec_00801'}",8,set(),0,{},118
+9,Improper Restriction of Operations within the Bounds of a Memory Buffer,cwe_00356,set(),0,4,"{'cve_01148', 'cve_01441', 'cve_01225', 'cve_01147'}",set(),0,set(),0,"{'capec_01009', 'capec_00352', 'capec_00616', 'capec_00467', 'capec_00363', 'capec_01023', 'capec_00784', 'capec_00794', 'capec_00825', 'capec_00432', 'capec_00769', 'capec_00801'}",12,set(),0,{},119
+10,Improper Neutralization of Special Elements in Output Used by a Downstream Component ('Injection'),cwe_00357,set(),0,2,"{'cve_01518', 'cve_01173'}",set(),0,set(),0,"{'capec_01009', 'capec_00388', 'capec_00876', 'capec_00825', 'capec_00998', 'capec_01007', 'capec_00456', 'capec_00941', 'capec_01003', 'capec_00659', 'capec_01015', 'capec_00352', 'capec_00681', 'capec_00994', 'capec_00467', 'capec_00983', 'capec_01023', 'capec_00717', 'capec_00794', 'capec_00885', 'capec_00801', 'capec_01010', 'capec_00368', 'capec_00616', 'capec_00780', 'capec_01016', 'capec_00418', 'capec_00769', 'capec_00989', 'capec_00667', 'capec_00869', 'capec_00996', 'capec_00634', 'capec_00291', 'capec_00990', 'capec_01008', 'capec_00447'}",37,set(),0,{},74
+11,Improper Control of Resource Identifiers ('Resource Injection'),cwe_00358,set(),0,0,set(),set(),0,set(),0,"{'capec_00352', 'capec_00617', 'capec_01002'}",3,set(),0,{},99
+12,Improper Input Validation,cwe_00359,set(),0,9,"{'cve_01248', 'cve_01081', 'cve_01254', 'cve_01205', 'cve_01169', 'cve_01457', 'cve_01143', 'cve_01496', 'cve_01146'}",set(),0,set(),0,"{'capec_00608', 'capec_01009', 'capec_00388', 'capec_00876', 'capec_00537', 'capec_00825', 'capec_00975', 'capec_00998', 'capec_00924', 'capec_00456', 'capec_00999', 'capec_01007', 'capec_00577', 'capec_01011', 'capec_00352', 'capec_01015', 'capec_00681', 'capec_00497', 'capec_00994', 'capec_00467', 'capec_00459', 'capec_00983', 'capec_01023', 'capec_00794', 'capec_00885', 'capec_01017', 'capec_00801', 'capec_00611', 'capec_00392', 'capec_01010', 'capec_01021', 'capec_00368', 'capec_00616', 'capec_00829', 'capec_00780', 'capec_00693', 'capec_00418', 'capec_00379', 'capec_00769', 'capec_00989', 'capec_00667', 'capec_00397', 'capec_00649', 'capec_00996', 'capec_00634', 'capec_00291', 'capec_00990', 'capec_00607', 'capec_01008', 'capec_00447', 'capec_00596'}",51,set(),0,{},20
+13,Integer Overflow to Buffer Overflow,cwe_00360,set(),0,0,set(),set(),0,set(),0,"{'capec_01009', 'capec_01027', 'capec_00352', 'capec_00616', 'capec_00467', 'capec_00363', 'capec_00990', 'capec_00825', 'capec_00794', 'capec_01023', 'capec_00801'}",11,set(),0,{},680
+14,Compiler Optimization Removal or Modification of Security-critical Code,cwe_00361,set(),0,0,set(),set(),0,set(),0,"{'capec_01009', 'capec_00352', 'capec_00616', 'capec_01023', 'capec_00801'}",5,set(),0,{},733
+15,Incorrect Comparison,cwe_00362,set(),0,1,{'cve_01181'},set(),0,set(),0,"{'capec_00486', 'capec_01009', 'capec_01027', 'capec_00876', 'capec_00537', 'capec_00825', 'capec_01007', 'capec_00941', 'capec_00352', 'capec_00681', 'capec_00994', 'capec_00467', 'capec_00983', 'capec_01023', 'capec_00717', 'capec_00794', 'capec_00885', 'capec_00801', 'capec_01010', 'capec_00760', 'capec_01021', 'capec_00616', 'capec_00780', 'capec_00418', 'capec_00784', 'capec_00989', 'capec_00996', 'capec_00291', 'capec_00990', 'capec_01008', 'capec_00999'}",31,set(),0,{},697
+16,Incorrect Calculation of Buffer Size,cwe_00364,set(),0,0,set(),set(),0,set(),0,"{'capec_00363', 'capec_00825'}",2,set(),0,{},131
+17,Improper Validation of Array Index,cwe_00365,set(),0,1,{'cve_01117'},set(),0,set(),0,{'capec_00363'},1,set(),0,{},129
+18,Buffer Access with Incorrect Length Value,cwe_00366,set(),0,0,set(),set(),0,set(),0,"{'capec_00363', 'capec_00640'}",2,set(),0,{},805
+19,,cwe_00367,set(),0,0,set(),set(),0,set(),0,"{'capec_00363', 'capec_00611', 'capec_00608'}",3,set(),0,{},19
+20,Improper Neutralization of Server-Side Includes (SSI) Within a Web Page,cwe_00369,set(),0,0,set(),set(),0,set(),0,"{'capec_00718', 'capec_00368'}",2,set(),0,{},97
+21,,cwe_00370,set(),0,0,set(),set(),0,set(),0,"{'capec_00486', 'capec_00989', 'capec_01011', 'capec_01015', 'capec_00760', 'capec_00994', 'capec_01021', 'capec_00368', 'capec_00467', 'capec_00634', 'capec_00717', 'capec_01016', 'capec_01002', 'capec_00784', 'capec_00344', 'capec_00941'}",16,set(),0,{},713
+22,Authentication Bypass by Capture-replay,cwe_00372,set(),0,0,set(),set(),0,set(),0,"{'capec_00371', 'capec_00942', 'capec_01032'}",3,set(),0,{},294
+23,Insufficiently Protected Credentials,cwe_00373,set(),0,2,"{'cve_01459', 'cve_01045'}",set(),0,set(),0,"{'capec_00314', 'capec_00371', 'capec_00856', 'capec_00830', 'capec_00337', 'capec_00313', 'capec_00338', 'capec_00309', 'capec_00307'}",9,set(),0,{},522
+24,Unprotected Transport of Credentials,cwe_00374,set(),0,0,set(),set(),0,set(),0,{'capec_00371'},1,set(),0,{},523
+25,Cleartext Transmission of Sensitive Information,cwe_00375,set(),0,0,set(),set(),0,set(),0,"{'capec_00371', 'capec_00833', 'capec_00986', 'capec_00731'}",4,set(),0,{},319
+26,Sensitive Cookie in HTTPS Session Without 'Secure' Attribute,cwe_00376,set(),0,0,set(),set(),0,set(),0,{'capec_00371'},1,set(),0,{},614
+27,Improper Restriction of Rendered UI Layers or Frames,cwe_00378,set(),0,0,set(),set(),0,set(),0,"{'capec_00601', 'capec_00864', 'capec_00866', 'capec_00536', 'capec_00377'}",5,set(),0,{},1021
+28,Execution with Unnecessary Privileges,cwe_00380,set(),0,0,set(),set(),0,set(),0,"{'capec_00379', 'capec_00827', 'capec_00993'}",3,set(),0,{},250
+29,Not Using Complete Mediation,cwe_00381,set(),0,0,set(),set(),0,set(),0,{'capec_00379'},1,set(),0,{},638
+30,Improper Encoding or Escaping of Output,cwe_00382,set(),0,0,set(),set(),0,set(),0,"{'capec_01011', 'capec_00379', 'capec_01017', 'capec_00999'}",4,set(),0,{},116
+31,Interpretation Conflict,cwe_00384,set(),0,0,set(),set(),0,set(),0,"{'capec_00713', 'capec_00383', 'capec_00659'}",3,set(),0,{},436
+32,Inconsistent Interpretation of HTTP Requests ('HTTP Request Smuggling'),cwe_00385,set(),0,2,"{'cve_01086', 'cve_01516'}",set(),0,set(),0,"{'capec_00713', 'capec_00383'}",2,set(),0,{},444
+33,Incorrect Use of Privileged APIs,cwe_00387,set(),0,0,set(),set(),0,set(),0,"{'capec_00386', 'capec_00613'}",2,set(),0,{},648
+34,Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'),cwe_00389,set(),0,1,{'cve_01048'},set(),0,set(),0,"{'capec_00397', 'capec_00392', 'capec_00388', 'capec_00994', 'capec_00827', 'capec_00989'}",6,set(),0,{},89
+35,Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection'),cwe_00390,set(),0,4,"{'cve_01053', 'cve_01079', 'cve_01223', 'cve_01535'}",set(),0,set(),0,"{'capec_00486', 'capec_00388', 'capec_01021', 'capec_00780', 'capec_00941'}",5,set(),0,{},78
+36,Process Control,cwe_00391,set(),0,0,set(),set(),0,set(),0,{'capec_00388'},1,set(),0,{},114
+37,,cwe_00393,set(),0,0,set(),set(),0,set(),0,{'capec_00392'},1,set(),0,{},100
+38,SQL Injection: Hibernate,cwe_00394,set(),0,0,set(),set(),0,set(),0,{'capec_00392'},1,set(),0,{},564
+39,Deployment of Wrong Handler,cwe_00396,set(),0,0,set(),set(),0,set(),0,{'capec_00395'},1,set(),0,{},430
+40,Insufficient Verification of Data Authenticity,cwe_00399,set(),0,1,{'cve_01092'},set(),0,set(),0,"{'capec_00593', 'capec_00474', 'capec_00738', 'capec_00398', 'capec_00735', 'capec_00484', 'capec_00736', 'capec_00470', 'capec_00733', 'capec_00737'}",10,set(),0,{},345
+41,Origin Validation Error,cwe_00400,set(),0,0,set(),set(),0,set(),0,"{'capec_00942', 'capec_00580', 'capec_00870', 'capec_01003', 'capec_00926', 'capec_00474', 'capec_00738', 'capec_00398', 'capec_01022', 'capec_00507', 'capec_00735', 'capec_01002', 'capec_00736', 'capec_00470', 'capec_00733', 'capec_00737'}",16,set(),0,{},346
+42,Cross-Site Request Forgery (CSRF),cwe_00401,set(),0,6,"{'cve_01207', 'cve_01176', 'cve_01450', 'cve_01049', 'cve_01209', 'cve_01211'}",set(),0,set(),0,"{'capec_00807', 'capec_00398', 'capec_00963', 'capec_00819'}",4,set(),0,{},352
+43,Use of Insufficiently Random Values,cwe_00403,set(),0,0,set(),set(),0,set(),0,"{'capec_00402', 'capec_00926', 'capec_00838'}",3,set(),0,{},330
+44,Inadequate Encryption Strength,cwe_00404,set(),0,0,set(),set(),0,set(),0,"{'capec_00566', 'capec_00402', 'capec_00550'}",3,set(),0,{},326
+45,Weak Password Requirements,cwe_00405,set(),0,1,{'cve_01462'},set(),0,set(),0,"{'capec_00504', 'capec_00402', 'capec_00304', 'capec_00995', 'capec_00907'}",5,set(),0,{},521
+46,,cwe_00407,set(),0,0,set(),set(),0,set(),0,"{'capec_01036', 'capec_00406'}",2,set(),0,{},227
+47,Improper Authentication,cwe_00409,set(),0,1,{'cve_01536'},set(),0,set(),0,"{'capec_00912', 'capec_00932', 'capec_00343', 'capec_00496', 'capec_00408', 'capec_01032', 'capec_00410', 'capec_00330', 'capec_00554', 'capec_00596'}",10,set(),0,{},287
+48,Information Exposure,cwe_00412,set(),0,21,"{'cve_01447', 'cve_01252', 'cve_01448', 'cve_01144', 'cve_01098', 'cve_01515', 'cve_01512', 'cve_01465', 'cve_01119', 'cve_01503', 'cve_01475', 'cve_01498', 'cve_01449', 'cve_01460', 'cve_01455', 'cve_01510', 'cve_01461', 'cve_01047', 'cve_01500', 'cve_01464', 'cve_01534'}",set(),0,set(),0,"{'capec_00411', 'capec_00942', 'capec_00676', 'capec_00699', 'capec_00711', 'capec_00828', 'capec_00669', 'capec_00926', 'capec_00698', 'capec_00703', 'capec_00959', 'capec_00689', 'capec_00324', 'capec_00700', 'capec_00685', 'capec_00668', 'capec_00294', 'capec_00709', 'capec_00673', 'capec_00707', 'capec_00687', 'capec_00708', 'capec_00680', 'capec_00675', 'capec_00327', 'capec_00602', 'capec_00697', 'capec_00295', 'capec_00712', 'capec_00674', 'capec_00688', 'capec_00297', 'capec_00705', 'capec_00686', 'capec_00710', 'capec_00296', 'capec_00323', 'capec_00518', 'capec_00679', 'capec_00678', 'capec_00714', 'capec_00690', 'capec_00339', 'capec_00691', 'capec_00326', 'capec_00336', 'capec_00677', 'capec_00325', 'capec_00692', 'capec_00701', 'capec_00704', 'capec_00706', 'capec_00988', 'capec_00293', 'capec_01008', 'capec_00447', 'capec_00596'}",57,set(),0,{},200
+49,Channel Accessible by Non-Endpoint ('Man-in-the-Middle'),cwe_00414,set(),0,0,set(),set(),0,set(),0,"{'capec_00912', 'capec_00818', 'capec_00956', 'capec_00929', 'capec_00955', 'capec_01032', 'capec_00958', 'capec_00925', 'capec_00413'}",9,set(),0,{},300
+50,Information Exposure Through Sent Data,cwe_00416,set(),0,0,set(),set(),0,set(),0,"{'capec_00592', 'capec_00415', 'capec_00956', 'capec_00966', 'capec_00955', 'capec_00968', 'capec_00967', 'capec_00962', 'capec_00961'}",9,set(),0,{},201
+51,Missing Authentication for Critical Function,cwe_00417,set(),0,0,set(),set(),0,set(),0,"{'capec_00721', 'capec_00513', 'capec_00963', 'capec_00415'}",4,set(),0,{},306
+52,Improper Handling of Alternate Encoding,cwe_00419,set(),0,0,set(),set(),0,set(),0,"{'capec_00752', 'capec_00885', 'capec_00876', 'capec_01010', 'capec_00681', 'capec_00996', 'capec_00291', 'capec_00983', 'capec_01008', 'capec_00418', 'capec_00998', 'capec_01007'}",12,set(),0,{},173
+53,Encoding Error,cwe_00420,set(),0,0,set(),set(),0,set(),0,"{'capec_00885', 'capec_00876', 'capec_01010', 'capec_00681', 'capec_00996', 'capec_00291', 'capec_00983', 'capec_00418', 'capec_00998', 'capec_01007'}",10,set(),0,{},172
+54,Improper Handling of URL Encoding (Hex Encoding),cwe_00421,set(),0,0,set(),set(),0,set(),0,"{'capec_00418', 'capec_00983', 'capec_00820', 'capec_00998'}",4,set(),0,{},177
+55,Incorrect Behavior Order: Validate Before Filter,cwe_00422,set(),0,0,set(),set(),0,set(),0,"{'capec_01010', 'capec_00681', 'capec_00291', 'capec_00780', 'capec_01008', 'capec_00418', 'capec_01007'}",7,set(),0,{},181
+56,,cwe_00423,set(),0,0,set(),set(),0,set(),0,"{'capec_00885', 'capec_00876', 'capec_01010', 'capec_00681', 'capec_00996', 'capec_00291', 'capec_00983', 'capec_00780', 'capec_01008', 'capec_00418', 'capec_00998', 'capec_01007'}",12,set(),0,{},171
+57,Permissive Whitelist,cwe_00424,set(),0,0,set(),set(),0,set(),0,"{'capec_00418', 'capec_00780', 'capec_00681', 'capec_00996'}",4,set(),0,{},183
+58,Incomplete Blacklist,cwe_00425,set(),0,0,set(),set(),0,set(),0,"{'capec_00486', 'capec_00681', 'capec_00996', 'capec_00537', 'capec_01017', 'capec_00780', 'capec_00418', 'capec_00941', 'capec_00999'}",9,set(),0,{},184
+59,,cwe_00426,set(),0,0,set(),set(),0,set(),0,"{'capec_01010', 'capec_00291', 'capec_00983', 'capec_01008', 'capec_00418', 'capec_00998', 'capec_01007'}",7,set(),0,{},21
+60,Incomplete Blacklist to Cross-Site Scripting,cwe_00427,set(),0,0,set(),set(),0,set(),0,"{'capec_01010', 'capec_00996', 'capec_00291', 'capec_01017', 'capec_00418'}",5,set(),0,{},692
+61,Leftover Debug Code,cwe_00429,set(),0,0,set(),set(),0,set(),0,{'capec_00428'},1,set(),0,{},489
+62,Improper Privilege Management,cwe_00431,set(),0,6,"{'cve_01222', 'cve_01096', 'cve_01154', 'cve_01472', 'cve_01224', 'cve_01149'}",set(),0,set(),0,"{'capec_00612', 'capec_00913', 'capec_00430'}",3,set(),0,{},269
+63,Improper Resource Shutdown or Release,cwe_00434,set(),0,0,set(),set(),0,set(),0,"{'capec_00851', 'capec_00281', 'capec_00850', 'capec_00849', 'capec_00279', 'capec_00280'}",6,set(),0,{},404
+64,Allocation of Resources Without Limits or Throttling,cwe_00435,set(),0,0,set(),set(),0,set(),0,"{'capec_00608', 'capec_00845', 'capec_00840', 'capec_00837', 'capec_00482', 'capec_00848', 'capec_00851', 'capec_00849', 'capec_00846', 'capec_00823', 'capec_00611', 'capec_00559', 'capec_00883', 'capec_00841', 'capec_00279', 'capec_00842', 'capec_00280', 'capec_00843', 'capec_00606', 'capec_00850'}",20,set(),0,{},770
+65,Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal'),cwe_00437,set(),0,3,"{'cve_01088', 'cve_01157', 'cve_01046'}",set(),0,set(),0,"{'capec_00436', 'capec_00983', 'capec_01008', 'capec_01007', 'capec_01003'}",5,set(),0,{},22
+66,Improper Protection of Alternate Path,cwe_00439,set(),0,0,set(),set(),0,set(),0,"{'capec_00910', 'capec_00438'}",2,set(),0,{},424
+67,Direct Request ('Forced Browsing'),cwe_00440,set(),0,0,set(),set(),0,set(),0,"{'capec_01020', 'capec_00438'}",2,set(),0,{},425
+68,Authentication Bypass Using an Alternate Path or Channel,cwe_00441,set(),0,0,set(),set(),0,set(),0,{'capec_00438'},1,set(),0,{},288
+69,Incorrect Calculation,cwe_00443,set(),0,0,set(),set(),0,set(),0,"{'capec_00444', 'capec_00442'}",2,set(),0,{},682
+70,Untrusted Pointer Dereference,cwe_00445,set(),0,0,set(),set(),0,set(),0,{'capec_00444'},1,set(),0,{},822
+71,Use of Out-of-range Pointer Offset,cwe_00446,set(),0,0,set(),set(),0,set(),0,{'capec_00444'},1,set(),0,{},823
+72,Missing Support for Integrity Check,cwe_00448,set(),0,0,set(),set(),0,set(),0,"{'capec_00739', 'capec_00740', 'capec_00467', 'capec_01002', 'capec_01000', 'capec_00447'}",6,set(),0,{},353
+73,External Control of System or Configuration Setting,cwe_00449,set(),0,0,set(),set(),0,set(),0,"{'capec_00530', 'capec_00292', 'capec_00289', 'capec_01005', 'capec_00993', 'capec_00657', 'capec_00447', 'capec_00480', 'capec_01003'}",9,set(),0,{},15
+74,External Control of File Name or Path,cwe_00450,set(),0,0,set(),set(),0,set(),0,"{'capec_01007', 'capec_01010', 'capec_00291', 'capec_00983', 'capec_01008', 'capec_00998', 'capec_00447', 'capec_01003'}",8,set(),0,{},73
+75,Improper Link Resolution Before File Access ('Link Following'),cwe_00451,set(),0,0,set(),set(),0,set(),0,"{'capec_00286', 'capec_00282', 'capec_00718', 'capec_01003'}",4,set(),0,{},59
+76,Hidden Functionality,cwe_00453,set(),0,0,set(),set(),0,set(),0,"{'capec_00452', 'capec_00547'}",2,set(),0,{},912
+77,Improper Neutralization of Escap,cwe_00455,set(),0,0,set(),set(),0,set(),0,"{'capec_01011', 'capec_00760', 'capec_00454', 'capec_00344'}",4,set(),0,{},150
+78,Use of Externally-Controlled Format String,cwe_00457,set(),0,0,set(),set(),0,set(),0,"{'capec_00990', 'capec_00456'}",2,set(),0,{},134
+79,,cwe_00458,set(),0,0,set(),set(),0,set(),0,{'capec_00456'},1,set(),0,{},133
+80,Improper Neutralization of Special Elements used in a Command ('Command Injection'),cwe_00460,set(),0,0,set(),set(),0,set(),0,"{'capec_00538', 'capec_00486', 'capec_01003', 'capec_00627', 'capec_00459', 'capec_00780', 'capec_01002', 'capec_00754'}",8,set(),0,{},77
+81,Improper Neutralization of Special Elements used in an LDAP Query ('LDAP Injection'),cwe_00461,set(),0,0,set(),set(),0,set(),0,{'capec_00459'},1,set(),0,{},90
+82,Argument Injection or Modification,cwe_00463,set(),0,0,set(),set(),0,set(),0,"{'capec_00760', 'capec_01021', 'capec_00802', 'capec_00527', 'capec_00462'}",5,set(),0,{},88
+83,Relative Path Traversal,cwe_00466,set(),0,0,set(),set(),0,set(),0,"{'capec_00465', 'capec_01003'}",2,set(),0,{},23
+84,Incomplete Internal State Distinction,cwe_00469,set(),0,0,set(),set(),0,set(),0,"{'capec_01000', 'capec_00468'}",2,set(),0,{},372
+85,Use of Less Trusted Source,cwe_00471,set(),0,0,set(),set(),0,set(),0,"{'capec_00474', 'capec_01017', 'capec_00470', 'capec_00999', 'capec_01003'}",5,set(),0,{},348
+86,Acceptance of Extraneous Untrusted Data With Trusted Data,cwe_00472,set(),0,0,set(),set(),0,set(),0,"{'capec_00474', 'capec_00470', 'capec_01002'}",3,set(),0,{},349
+87,Unintended Proxy or Intermediary ('Confused Deputy'),cwe_00473,set(),0,0,set(),set(),0,set(),0,"{'capec_00474', 'capec_00817', 'capec_00470', 'capec_00594'}",4,set(),0,{},441
+88,Reliance on Reverse DNS Resolution for a Security-Critical Action,cwe_00475,set(),0,0,set(),set(),0,set(),0,"{'capec_00474', 'capec_00999', 'capec_01022', 'capec_00662'}",4,set(),0,{},350
+89,Improper Validation of Integrity Check Value,cwe_00479,set(),0,0,set(),set(),0,set(),0,"{'capec_00810', 'capec_00478', 'capec_01002'}",3,set(),0,{},354
+90,External Control of Assumed-Immutable Web Parameter,cwe_00481,set(),0,0,set(),set(),0,set(),0,"{'capec_00693', 'capec_00480', 'capec_00740', 'capec_00603'}",4,set(),0,{},472
+91,Uncontrolled Resource Consumption,cwe_00483,set(),0,3,"{'cve_01507', 'cve_01195', 'cve_01043'}",set(),0,set(),0,"{'capec_00847', 'capec_00559', 'capec_00482'}",3,set(),0,{},400
+92,Improper Neutralization of Expression/Command Delimiters,cwe_00487,set(),0,0,set(),set(),0,set(),0,"{'capec_00486', 'capec_00941'}",2,set(),0,{},146
+93,Incorrect Regular Expression,cwe_00488,set(),0,0,set(),set(),0,set(),0,"{'capec_00486', 'capec_01008', 'capec_00941'}",3,set(),0,{},185
+94,Improper Neutralization of CRLF Sequences ('CRLF Injection'),cwe_00489,set(),0,0,set(),set(),0,set(),0,"{'capec_01011', 'capec_00486'}",2,set(),0,{},93
+95,Improper Neutralization of Delimiters,cwe_00490,set(),0,0,set(),set(),0,set(),0,{'capec_00486'},1,set(),0,{},140
+96,Failure to Sanitize Paired Delimiters,cwe_00491,set(),0,0,set(),set(),0,set(),0,{'capec_00486'},1,set(),0,{},157
+97,Improper Neutralization of Special Elements,cwe_00492,set(),0,0,set(),set(),0,set(),0,{'capec_00486'},1,set(),0,{},138
+98,Improper Neutralization of Variable Name Delimiters,cwe_00493,set(),0,0,set(),set(),0,set(),0,{'capec_00486'},1,set(),0,{},154
+99,Files or Directories Accessible to External Parties,cwe_00495,set(),0,0,set(),set(),0,set(),0,"{'capec_00494', 'capec_00868', 'capec_00333'}",3,set(),0,{},552
+100,Insecure Temporary File,cwe_00500,set(),0,0,set(),set(),0,set(),0,{'capec_00499'},1,set(),0,{},377
+101,Missing Encryption of Sensitive Data,cwe_00502,set(),0,0,set(),set(),0,set(),0,"{'capec_00738', 'capec_00950', 'capec_00572', 'capec_00723', 'capec_00283', 'capec_00693', 'capec_00735', 'capec_00833', 'capec_00736', 'capec_00986', 'capec_00501', 'capec_00737', 'capec_00733', 'capec_00731'}",14,set(),0,{},311
+102,Use of Incorrectly-Resolved Name or Reference,cwe_00503,set(),0,0,set(),set(),0,set(),0,"{'capec_00335', 'capec_00287', 'capec_00834', 'capec_00284'}",4,set(),0,{},706
+103,Not Using Password Aging,cwe_00505,set(),0,0,set(),set(),0,set(),0,"{'capec_00504', 'capec_00304', 'capec_00995', 'capec_00907'}",4,set(),0,{},262
+104,Password Aging with Long Expiration,cwe_00506,set(),0,0,set(),set(),0,set(),0,"{'capec_00504', 'capec_00304', 'capec_00995', 'capec_00907'}",4,set(),0,{},263
+105,Client-Side Enforcement of Server-Side Security,cwe_00510,set(),0,0,set(),set(),0,set(),0,"{'capec_00580', 'capec_00509', 'capec_00738', 'capec_00576', 'capec_00575', 'capec_00735', 'capec_00693', 'capec_00736', 'capec_00571', 'capec_00737', 'capec_00733', 'capec_00731'}",12,set(),0,{},602
+106,Improper Cross-boundary Removal of Sensitive Data,cwe_00516,set(),0,0,set(),set(),0,set(),0,{'capec_00515'},1,set(),0,{},212
+107,Improper Handling of Windows ::DATA Alternate Data Stream,cwe_00517,set(),0,0,set(),set(),0,set(),0,{'capec_00515'},1,set(),0,{},69
+108,Least Privilege Violation,cwe_00519,set(),0,0,set(),set(),0,set(),0,"{'capec_00286', 'capec_00718', 'capec_01003'}",3,set(),0,{},272
+109,Improper Ownership Management,cwe_00520,set(),0,0,set(),set(),0,set(),0,"{'capec_00286', 'capec_00718'}",2,set(),0,{},282
+110,,cwe_00521,set(),0,0,set(),set(),0,set(),0,"{'capec_00286', 'capec_00718'}",2,set(),0,{},275
+111,,cwe_00522,set(),0,0,set(),set(),0,set(),0,"{'capec_00913', 'capec_00993', 'capec_00718', 'capec_00286', 'capec_01003'}",5,set(),0,{},264
+112,Privilege Context Switching Error,cwe_00523,set(),0,0,set(),set(),0,set(),0,"{'capec_00286', 'capec_00614', 'capec_00684', 'capec_00718'}",4,set(),0,{},270
+113,Exposure of System Data to an Unauthorized Control Sphere,cwe_00525,set(),0,0,set(),set(),0,set(),0,{'capec_00524'},1,set(),0,{},497
+114,Inclusion of Functionality from Untrusted Control Sphere,cwe_00529,set(),0,0,set(),set(),0,set(),0,"{'capec_00639', 'capec_00650', 'capec_00570', 'capec_00906', 'capec_00528', 'capec_00638', 'capec_00637', 'capec_00605'}",8,set(),0,{},829
+115,Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS),cwe_00534,set(),0,0,set(),set(),0,set(),0,"{'capec_00551', 'capec_00702', 'capec_01019', 'capec_00533'}",4,set(),0,{},80
+116,Download of Code Without Integrity Check,cwe_00540,set(),0,0,set(),set(),0,set(),0,"{'capec_00541', 'capec_00288', 'capec_00539', 'capec_00542', 'capec_00888'}",5,set(),0,{},494
+117,Improper Access Control,cwe_00546,set(),0,0,set(),set(),0,set(),0,"{'capec_00328', 'capec_00306', 'capec_00891', 'capec_00315', 'capec_00302', 'capec_00312', 'capec_00545', 'capec_00310', 'capec_00303', 'capec_00307', 'capec_00308', 'capec_00317', 'capec_00316', 'capec_00862', 'capec_00786', 'capec_00903', 'capec_00863'}",17,set(),0,{},284
+118,Use of Hard-coded Credentials,cwe_00549,set(),0,0,set(),set(),0,set(),0,"{'capec_00995', 'capec_00548'}",2,set(),0,{},798
+119,Improper Control of Filename for Include/Require Statement in PHP Program ('PHP Remote File Inclusion'),cwe_00552,set(),0,0,set(),set(),0,set(),0,{'capec_00551'},1,set(),0,{},98
+120,,cwe_00553,set(),0,0,set(),set(),0,set(),0,"{'capec_00551', 'capec_00718'}",2,set(),0,{},714
+121,Session Fixation,cwe_00557,set(),0,1,{'cve_01160'},set(),0,set(),0,"{'capec_00942', 'capec_00580', 'capec_00951', 'capec_00740', 'capec_00693', 'capec_00556', 'capec_00926'}",7,set(),0,{},384
+122,Improper Control of a Resource Through its Lifetime,cwe_00558,set(),0,0,set(),set(),0,set(),0,"{'capec_00942', 'capec_00580', 'capec_00951', 'capec_00963', 'capec_00556'}",5,set(),0,{},664
+123,Improper Neutralization of Script in an Error Message Web Page,cwe_00561,set(),0,0,set(),set(),0,set(),0,{'capec_00560'},1,set(),0,{},81
+124,Improper Neutralization of Alternate XSS Syntax,cwe_00563,set(),0,0,set(),set(),0,set(),0,{'capec_00562'},1,set(),0,{},87
+125,Overly Restrictive Account Lockout Mechanism,cwe_00565,set(),0,0,set(),set(),0,set(),0,{'capec_00564'},1,set(),0,{},645
+126,Use of a Broken or Risky Cryptographic Algorithm,cwe_00567,set(),0,4,"{'cve_01481', 'cve_01471', 'cve_01470', 'cve_01479'}",set(),0,set(),0,"{'capec_00949', 'capec_01038', 'capec_00566', 'capec_00829', 'capec_00957', 'capec_00799', 'capec_00831'}",7,set(),0,{},327
+127,,cwe_00568,set(),0,0,set(),set(),0,set(),0,"{'capec_00566', 'capec_00986', 'capec_00907', 'capec_00926'}",4,set(),0,{},719
+128,Information Exposure Through Caching,cwe_00573,set(),0,0,set(),set(),0,set(),0,{'capec_00572'},1,set(),0,{},524
+129,Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting'),cwe_00578,set(),0,24,"{'cve_01197', 'cve_01486', 'cve_01102', 'cve_01178', 'cve_01203', 'cve_01532', 'cve_01055', 'cve_01184', 'cve_01159', 'cve_01476', 'cve_01052', 'cve_01466', 'cve_01057', 'cve_01478', 'cve_01196', 'cve_01212', 'cve_01059', 'cve_01477', 'cve_01482', 'cve_01442', 'cve_01227', 'cve_01220', 'cve_01493', 'cve_01124'}",set(),0,set(),0,"{'capec_00931', 'capec_00577', 'capec_01017', 'capec_00930', 'capec_00975', 'capec_00924'}",6,set(),0,{},79
+130,Reliance on File Name or Extension of Externally-Supplied File,cwe_00579,set(),0,0,set(),set(),0,set(),0,{'capec_00577'},1,set(),0,{},646
+131,Authentication Bypass by Spoofing,cwe_00581,set(),0,0,set(),set(),0,set(),0,"{'capec_00942', 'capec_00580', 'capec_00805', 'capec_00926', 'capec_00829', 'capec_00799', 'capec_01032', 'capec_00832', 'capec_00596'}",9,set(),0,{},290
+132,Information Exposure Through Persistent Cookies,cwe_00582,set(),0,0,set(),set(),0,set(),0,"{'capec_00942', 'capec_00580', 'capec_00740', 'capec_00693', 'capec_00926'}",5,set(),0,{},539
+133,J2EE Misconfiguration: Insufficient Session-ID Length,cwe_00583,set(),0,0,set(),set(),0,set(),0,"{'capec_00580', 'capec_00926'}",2,set(),0,{},6
+134,External Control of Critical State Data,cwe_00584,set(),0,0,set(),set(),0,set(),0,"{'capec_00580', 'capec_00693'}",2,set(),0,{},642
+135,Information Exposure Through an Error Message,cwe_00587,set(),0,0,set(),set(),0,set(),0,"{'capec_00896', 'capec_00589', 'capec_00994', 'capec_00810', 'capec_00586'}",5,set(),0,{},209
+136,,cwe_00588,set(),0,0,set(),set(),0,set(),0,"{'capec_00667', 'capec_00586'}",2,set(),0,{},388
+137,Inclusion of Sensitive Information in Log Files,cwe_00590,set(),0,0,set(),set(),0,set(),0,{'capec_00589'},1,set(),0,{},532
+138,Externally Controlled Reference to a Resource in Another Sphere,cwe_00595,set(),0,0,set(),set(),0,set(),0,{'capec_00594'},1,set(),0,{},610
+139,Selection of Less-Secure Algorithm During Negotiation ('Algorithm Downgrade'),cwe_00598,set(),0,0,set(),set(),0,set(),0,"{'capec_00597', 'capec_00965', 'capec_00947'}",3,set(),0,{},757
+140,Improper Restriction of XML External Entity Reference,cwe_00600,set(),0,1,{'cve_01463'},set(),0,set(),0,{'capec_00599'},1,set(),0,{},611
+141,Reliance on Cookies without Validation and Integrity Checking,cwe_00604,set(),0,0,set(),set(),0,set(),0,"{'capec_00693', 'capec_00740', 'capec_00603'}",3,set(),0,{},565
+142,Missing XML Validation,cwe_00609,set(),0,0,set(),set(),0,set(),0,"{'capec_00611', 'capec_00608'}",2,set(),0,{},112
+143,Uncontrolled Recursion,cwe_00610,set(),0,0,set(),set(),0,set(),0,"{'capec_00611', 'capec_00608'}",2,set(),0,{},674
+144,Improper Control of Generation of Code ('Code Injection'),cwe_00619,set(),0,1,{'cve_01122'},set(),0,set(),0,"{'capec_00718', 'capec_01005', 'capec_00618'}",3,set(),0,{},94
+145,Improper Neutralization of Script in Attributes in a Web Page,cwe_00621,set(),0,0,set(),set(),0,set(),0,"{'capec_00622', 'capec_00924', 'capec_00620'}",3,set(),0,{},83
+146,Doubled Character XSS Manipulations,cwe_00624,set(),0,0,set(),set(),0,set(),0,{'capec_00623'},1,set(),0,{},85
+147,Improper Neutralization of Invalid Characters in Identifiers in Web Pages,cwe_00626,set(),0,0,set(),set(),0,set(),0,"{'capec_00625', 'capec_01017', 'capec_00999'}",3,set(),0,{},86
+148,Unrestricted Externally Accessible Lock,cwe_00629,set(),0,0,set(),set(),0,set(),0,{'capec_00628'},1,set(),0,{},412
+149,Unsynchronized Access to Shared Data in a Multithreaded Context,cwe_00630,set(),0,0,set(),set(),0,set(),0,{'capec_00628'},1,set(),0,{},567
+150,Improper Synchronization,cwe_00631,set(),0,0,set(),set(),0,set(),0,"{'capec_00628', 'capec_00670', 'capec_00654', 'capec_00641'}",4,set(),0,{},662
+151,Deadlock,cwe_00632,set(),0,0,set(),set(),0,set(),0,{'capec_00628'},1,set(),0,{},833
+152,Improper Locking,cwe_00633,set(),0,0,set(),set(),0,set(),0,"{'capec_00628', 'capec_00654', 'capec_00641'}",3,set(),0,{},667
+153,XML Injection (aka Blind XPath Injection),cwe_00635,set(),0,0,set(),set(),0,set(),0,"{'capec_01015', 'capec_00634'}",2,set(),0,{},91
+154,Improper Enforcement of Message or Data Structure,cwe_00636,set(),0,0,set(),set(),0,set(),0,"{'capec_00713', 'capec_00876', 'capec_00820', 'capec_01007', 'capec_00665', 'capec_01015', 'capec_00681', 'capec_00994', 'capec_00983', 'capec_00717', 'capec_00885', 'capec_00666', 'capec_00780', 'capec_01016', 'capec_00989', 'capec_00663', 'capec_00664', 'capec_00634', 'capec_01008'}",19,set(),0,{},707
+155,Context Switching Race Condition,cwe_00642,set(),0,0,set(),set(),0,set(),0,"{'capec_00670', 'capec_00641'}",2,set(),0,{},368
+156,Race Condition Enabling Link Following,cwe_00643,set(),0,0,set(),set(),0,set(),0,{'capec_00641'},1,set(),0,{},363
+157,Race Condition within a Thread,cwe_00644,set(),0,0,set(),set(),0,set(),0,"{'capec_00670', 'capec_00641'}",2,set(),0,{},366
+158,Missing Check for Certificate Revocation after Initial Check,cwe_00645,set(),0,0,set(),set(),0,set(),0,"{'capec_00670', 'capec_00641'}",2,set(),0,{},370
+159,Concurrent Execution using Shared Resource with Improper Synchronization ('Race Condition'),cwe_00646,set(),0,1,{'cve_01136'},set(),0,set(),0,"{'capec_00670', 'capec_00641'}",2,set(),0,{},362
+160,Permission Race Condition During Resource Copy,cwe_00647,set(),0,0,set(),set(),0,set(),0,"{'capec_00654', 'capec_00641'}",2,set(),0,{},689
+161,Improper Initialization,cwe_00648,set(),0,0,set(),set(),0,set(),0,"{'capec_00670', 'capec_00641'}",2,set(),0,{},665
+162,Incorrect Behavior Order: Validate Before Canonicalize,cwe_00651,set(),0,0,set(),set(),0,set(),0,"{'capec_01010', 'capec_00681', 'capec_00996', 'capec_00291', 'capec_01008', 'capec_01007'}",6,set(),0,{},180
+163,Improper Output Neutralization for Logs,cwe_00653,set(),0,0,set(),set(),0,set(),0,"{'capec_01011', 'capec_00344', 'capec_00652'}",3,set(),0,{},117
+164,Time-of-check Time-of-use (TOCTOU) Race Condition,cwe_00655,set(),0,0,set(),set(),0,set(),0,"{'capec_00670', 'capec_00654'}",2,set(),0,{},367
+165,UNIX Symbolic Link (Symlink) Following,cwe_00656,set(),0,0,set(),set(),0,set(),0,{'capec_00654'},1,set(),0,{},61
+166,Reliance on a Single Factor in a Security Decision,cwe_00661,set(),0,0,set(),set(),0,set(),0,{'capec_00660'},1,set(),0,{},654
+167,Insufficient Control Flow Management,cwe_00671,set(),0,0,set(),set(),0,set(),0,{'capec_00670'},1,set(),0,{},691
+168,Use of a Non-reentrant Function in a Concurrent Context,cwe_00672,set(),0,0,set(),set(),0,set(),0,{'capec_00670'},1,set(),0,{},663
+169,Improper Resolution of Path Equivalence,cwe_00682,set(),0,0,set(),set(),0,set(),0,{'capec_00681'},1,set(),0,{},41
+170,Incorrect Behavior Order: Early Validation,cwe_00683,set(),0,0,set(),set(),0,set(),0,"{'capec_00780', 'capec_00681', 'capec_00996'}",3,set(),0,{},179
+171,Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Response Splitting'),cwe_00694,set(),0,0,set(),set(),0,set(),0,"{'capec_01017', 'capec_00693', 'capec_00717'}",3,set(),0,{},113
+172,Cleartext Storage of Sensitive Information in a Cookie,cwe_00695,set(),0,0,set(),set(),0,set(),0,"{'capec_01000', 'capec_00723', 'capec_00693', 'capec_00740'}",4,set(),0,{},315
+173,,cwe_00696,set(),0,0,set(),set(),0,set(),0,"{'capec_00693', 'capec_00912', 'capec_01032'}",3,set(),0,{},724
+174,Improper Neutralization of Directives in Statically Saved Code ('Static Code Injection'),cwe_00719,set(),0,0,set(),set(),0,set(),0,"{'capec_01005', 'capec_01011', 'capec_01017', 'capec_00718', 'capec_00999'}",5,set(),0,{},96
+175,Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection'),cwe_00720,set(),0,0,set(),set(),0,set(),0,{'capec_00718'},1,set(),0,{},95
+176,Use of Low-Level Functionality,cwe_00722,set(),0,0,set(),set(),0,set(),0,{'capec_00721'},1,set(),0,{},695
+177,Information Exposure Through Browser Caching,cwe_00724,set(),0,0,set(),set(),0,set(),0,{'capec_00723'},1,set(),0,{},525
+178,Cleartext Storage of Sensitive Information,cwe_00725,set(),0,0,set(),set(),0,set(),0,{'capec_00723'},1,set(),0,{},312
+179,Cleartext Storage in the Registry,cwe_00726,set(),0,0,set(),set(),0,set(),0,{'capec_00723'},1,set(),0,{},314
+180,Cleartext Storage of Sensitive Information in Executable,cwe_00727,set(),0,0,set(),set(),0,set(),0,"{'capec_00723', 'capec_00986'}",2,set(),0,{},318
+181,Untrusted Search Path,cwe_00729,set(),0,0,set(),set(),0,set(),0,{'capec_00728'},1,set(),0,{},426
+182,Uncontrolled Search Path Element,cwe_00730,set(),0,0,set(),set(),0,set(),0,"{'capec_00728', 'capec_00301'}",2,set(),0,{},427
+183,Unprotected Primary Channel,cwe_00732,set(),0,0,set(),set(),0,set(),0,{'capec_00731'},1,set(),0,{},419
+184,Modification of Assumed-Immutable Data (MAID),cwe_00734,set(),0,0,set(),set(),0,set(),0,"{'capec_00738', 'capec_00735', 'capec_00736', 'capec_00733', 'capec_00737'}",5,set(),0,{},471
+185,Improper Handling of Parameters,cwe_00741,set(),0,0,set(),set(),0,set(),0,{'capec_00740'},1,set(),0,{},233
+186,Reliance on IP Address for Authentication,cwe_00753,set(),0,0,set(),set(),0,set(),0,{'capec_00752'},1,set(),0,{},291
+187,Improper Certificate Validation,cwe_00800,set(),0,5,"{'cve_01188', 'cve_01179', 'cve_01190', 'cve_01214', 'cve_01186'}",set(),0,set(),0,{'capec_00799'},1,set(),0,{},295
+188,Improper Neutralization of Input Terminators,cwe_00803,set(),0,0,set(),set(),0,set(),0,{'capec_00802'},1,set(),0,{},147
+189,Improper Handling of Extra Parameters,cwe_00804,set(),0,0,set(),set(),0,set(),0,{'capec_00802'},1,set(),0,{},235
+190,Reversible One-Way Hash,cwe_00806,set(),0,0,set(),set(),0,set(),0,"{'capec_00991', 'capec_00805'}",2,set(),0,{},328
+191,Covert Timing Channel,cwe_00808,set(),0,0,set(),set(),0,set(),0,{'capec_00807'},1,set(),0,{},385
+192,Information Exposure Through Timing Discrepancy,cwe_00809,set(),0,0,set(),set(),0,set(),0,{'capec_00807'},1,set(),0,{},208
+193,Covert Channel,cwe_00811,set(),0,0,set(),set(),0,set(),0,{'capec_00810'},1,set(),0,{},514
+194,Reliance on Obfuscation or Encryption of Security-Relevant Inputs without Integrity Checking,cwe_00812,set(),0,0,set(),set(),0,set(),0,{'capec_00810'},1,set(),0,{},649
+195,Improper Verification of Cryptographic Signature,cwe_00813,set(),0,0,set(),set(),0,set(),0,{'capec_00810'},1,set(),0,{},347
+196,Incorrect Behavior Order,cwe_00814,set(),0,0,set(),set(),0,set(),0,{'capec_00810'},1,set(),0,{},696
+197,Exposure of Private Information ('Privacy Violation'),cwe_00816,set(),0,0,set(),set(),0,set(),0,"{'capec_00815', 'capec_00819'}",2,set(),0,{},359
+198,Improper Neutralization of Quoting Syntax,cwe_00821,set(),0,0,set(),set(),0,set(),0,{'capec_00820'},1,set(),0,{},149
+199,Inappropriate Encoding for Output Context,cwe_00822,set(),0,0,set(),set(),0,set(),0,{'capec_00820'},1,set(),0,{},838
+200,Missing Release of Resource after Effective Lifetime,cwe_00824,set(),0,0,set(),set(),0,set(),0,{'capec_00823'},1,set(),0,{},772
+201,Improper Handling of Length Parameter Inconsistency ,cwe_00826,set(),0,0,set(),set(),0,set(),0,{'capec_00825'},1,set(),0,{},130
+202,Improper Handling of Unexpected Data Type,cwe_00835,set(),0,0,set(),set(),0,set(),0,{'capec_00834'},1,set(),0,{},241
+203,,cwe_00839,set(),0,0,set(),set(),0,set(),0,{'capec_00838'},1,set(),0,{},310
+204,Storing Passwords in a Recoverable Format,cwe_00844,set(),0,0,set(),set(),0,set(),0,{'capec_00304'},1,set(),0,{},257
+205,Improper Verification of Intent by Broadcast Receiver,cwe_00854,set(),0,0,set(),set(),0,set(),0,{'capec_00853'},1,set(),0,{},925
+206,Weak Password Recovery Mechanism for Forgotten Password,cwe_00857,set(),0,0,set(),set(),0,set(),0,{'capec_00856'},1,set(),0,{},640
+207,,cwe_00858,set(),0,0,set(),set(),0,set(),0,"{'capec_01024', 'capec_00856'}",2,set(),0,{},718
+208,Improper Restriction of Communication Channel to Intended Endpoints,cwe_00861,set(),0,0,set(),set(),0,set(),0,{'capec_00860'},1,set(),0,{},923
+209,Improper Neutralization of Null Byte or NUL Character,cwe_00877,set(),0,0,set(),set(),0,set(),0,"{'capec_00885', 'capec_00876'}",2,set(),0,{},158
+210,Out-of-bounds Read,cwe_00893,set(),0,11,"{'cve_01118', 'cve_01126', 'cve_01116', 'cve_01113', 'cve_01128', 'cve_01127', 'cve_01129', 'cve_01166', 'cve_01130', 'cve_01112', 'cve_01162'}",set(),0,set(),0,"{'capec_00897', 'capec_00892'}",2,set(),0,{},125
+211,Weak Cryptography for Passwords,cwe_00908,set(),0,0,set(),set(),0,set(),0,{'capec_00907'},1,set(),0,{},261
+212,Use of Password Hash With Insufficient Computational Effort,cwe_00909,set(),0,0,set(),set(),0,set(),0,{'capec_00907'},1,set(),0,{},916
+213,Privilege Defined With Unsafe Actions,cwe_00914,set(),0,0,set(),set(),0,set(),0,"{'capec_00332', 'capec_00913', 'capec_00341', 'capec_00336', 'capec_00331'}",5,set(),0,{},267
+214,Deserialization of Untrusted Data,cwe_00922,set(),0,1,{'cve_01142'},set(),0,set(),0,{'capec_00921'},1,set(),0,{},502
+215,Insufficient Entropy,cwe_00927,set(),0,0,set(),set(),0,set(),0,{'capec_00926'},1,set(),0,{},331
+216,Exposure of Data Element to Wrong Session,cwe_00928,set(),0,0,set(),set(),0,set(),0,"{'capec_00942', 'capec_00926'}",2,set(),0,{},488
+217,Improper Verification of Source of a Communication Channel,cwe_00934,set(),0,0,set(),set(),0,set(),0,"{'capec_00933', 'capec_00936', 'capec_00935'}",3,set(),0,{},940
+218,Absolute Path Traversal,cwe_00938,set(),0,0,set(),set(),0,set(),0,{'capec_00937'},1,set(),0,{},36
+219,,cwe_00952,set(),0,0,set(),set(),0,set(),0,{'capec_00951'},1,set(),0,{},361
+220,,cwe_00964,set(),0,0,set(),set(),0,set(),0,{'capec_00963'},1,set(),0,{},716
+221,Improper Neutralization of Trailing Special Elements,cwe_00980,set(),0,0,set(),set(),0,set(),0,{'capec_00979'},1,set(),0,{},162
+222,Path Equivalence: 'filename ' (Trailing Space),cwe_00985,set(),0,0,set(),set(),0,set(),0,{'capec_00342'},1,set(),0,{},46
+223,Command Shell in Externally Accessible Directory,cwe_00987,set(),0,0,set(),set(),0,set(),0,{'capec_00343'},1,set(),0,{},553
+224,Missing Required Cryptographic Step,cwe_00992,set(),0,0,set(),set(),0,set(),0,{'capec_00991'},1,set(),0,{},325
+225,Improper Handling of Unicode Encoding,cwe_00997,set(),0,0,set(),set(),0,set(),0,{'capec_00996'},1,set(),0,{},176
+226,,cwe_01001,set(),0,0,set(),set(),0,set(),0,{'capec_01000'},1,set(),0,{},371
+227,,cwe_01004,set(),0,0,set(),set(),0,set(),0,{'capec_01003'},1,set(),0,{},715
+228,PHP External Variable Modification,cwe_01006,set(),0,0,set(),set(),0,set(),0,{'capec_01005'},1,set(),0,{},473
+229,Failure to Sanitize Special Elements into a Different Plane (Special Element Injection),cwe_01012,set(),0,0,set(),set(),0,set(),0,"{'capec_01011', 'capec_00344'}",2,set(),0,{},75
+230,Information Loss or Omission,cwe_01013,set(),0,0,set(),set(),0,set(),0,{'capec_01011'},1,set(),0,{},221
+231,Incorrect Execution-Assigned Permissions,cwe_01014,set(),0,0,set(),set(),0,set(),0,{'capec_01011'},1,set(),0,{},279
+232,,cwe_01018,set(),0,0,set(),set(),0,set(),0,{'capec_01017'},1,set(),0,{},712
+233,Reflection Attack in an Authentication Protocol,cwe_01025,set(),0,0,set(),set(),0,set(),0,{'capec_01024'},1,set(),0,{},301
+234,Incorrect Implementation of Authentication Algorithm,cwe_01026,set(),0,0,set(),set(),0,set(),0,{'capec_01024'},1,set(),0,{},303
+235,Integer Overflow or Wraparound,cwe_01028,set(),0,3,"{'cve_01115', 'cve_01114', 'cve_01074'}",set(),0,set(),0,{'capec_01027'},1,set(),0,{},190
+236,Wrap-around Error,cwe_01029,set(),0,0,set(),set(),0,set(),0,{'capec_01027'},1,set(),0,{},128
+237,Heap-based Buffer Overflow,cwe_01030,set(),0,0,set(),set(),0,set(),0,{'capec_01027'},1,set(),0,{},122
+238,Unsigned to Signed Conversion Error,cwe_01031,set(),0,0,set(),set(),0,set(),0,{'capec_01027'},1,set(),0,{},196
+239,Authentication Bypass: OpenSSL CTX Object Modified after SSL Objects are Created,cwe_01033,set(),0,0,set(),set(),0,set(),0,{'capec_01032'},1,set(),0,{},593
+240,File and Directory Information Exposure,cwe_01035,set(),0,0,set(),set(),0,set(),0,{'capec_01034'},1,set(),0,{},538
+241,Call to Non-ubiquitous API,cwe_01037,set(),0,0,set(),set(),0,set(),0,{'capec_01036'},1,set(),0,{},589
+242,Server-Side Request Forgery (SSRF),cwe_01051,set(),0,1,{'cve_01050'},set(),0,set(),0,set(),0,set(),0,{},918
+243,NULL Pointer Dereference,cwe_01078,set(),0,6,"{'cve_01084', 'cve_01219', 'cve_01090', 'cve_01202', 'cve_01218', 'cve_01076'}",set(),0,set(),0,set(),0,set(),0,{},476
+244,URL Redirection to Untrusted Site ('Open Redirect'),cwe_01108,set(),0,2,"{'cve_01106', 'cve_01183'}",set(),0,set(),0,set(),0,set(),0,{},601
+245,Double Free,cwe_01111,set(),0,1,{'cve_01109'},set(),0,set(),0,set(),0,set(),0,{},415
+246,Out-of-bounds Write,cwe_01165,set(),0,1,{'cve_01164'},set(),0,set(),0,set(),0,set(),0,{},787
+247,Reachable Assertion,cwe_01194,set(),0,1,{'cve_01192'},set(),0,set(),0,set(),0,set(),0,{},617
+248,Use After Free,cwe_01200,set(),0,1,{'cve_01198'},set(),0,set(),0,set(),0,set(),0,{},416
+249,Incorrect Authorization,cwe_01446,set(),0,2,"{'cve_01445', 'cve_01468'}",set(),0,set(),0,set(),0,set(),0,{},863
+250,Insecure Storage of Sensitive Information,cwe_01531,set(),0,1,{'cve_01528'},set(),0,set(),0,set(),0,set(),0,{},922

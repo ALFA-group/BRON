@@ -1,0 +1,1 @@
+{"command-and-control": "00002", "exfiltration": "00004", "credential-access": "00006", "persistence": "00008", "collection": "00010", "defense-evasion": "00012", "discovery": "00014", "privilege-escalation": "00021", "lateral-movement": "00026", "execution": "00038", "initial-access": "00089", "impact": "00240"}
