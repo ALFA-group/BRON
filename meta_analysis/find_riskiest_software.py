@@ -51,50 +51,22 @@ def riskiest_software(graph):
     return highest_score, highest_software
 
 
-def riskiest_software_network_specific(graph):
-    highest_score = -1
-    highest_software = set()
-    all_nodes = graph.nodes(data=True)
-    for node in all_nodes:
-        if "network-node_" in node[0]:
-            cpes = graph.in_edges(node[0])
-            for cpe, _ in cpes:
-                score = 0
-                cves = graph.in_edges(cpe)
-                for cve, _ in cves:
-                    if all_nodes[cve]["datatype"] == "cve":
-                        score += all_nodes[cve]["metadata"]["weight"]
-                    if score >= highest_score:
-                        highest_score = score
-                        highest_software.add(all_nodes[cpe]["metadata"]["product"])
-    print(highest_score, highest_software)
-    return highest_score, highest_software
-
-
 def parse_args(args: List[str]) -> Dict[str, Any]:
-    parser = argparse.ArgumentParser(description="Count number of unique CVEs")
+    parser = argparse.ArgumentParser(description="Find riskiest software")
     parser.add_argument(
-        "--db_path",
+        "--BRON_path",
         type=str,
         required=True,
-        help="Location of saved BRON_db e.g. data/BRON_db/BRON_db.json or data/BRON_db/BRON_db.gz",
-    )
-    parser.add_argument(
-        "--network_specific",
-        action="store_true",
-        help="Use the argument if BRON_db is network specific",
+        help="File path to saved BRON, e.g. data/BRON.json",
     )
     args = vars(parser.parse_args())
     return args
 
 
 def main(**args: Dict[str, Any]) -> None:
-    db_path, network_specific = args.values()
-    graph = load_graph_network(db_path)
-    if network_specific:
-        riskiest_software_network_specific(graph)
-    else:
-        riskiest_software(graph)
+    BRON_path = args.values()
+    graph = load_graph_network(BRON_path)
+    riskiest_software(graph)
 
 
 if __name__ == "__main__":

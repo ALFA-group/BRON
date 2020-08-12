@@ -1,4 +1,4 @@
-# This workflow will install dependencies and lint with Black and flake8 using Python 3.8
+# This workflow will install dependencies, reformat code with Black, and lint with flake8 using Python 3.8
 
 name: Lint
 
@@ -25,7 +25,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install black flake8
 
-    - name: Lint with Black
+    - name: Reformat code with Black
       run: |
         black .
 

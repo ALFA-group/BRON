@@ -7,9 +7,7 @@ import sys
 from typing import List, Dict, Any
 
 UNIQUE_ID = 0
-BRON_DB_BASE_PATH = "data/BRON_db"
-BRON_DB_PATH = os.path.join(BRON_DB_BASE_PATH, "original_id_to_bron_id")
-BRON_DB_NETWORK_PATH = os.path.join(BRON_DB_BASE_PATH, "network_specific_BRON_db/original_id_to_bron_id")
+BRON_PATH = "BRON/original_id_to_bron_id"
 name_map_paths = {"tactic_map": "technique_tactic_map.json",
                   "technique_names": "technique_name_map.json",
                   "attack_map": "capec_technique_map.json",
@@ -23,29 +21,16 @@ id_dict_paths = {"tactic": "tactic_name_to_bron_id.json",
                  "capec": "capec_id_to_bron_id.json",
                  "cwe": "cwe_id_to_bron_id.json",
                  "cve": "cve_id_bron_id.json",
-                 "cpe": "cpe_id_bron_id.json",
-                 "network": "network_name_to_bron_id.json"}
-id_dict_network_paths = {"tactic": "tactic_name_to_bron_id.json",
-                         "technique": "technique_id_to_bron_id.json",
-                         "capec": "capec_id_to_bron_id.json",
-                         "cwe": "cwe_id_to_bron_id.json",
-                         "cve": "cve_id_to_bron_id.json",
-                         "cpe": "cpe_id_to_bron_id.json",
-                         "network": "network_name_to_bron_id.json"}
+                 "cpe": "cpe_id_bron_id.json"}
 
-def build_graph(graph_path, input_data_folder, network=None, recent_cves=False):
+def build_graph(save_path, input_data_folder, recent_cves=False):
     main_graph = nx.DiGraph()
-    tactic_graph = add_tactic_technique_edges(main_graph, network, input_data_folder)
-    attack_graph = add_capec_technique_edges(tactic_graph, network, input_data_folder)
-    update_graph = add_capec_cwe_edges(attack_graph, network, input_data_folder)
-
-    if network is not None:
-        cpe_graph = add_cve_cpe_cwe(update_graph, recent_cves, network, input_data_folder)
-        final_graph = connect_cpe_network_nodes(cpe_graph, network)
-    else:
-        final_graph = add_cve_cpe_cwe(update_graph, recent_cves, input_data_folder)
-
-    save(final_graph, graph_path)
+    tactic_graph = add_tactic_technique_edges(main_graph, input_data_folder, save_path)
+    attack_graph = add_capec_technique_edges(tactic_graph, input_data_folder, save_path)
+    update_graph = add_capec_cwe_edges(attack_graph, input_data_folder, save_path)
+    final_graph = add_cve_cpe_cwe(update_graph, recent_cves, input_data_folder, save_path)
+    BRON_file_path = os.path.join(save_path, "BRON.json")
+    save(final_graph, BRON_file_path)
 
 
 def save(G, fname):
@@ -71,6 +56,7 @@ def get_unique_id():
 def load_json(data_file, input_data_folder):
     """
     data_file (str): data file to open, e.g. "tactic_map" or "attack_map"
+    input_data_folder (str): folder path to input data
 
     Returns Python dictionary of JSON file using path associated with data_file
     """
@@ -83,25 +69,20 @@ def load_json(data_file, input_data_folder):
             return json.load(f)
 
 
-def write_json(data_type_ids, network):
+def write_json(data_type_ids, save_path):
     """
     data_type_ids (dict): maps string of data type to dict of data type id to bron id,
             e.g. {"technique": technique_id_to_bron_id, "capec": capec_id_to_bron_id}
     """
-    if network is not None:
-        path_start = BRON_DB_NETWORK_PATH
-        file_paths = id_dict_network_paths
-    else:
-        path_start = BRON_DB_PATH
-        file_paths = id_dict_paths
-
+    path_start = os.path.join(save_path, BRON_PATH)
+    file_paths = id_dict_paths
     for data_type, id_dict in data_type_ids.items():
         PATH = os.path.join(path_start, file_paths[data_type])
         with open (PATH, "w") as f:
             json.dump(id_dict, f)
 
 
-def add_tactic_technique_edges(graph, network, input_data_folder):
+def add_tactic_technique_edges(graph, input_data_folder, save_path):
     tactic_map = load_json("tactic_map", input_data_folder)
     technique_names = load_json("technique_names", input_data_folder)
     technique_id_to_bron_id = {}
@@ -146,23 +127,19 @@ def add_tactic_technique_edges(graph, network, input_data_folder):
                 graph.add_edge(tactic_node_name, technique_node_name)
             if not graph.has_edge(technique_node_name, tactic_node_name):
                 graph.add_edge(technique_node_name, tactic_node_name)
-    write_json({"technique": technique_id_to_bron_id, "tactic": tactic_name_to_bron_id}, network)
+    write_json({"technique": technique_id_to_bron_id, "tactic": tactic_name_to_bron_id}, save_path)
     return graph
 
 
-def add_capec_technique_edges(graph, network, input_data_folder):
+def add_capec_technique_edges(graph, input_data_folder, save_path):
     attack_map = load_json("attack_map", input_data_folder)
     capec_names = load_json("capec_names", input_data_folder)
     technique_names = load_json("technique_names", input_data_folder)
-    if network is not None:
-        path = os.path.join(BRON_DB_NETWORK_PATH, "technique_id_to_bron_id.json")
-    else:
-        path = os.path.join(BRON_DB_PATH, "technique_id_to_bron_id.json")
+    path = os.path.join(save_path, BRON_PATH, "technique_id_to_bron_id.json")
     with open(path, "r") as f:
         technique_id_to_bron_id = json.load(f)
     capec_id_to_bron_id = {}
     for capec in attack_map:
-
         capec_original_id = capec
 
         if capec_original_id not in capec_id_to_bron_id:
@@ -211,19 +188,16 @@ def add_capec_technique_edges(graph, network, input_data_folder):
                 graph.add_edge(technique_node_name, capec_node_name)
             if not graph.has_edge(capec_node_name, technique_node_name):
                 graph.add_edge(capec_node_name, technique_node_name)
-    write_json({"technique": technique_id_to_bron_id, "capec": capec_id_to_bron_id}, network)
+    write_json({"technique": technique_id_to_bron_id, "capec": capec_id_to_bron_id}, save_path)
     return graph
 
 
-def add_capec_cwe_edges(graph, network, input_data_folder):
+def add_capec_cwe_edges(graph, input_data_folder, save_path):
     # make capec and cwe node and add edge between the two of them
     capec_cwe = load_json("capec_cwe", input_data_folder)
     capec_names = load_json("capec_names", input_data_folder)
     cwe_names = load_json("cwe_names", input_data_folder)
-    if network is not None:
-        path = os.path.join(BRON_DB_NETWORK_PATH, "capec_id_to_bron_id.json")
-    else:
-        path = os.path.join(BRON_DB_PATH, "capec_id_to_bron_id.json")
+    path = os.path.join(save_path, BRON_PATH, "capec_id_to_bron_id.json")
     with open(path, "r") as json_file:
         capec_id_to_bron_id = json.load(json_file)
     cwe_id_to_bron_id = {}
@@ -275,20 +249,17 @@ def add_capec_cwe_edges(graph, network, input_data_folder):
                 graph.add_edge(capec_node_name, cwe_node_name)
             if not graph.has_edge(cwe_node_name, capec_node_name):
                 graph.add_edge(cwe_node_name, capec_node_name)
-    write_json({"capec": capec_id_to_bron_id, "cwe": cwe_id_to_bron_id}, network)
+    write_json({"capec": capec_id_to_bron_id, "cwe": cwe_id_to_bron_id}, save_path)
     return graph
 
 
-def add_cve_cpe_cwe(graph, recent_cves, input_data_folder, network=None):
+def add_cve_cpe_cwe(graph, recent_cves, input_data_folder, save_path):
     if recent_cves:
         cve_map = load_json("cve_map_2015_2020", input_data_folder)
     else:
         cve_map = load_json("cve_map", input_data_folder)
     cwe_names = load_json("cwe_names", input_data_folder)
-    if network is not None:
-        path = os.path.join(BRON_DB_NETWORK_PATH, "cwe_id_to_bron_id.json")
-    else:
-        path = os.path.join(BRON_DB_PATH, "cwe_id_to_bron_id.json")
+    path = os.path.join(save_path, BRON_PATH, "cwe_id_to_bron_id.json")
     with open(path, "r") as f:
         cwe_id_to_bron_id = json.load(f)
     cve_id_to_bron_id = {}
@@ -327,7 +298,7 @@ def add_cve_cpe_cwe(graph, recent_cves, input_data_folder, network=None):
                     graph.add_edge(cwe_node_name, cve_node_name)
                 if not graph.has_edge(cve_node_name, cwe_node_name):
                     graph.add_edge(cve_node_name, cwe_node_name)
-    write_json({"cwe": cwe_id_to_bron_id, "cve": cve_id_to_bron_id, "cpe": cpe_id_to_bron_id}, network)
+    write_json({"cwe": cwe_id_to_bron_id, "cve": cve_id_to_bron_id, "cpe": cpe_id_to_bron_id}, save_path)
     return graph
 
 
@@ -366,54 +337,14 @@ def _add_cpe_node(cpe, graph, cpe_id_to_bron_id, end_point):
         graph.add_edge(cpe_node_name, end_point)
 
 
-def connect_cpe_network_nodes(graph, network):
-    with open(network) as f:
-        net = json.load(f)
-    with open(
-        os.path.join(BRON_DB_PATH, "cpe_id_to_bron_id.json"),
-        "r",
-    ) as json_file:
-        cpe_id_to_bron_id = json.load(json_file)
-    network_name_to_bron_id = {}
-    for level in net.keys():
-        second_level = net[level]
-        for node in second_level:
-
-            third_level = second_level[node]
-            for named_node in third_level:
-
-                net_node_bron_id = get_unique_id()
-
-                node = third_level[named_node]
-                net_node_name = "network-node_" + net_node_bron_id
-                net_node_real_name = named_node
-                if net_node_real_name not in network_name_to_bron_id:
-                    graph.add_node(
-                        net_node_name,
-                        original_id="",
-                        name=net_node_real_name,
-                        datatype="network-node",
-                        metadata={},
-                    )
-                    network_name_to_bron_id[net_node_real_name] = net_node_bron_id
-                else:
-                    net_node_real_name = named_node
-                    net_node_bron_id = network_name_to_bron_id[net_node_real_name]
-                    net_node_name = "network-node_" + net_node_bron_id
-                for app in node:
-                    cpe = node[app]
-                    _add_cpe_node(cpe, graph, cpe_id_to_bron_id, net_node_name)
-
-    write_json({"cpe": cpe_id_to_bron_id, "network": network_name_to_bron_id}, network)
-    return graph
-
-
 def parse_args(args: List[str]) -> Dict[str, Any]:
-    parser = argparse.ArgumentParser(description="Create graph from threat data")
-    parser.add_argument('--data_folder', type=str, required=True, help='Folder containing parsed data e.g. data/example_data')
+    parser = argparse.ArgumentParser(description="Create BRON graph from threat data")
+    parser.add_argument('--input_data_folder', type=str, required=True,
+                        help='Folder path to input threat data')
     parser.add_argument('--save_path', type=str, required=True,
-                        help='Path to save graph e.g. data/graph/graph_results/threat_data.json')
-    parser.add_argument('--only_recent_cves', action='store_true', help='Make BRON_db with CVEs from 2015 to 2020 only')
+                        help='Folder path to save BRON graph and files, e.g. example_data/example_output_data')
+    parser.add_argument('--only_recent_cves', action='store_true',
+                        help='Make BRON with CVEs from 2015 to 2020 only')
     args = vars(parser.parse_args())
     return args
 

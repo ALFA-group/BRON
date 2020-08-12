@@ -3,9 +3,7 @@ import gzip
 import argparse
 
 """
-Decompresses GZ file to JSON file. Some files such as BRON_db, large_network_BRON_db,
-small_network_BRON_db, and cve_map_cpe_cwe_score are saved as GZ files and need to
-be decompressed to JSON files.
+Decompresses GZ file to JSON file
 """
 
 
@@ -20,10 +18,10 @@ def decompress_gz_to_json(gz_path, save_path):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Decompress GZ file to JSON file")
     parser.add_argument(
-        "--gz_path", type=str, required=True, help="Location of .gz file to be decompressed, e.g. data/BRON_db/BRON_db.gz"
+        "--gz_path", type=str, required=True, help="Location of .gz file to be decompressed"
     )
     parser.add_argument(
-        "--save_path", type=str, required=True, help="Location to save file as .json, e.g. data/BRON_db/BRON_db.json"
+        "--save_path", type=str, required=True, help="Location to save file as .json"
     )
     args = parser.parse_args()
     gz_path = args.gz_path

@@ -3,8 +3,8 @@ import os
 import json
 import datetime
 import hashlib
-
 import requests
+import gzip
 
 # TODO how to check if there are updates, or different URLs
 # TODO add some verbosity
@@ -12,14 +12,18 @@ import requests
 ENTERPRISE_ATTACK_URL = 'https://github.com/mitre/cti/raw/master/enterprise-attack/enterprise-attack.json'
 CAPEC_URL = 'https://github.com/mitre/cti/raw/master/capec/stix-capec.json'
 CWE_URL = 'https://cwe.mitre.org/data/csv/1000.csv.zip'
-CVE_URL = 'https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-2019.json.zip'
+CVE_BASE_URL = 'https://nvd.nist.gov/feeds/json/cve/1.1'
+CVE_ALL_YEARS = ['2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009',
+                 '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017',
+                 '2018', '2019', '2020']
+CVE_RECENT_YEARS = ['2015', '2016', '2017', '2018', '2019', '2020']
 
-OUTPUT_FOLDER = 'mitre_nist_data/downloaded_data/'
+OUTPUT_FOLDER = 'download_threat_information'
 THREAT_DATA_TYPES = {
     'ATTACK': 'raw_enterprise_attack.json',
     'CAPEC': 'raw_CAPEC.json',
     'CWE': 'raw_CWE.zip',
-    'CVE': 'raw_CVE.json.zip',
+    'CVE': 'raw_CVE.json.gz',
 }
 BRON_META_DATA_PATH = 'bron_meta_data.json'
 
@@ -42,7 +46,7 @@ def _write_meta_data(threat_data_type: str, file_path: str) -> None:
     meta_data[threat_data_type] = data_info
 
     with open(meta_data_path, 'w') as fd:
-        json.dump(meta_data, fd)
+        json.dump(meta_data, fd, indent=4)
 
 
 def md5(file_path: str) -> str:
@@ -85,24 +89,38 @@ def _download_cwe():
     _write_meta_data(threat_data_type='CWE', file_path=file_path)
 
 
-def _download_cve():
-    # TODO which years are these?
-    response = requests.get(CWE_URL, stream=True)
+def _download_cve(cve_years):
+    combined_cve = {'CVE_Items': []}
+    for year in cve_years:
+        # Download CVE data for each year
+        cve_url = os.path.join(CVE_BASE_URL, f"nvdcve-1.1-{year}.json.gz")
+        response = requests.get(cve_url, stream=True)
+        year_file_path = os.path.join(OUTPUT_FOLDER, f"raw_CVE_{year}.json.gz")
+        with open(year_file_path, 'wb') as fd:
+            for chunk in response.iter_content(chunk_size=128):
+                fd.write(chunk)
+
+        # Combine CVE data into one json.gz file
+        cve_path = os.path.join(OUTPUT_FOLDER, f"raw_CVE_{year}.json.gz")
+        with gzip.open(cve_path, "rt", encoding="utf-8") as f:
+            cve_data = json.load(f)
+        combined_cve['CVE_Items'].extend(cve_data['CVE_Items'])
+    json_string = json.dumps(combined_cve)
+    encoded = json_string.encode('utf-8')
     file_path = os.path.join(OUTPUT_FOLDER, THREAT_DATA_TYPES['CVE'])
-    with open(file_path, 'wb') as fd:
-        for chunk in response.iter_content(chunk_size=128):
-            fd.write(chunk)
+    with gzip.GzipFile(file_path, 'w') as f:
+        f.write(encoded)
 
     assert os.path.exists(file_path)
     _write_meta_data(threat_data_type='CVE', file_path=file_path)
 
 
-def main() -> None:
+def main(cve_years) -> None:
     assert os.path.exists(OUTPUT_FOLDER)
     _download_attack()
     _download_capec()
     _download_cwe()
-    _download_cve()
+    _download_cve(cve_years)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Download raw data for BRON")
@@ -112,7 +130,17 @@ if __name__ == '__main__':
         choices=list(THREAT_DATA_TYPES.keys()),
         help="Download only one threat data type, e.g threat-data-type=CVE",
     )
+    parser.add_argument(
+        "--only_recent_cves",
+        action='store_true',
+        help="For CVEs, add argument to download only recent CVE data from 2015-2020"
+    )
     args = parser.parse_args()
+    only_recent_cves = args.only_recent_cves
+    if only_recent_cves:
+        cve_years = CVE_RECENT_YEARS
+    else:
+        cve_years = CVE_ALL_YEARS
     if args.threat_data_type:
         if args.threat_data_type == 'ATTACK':
             _download_attack()
@@ -121,8 +149,8 @@ if __name__ == '__main__':
         elif args.threat_data_type == 'CWE':
             _download_cwe()
         elif args.threat_data_type == 'CVE':
-            _download_cve()
+            _download_cve(cve_years)
         else:
             raise Exception(f'Bad threat data type: {args.threat_data_type}')
     else:
-        main()
+        main(cve_years)

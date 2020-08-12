@@ -6,7 +6,7 @@ from meta_analysis.draw_BRON import draw_bron
 
 class TestVisualization(unittest.TestCase):
     def test_draw_bron(self):
-        bron_data_path = "tests/test_BRON_db.json"
+        bron_data_path = "tests/test_BRON.json"
         graph_name = "test"
         save_file_path = "bron_plot_test.pdf"
         try:

@@ -15,7 +15,7 @@ from ast import literal_eval
 Plot number of data types for specific vendor product over all product versions
 """
 
-CPE_ID_BRON_ID_PATH = "data/BRON_db/original_id_to_bron_id/cpe_id_bron_id.json"
+CPE_ID_BRON_ID_PATH = "BRON/original_id_to_bron_id/cpe_id_bron_id.json"
 
 def sort_versions(versions):
     i = 0
@@ -30,15 +30,15 @@ def sort_versions(versions):
     return versions
 
 
-def vendor_product_versions(BRONdb_path, vendor, product):
+def vendor_product_versions(BRON_path, vendor, product):
     """
     Return list of versions for vendor product in order from oldest to most recent
     """
-    if BRONdb_path.lower().endswith('.json'):
-        with open(BRONdb_path) as f:
+    if BRON_path.lower().endswith('.json'):
+        with open(BRON_path) as f:
             graph = json.load(f)
-    elif BRONdb_path.lower().endswith('.gz'):
-        with gzip.open(BRONdb_path, "rt", encoding="utf-8") as f:
+    elif BRON_path.lower().endswith('.gz'):
+        with gzip.open(BRON_path, "rt", encoding="utf-8") as f:
             graph = json.load(f)
     app_platform_to_versions = dict()
     graph_nodes = graph['nodes']
@@ -54,12 +54,14 @@ def vendor_product_versions(BRONdb_path, vendor, product):
     return versions
 
 
-def version_to_cpe_ids(BRONdb_path, vendor, product, starting_point_file, cpe_id_bron_id): # sorted versions
+def version_to_cpe_ids(BRON_folder_path, vendor, product, starting_point_file, cpe_id_bron_id): # sorted versions
     """
     Return list of 'cpe_' IDs, save starting points
     """
-    versions = vendor_product_versions(BRONdb_path, vendor, product)
-    with open(cpe_id_bron_id) as f:
+    BRON_path = os.path.join(BRON_folder_path, "BRON.json")
+    versions = vendor_product_versions(BRON_path, vendor, product)
+    BRON_cpe_id_path = os.path.join(BRON_folder_path, cpe_id_bron_id)
+    with open(BRON_cpe_id_path) as f:
         cpe_id_bron_id = json.load(f)
     cpe_ids = []
     id_to_version = dict()
@@ -77,14 +79,15 @@ def version_to_cpe_ids(BRONdb_path, vendor, product, starting_point_file, cpe_id
     return cpe_ids, id_to_version
 
 
-def data_types_over_versions(BRONdb_path, vendor, product, starting_point_file, search_result_file, save_path=None):
+def data_types_over_versions(BRON_folder_path, vendor, product, starting_point_file, search_result_file, save_path=None):
+    BRON_path = os.path.join(BRON_folder_path, "BRON.json")
     plt.rc('font', size=14)
     plt.rcParams["font.weight"] = "bold"
     plt.rcParams["axes.labelweight"] = "bold"
     # Save file of starting points for vendor product
-    _, id_to_version = version_to_cpe_ids(BRONdb_path, vendor, product, starting_point_file, CPE_ID_BRON_ID_PATH)
+    _, id_to_version = version_to_cpe_ids(BRON_folder_path, vendor, product, starting_point_file, CPE_ID_BRON_ID_PATH)
     # Run path search on starting points, save file of search results for vendor product
-    cmd = f"python -m path_search.path_search_BRON_db --db_path {BRONdb_path} --starting_point {starting_point_file} --starting_point_type 'cpe' --results_file {search_result_file}"
+    cmd = f"python -m path_search.path_search_BRON --BRON_path {BRON_path} --starting_point {starting_point_file} --starting_point_type 'cpe' --results_file {search_result_file}"
     sys = os.system(cmd)
     version_to_num_types = {'Version': [], 'Tactic': [], 'Technique': [], 'Attack Pattern': [], 'Weakness': [], 'Vulnerability': []}
     _data_source_keys = ("tactic", "technique", "capec", "cwe", "cve", "cpe")
@@ -121,8 +124,8 @@ def data_types_over_versions(BRONdb_path, vendor, product, starting_point_file, 
 
 def parse_args(args: List[str]) -> Dict[str, Any]:
     parser = argparse.ArgumentParser(description="Plot number of data types for specific vendor product over all product versions")
-    parser.add_argument('--db_path', type=str, required=True,
-                        help='Path to BRON_db')
+    parser.add_argument('--BRON_folder_path', type=str, required=True,
+                        help='Folder path to BRON graph and files')
     parser.add_argument('--vendor', type=str, required=True,
                         help='Selected vendor')
     parser.add_argument('--product', type=str, required=True,
@@ -137,8 +140,8 @@ def parse_args(args: List[str]) -> Dict[str, Any]:
 
 
 def main(**args: Dict[str, Any]) -> None:
-    BRONdb_path, vendor, product, starting_point_file, search_result_file, save_path = args.values()
-    data_types_over_versions(BRONdb_path, vendor, product, starting_point_file, search_result_file, save_path=save_path)
+    BRON_folder_path, vendor, product, starting_point_file, search_result_file, save_path = args.values()
+    data_types_over_versions(BRON_folder_path, vendor, product, starting_point_file, search_result_file, save_path=save_path)
 
 
 if __name__ == "__main__":

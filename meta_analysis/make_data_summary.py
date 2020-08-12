@@ -35,7 +35,7 @@ def create_dict():
 
 def main_data_summary(graph, save_folder, data_types):
     """
-    :param graph: BRON_db file
+    :param graph: BRON file
     :param save_folder: location to save summary files
     :param data_types: list of data types to make data summaries
     :return:
@@ -94,15 +94,15 @@ def load_graph_network(graph_file, not_all_cpe_versions=False):
     return G
 
 
-def latest_CPE_versions(db_path):
+def latest_CPE_versions(BRON_path):
     vendor_product_to_version = dict() # maps vendor/product to latest version and node name
     latest_CPE_nodes = set() # set of node names for CPEs with latest version
 
-    if db_path.lower().endswith('.json'):
-        with open(db_path) as f:
+    if BRON_path.lower().endswith('.json'):
+        with open(BRON_path) as f:
             graph = json.load(f)
-    elif db_path.lower().endswith('.gz'):
-        with gzip.open(db_path, "rt", encoding="utf-8") as f:
+    elif BRON_path.lower().endswith('.gz'):
+        with gzip.open(BRON_path, "rt", encoding="utf-8") as f:
             graph = json.load(f)
 
     graph_nodes = graph['nodes']
@@ -131,7 +131,7 @@ def latest_CPE_versions(db_path):
 
 def parse_args(args: List[str]) -> Dict[str, Any]:
     parser = argparse.ArgumentParser(description='Analyse network for risk')
-    parser.add_argument('--db_path', type=str, required=True, help="Path of BRON db")
+    parser.add_argument('--BRON_path', type=str, required=True, help="Path of BRON")
     parser.add_argument('--save_folder', type=str, required=True, help="Save directory for the data summaries")
     parser.add_argument('--capec',action='store_true',help='Save data summary for capec')
     parser.add_argument('--cwe',action='store_true',help='Save data summary for cwe')
@@ -145,8 +145,8 @@ def parse_args(args: List[str]) -> Dict[str, Any]:
 
 
 def main(**args: Dict[str, Any]) -> None:
-    db_path, save_folder, capec, cwe, cve, cpe, tactic, technique, not_all_cpe_versions = args.values()
-    graph = load_graph_network(db_path, not_all_cpe_versions)
+    BRON_path, save_folder, capec, cwe, cve, cpe, tactic, technique, not_all_cpe_versions = args.values()
+    graph = load_graph_network(BRON_path, not_all_cpe_versions)
     datatypes = []
     if capec:
         datatypes.append("capec")

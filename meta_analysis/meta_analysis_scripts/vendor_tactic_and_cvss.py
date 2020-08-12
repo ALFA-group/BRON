@@ -14,7 +14,7 @@ from ast import literal_eval
 Plot heatmap or violinplot of tactics and vendors
 """
 
-CPE_ID_BRON_ID_PATH = "data/BRON_db/original_id_to_bron_id/cpe_id_bron_id.json"
+CPE_ID_BRON_ID_PATH = "BRON/original_id_to_bron_id/cpe_id_bron_id.json"
 
 def make_intensity_array(tactics, vendors, tactic_ids, tactic_vendor_products):
     intensity_array = np.zeros((len(vendors),len(tactics)))
@@ -26,8 +26,9 @@ def make_intensity_array(tactics, vendors, tactic_ids, tactic_vendor_products):
     return intensity_array
 
 
-def bron_id_to_cpe_id():
-    with open(CPE_ID_BRON_ID_PATH) as f:
+def bron_id_to_cpe_id(BRON_folder_path):
+    BRON_cpe_id_path = os.path.join(BRON_folder_path, CPE_ID_BRON_ID_PATH)
+    with open(BRON_cpe_id_path) as f:
         cpe_id_bron_id = json.load(f)
     bron_id_to_cpe_id = dict()
     for cpe_id, bron_id in cpe_id_bron_id.items():
@@ -250,16 +251,18 @@ def parse_args(args: List[str]) -> Dict[str, Any]:
                         help='True if you want to add sticks to violinplot')
     parser.add_argument('--cve_summary_path', type=str, required=True,
                         help='Path to file containing CVE data summary')
+    parser.add_argument('--BRON_folder_path', type=str, required=True,
+                        help='Folder path to BRON graph and files')
     parser.add_argument('--save_path', type=str, required=True, help='Path to save figure')
     args = vars(parser.parse_args())
     return args
 
 
 def main(**args: Dict[str, Any]) -> None:
-    tactics, vendors, tactic_search_result_file, vendor_search_result_folder, plot_type, violin_stick, cve_summary_path, save_path = args.values()
+    tactics, vendors, tactic_search_result_file, vendor_search_result_folder, plot_type, violin_stick, cve_summary_path, BRON_folder_path, save_path = args.values()
     tactics_split = tactics.split(',')
     vendors_split = vendors.split(',')
-    bron_id_to_cpe_id_dict = bron_id_to_cpe_id()
+    bron_id_to_cpe_id_dict = bron_id_to_cpe_id(BRON_folder_path)
     cve_to_risk_dict = cve_to_risk(cve_summary_path)
     all_tactics_name_to_id = {"persistence": "tactic_00008", "privilege-escalation": "tactic_00021",
                               "discovery": "tactic_00014", "initial-access": "tactic_00089",

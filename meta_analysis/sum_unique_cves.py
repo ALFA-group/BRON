@@ -44,48 +44,22 @@ def count_unique_cves(graph):
     return total_risk
 
 
-def count_unique_cves_network_specific(graph):
-    total_risk = 0
-    used_cves = set()
-    all_nodes = graph.nodes(data=True)
-    for node in all_nodes:
-        if node[1]["datatype"] == "network-node":
-            cpes = graph.in_edges(node[0])
-            for cpe, _ in cpes:
-                cves = graph.in_edges(cpe)
-                for cve, _ in cves:
-                    if all_nodes[cve]["datatype"] == "cve":
-                        if cve not in used_cves:
-                            total_risk += all_nodes[cve]["metadata"]["weight"]
-                            used_cves.add(cve)
-    print(total_risk)
-    return total_risk
-
-
 def parse_args(args: List[str]) -> Dict[str, Any]:
     parser = argparse.ArgumentParser(description="Count number of unique CVEs")
     parser.add_argument(
-        "--db_path",
+        "--BRON_path",
         type=str,
         required=True,
-        help="Location of saved BRON_db e.g. data/BRON_db/BRON_db.json or data/BRON_db/BRON_db.gz",
-    )
-    parser.add_argument(
-        "--network_specific",
-        action="store_true",
-        help="Use the argument if BRON_db is network specific",
+        help="Location of saved BRON e.g. data/BRON.json",
     )
     args = vars(parser.parse_args())
     return args
 
 
 def main(**args: Dict[str, Any]) -> None:
-    db_path, network_specific = args.values()
-    graph = load_graph_network(db_path)
-    if network_specific:
-        count_unique_cves_network_specific(graph)
-    else:
-        count_unique_cves(graph)
+    BRON_path = args.values()
+    graph = load_graph_network(BRON_path)
+    count_unique_cves(graph)
 
 
 if __name__ == "__main__":

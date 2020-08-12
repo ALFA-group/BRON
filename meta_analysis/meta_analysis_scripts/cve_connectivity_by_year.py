@@ -16,10 +16,11 @@ from typing import List, Dict, Any
 Plot number and percentage of Vulnerabilities connected to a Tactic, Attack Pattern, or Weakness
 """
 
-CVE_ID_BRON_ID_PATH = "data/BRON_db/original_id_to_bron_id/cve_id_bron_id.json"
+CVE_ID_BRON_ID_PATH = "BRON/original_id_to_bron_id/cve_id_bron_id.json"
 
-def cves_by_year(years):
-    with open(CVE_ID_BRON_ID_PATH) as f:
+def cves_by_year(years, BRON_folder_path):
+    BRON_cve_id_path = os.path.join(BRON_folder_path, CVE_ID_BRON_ID_PATH)
+    with open(BRON_cve_id_path) as f:
         cve_id_bron_id = json.load(f)
     year_to_cve_ids = dict()
     for year in years:
@@ -126,8 +127,8 @@ def make_line_plot(data_dict_1, data_dict_2, data_dict_3, data_dict_4, data_dict
         plt.savefig(save_path, dpi=400)
 
 
-def cve_connectivity_by_year(years, search_result_folder, number_or_percent, save_path=None):
-    year_to_num_cve_ids = cves_by_year(years)
+def cve_connectivity_by_year(years, search_result_folder, number_or_percent, BRON_folder_path, save_path=None):
+    year_to_num_cve_ids = cves_by_year(years, BRON_folder_path)
     tactic_connected = dict()
     technique_connected = dict()
     capec_connected = dict()
@@ -176,15 +177,16 @@ def parse_args(args: List[str]) -> Dict[str, Any]:
     parser.add_argument('--search_result_folder_path', type=str, required=True,
                         help='Path to folder with search results for selected CVE years')
     parser.add_argument('--number_or_percent', type=str, required=True, help='Either number or percent to determine plot type')
+    parser.add_argument('--BRON_folder_path', type=str, required=True, help='Folder path to BRON graph and files')
     parser.add_argument('--save_path', type=str, required=True, help='Path to save figure')
     args = vars(parser.parse_args())
     return args
 
 
 def main(**args: Dict[str, Any]) -> None:
-    years, search_result_folder_path, number_or_percent, save_path = args.values()
+    years, search_result_folder_path, number_or_percent, BRON_folder_path, save_path = args.values()
     years_split = years.split(',')
-    cve_connectivity_by_year(years_split, search_result_folder_path, number_or_percent, save_path=save_path)
+    cve_connectivity_by_year(years_split, search_result_folder_path, number_or_percent, BRON_folder_path, save_path=save_path)
 
 
 if __name__ == "__main__":
