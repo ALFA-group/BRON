@@ -36,7 +36,7 @@ def build_graph(save_path, input_data_folder, recent_cves=False):
 def save(G, fname):
     json.dump(
         dict(
-            nodes=[[n, G.node[n]] for n in G.nodes()],
+            nodes=[[n, G.nodes[n]] for n in G.nodes()],
             edges=[[u, v, G.edges[u, v]] for u, v in G.edges()],
         ),
         open(fname, "w"),
