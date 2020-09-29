@@ -74,6 +74,7 @@ def write_json(data_type_ids, save_path):
     data_type_ids (dict): maps string of data type to dict of data type id to bron id,
             e.g. {"technique": technique_id_to_bron_id, "capec": capec_id_to_bron_id}
     """
+    os.makedirs(BRON_PATH, exist_ok=True)
     path_start = os.path.join(save_path, BRON_PATH)
     file_paths = id_dict_paths
     for data_type, id_dict in data_type_ids.items():
