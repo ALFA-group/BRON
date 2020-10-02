@@ -1,1 +1,1 @@
-Example data is provided for demonstration purposes only.
+Example data is provided for tutorial purposes only.
