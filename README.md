@@ -48,7 +48,16 @@ There are 4 attributes for each node:
 
 ## Bibliography
 
+arXiv report: [https://arxiv.org/abs/2010.00533](https://arxiv.org/abs/2010.00533)
+
 ```
-TBD
+@misc{hemberg2020bron,
+      title={BRON -- Linking Attack Tactics, Techniques, and Patterns with Defensive Weaknesses, Vulnerabilities and Affected Platform Configurations}, 
+      author={Erik Hemberg and Jonathan Kelly and Michal Shlapentokh-Rothman and Bryn Reinstadler and Katherine Xu and Nick Rutar and Una-May O'Reilly},
+      year={2020},
+      eprint={2010.00533},
+      archivePrefix={arXiv},
+      primaryClass={cs.CR}
+}
 ```
 
