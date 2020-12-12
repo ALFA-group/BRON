@@ -18,8 +18,7 @@ DB = "BRON"
 GRAPH = "BRONGraph"
 USER = "root"
 HOST = "http://localhost:8529"
-# Default for arango docker
-PWD = os.environ.get("BRON_ARANGO_PWD", "openSesame")
+PWD = os.environ.get("BRON_ARANGO_PWD", "")
 NODE_KEYS = ("tactic", "technique", "capec", "cwe", "cve", "cpe")
 EDGE_KEYS = (("tactic", "technique"),
              ("technique", "capec"),
@@ -114,8 +113,8 @@ def arango_import() -> None:
 
             
 if __name__ == '__main__':
-    bron_file_path = './example_data/example_output_data/BRON.json'
-    #bron_file_path = './full_data/full_output_data/BRON.json'
+    bron_file_path = '../example_data/example_output_data/BRON.json'
+    #bron_file_path = '../full_data/full_output_data/BRON.json'
     parser = argparse.ArgumentParser(description='Create json files to import into ArangoDb from BRON json')
     parser.add_argument("-f", type=str, default=bron_file_path,
                         help="Path to BRON json")
