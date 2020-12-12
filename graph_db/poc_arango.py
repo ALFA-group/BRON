@@ -1,3 +1,4 @@
+import json
 import sys
 import argparse
 
@@ -8,6 +9,8 @@ from meta_analysis.find_riskiest_software import load_graph_network
 # Use arango via docker and python-arango package
 
 # TODO have in and out edges? Now only one direction is used
+
+# TODO rewrite to dump to arangodb importable files and then import with the arangoshell?
 
 DB = "BRON"
 GRAPH = "BRONGraph"
@@ -21,7 +24,7 @@ EDGE_KEYS = (("tactic", "technique"),
              ("cve", "cpe"),
              )
 
-def main(bron_file_path: str) -> None:
+def main(bron_file_path: str, format_for_import: bool=False) -> None:
     
     adb_client = arango.ArangoClient(hosts=f"http://localhost:8529")
     db = adb_client.db(username=USER, password=PWD)
@@ -60,34 +63,50 @@ def main(bron_file_path: str) -> None:
         print(f"Done: {collection}")
         
     # Load data
-    bron_graph = load_graph_network(bron_file_path)
-
-    for node in bron_graph.nodes(data=True):
+    nx_bron_graph = load_graph_network(bron_file_path)
+    collection_data = collections.defaultdict(list)
+    for node in nx_bron_graph.nodes(data=True):
         document = {"_key": node[0]}
         document.update(node[1])
         node_key = get_node_key(node[0])
         node_collection = node_collections[node_key]
+        if format_for_import:
+            collection_data[node_collection].append(document)
+            continue
+        
         try:
             node_collection.insert(document)
         except arango.exceptions.DocumentInsertError:
             pass
 
     print("Done nodes")
-    
-    for edge in bron_graph.edges():
+
+    collection_data = collections.defaultdict(list)    
+    for edge in nx_bron_graph.edges():
         to_node_key = get_node_key(edge[0])
         to_ = f"{to_node_key}/{edge[0]}"
         from_node_key = get_node_key(edge[1])
         from_ = f"{from_node_key}/{edge[1]}"
         edge_collection = f"{to_node_key}-{from_node_key}"
         document = {'_id': f"{edge_collection}/{edge[0]}-{edge[1]}", '_from': from_, '_to':to_}
+        if format_for_import:
+            edge_data[edge_collection].append(document)
+            continue
+
         try:
             bron_graph.insert_edge(collection=edge_collection, edge=document)
         except arango.exceptions.DocumentInsertError:
             pass
 
     print("Done edges")
-        
+
+    if format_for_import:
+        with open('collections.json', 'w') as fd:
+            json.dump(collection_data, fd)
+
+        with open('edges.json', 'w') as fd:
+            json.dump(edge_data, fd)
+
 def get_node_key(name: str) -> str:
     return name.split('_')[0]
 
@@ -119,9 +138,10 @@ if __name__ == '__main__':
     parser.add_argument("-f", type=str, default=bron_file_path,
                         help="Path to BRON json")
     parser.add_argument("--analyse", action='store_true', help="Analyse technique-cve")
+    parser.add_argument("--format_for_import", action='store_true', help="Write to arangoimprot comaptible file")
     args = parser.parse_args(sys.argv[1:])
 
     if args.analyse:
         analyze()
     else:
-        main(args.f)
+        main(args.f, args.format_for_import)
