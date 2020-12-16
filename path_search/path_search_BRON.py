@@ -1,4 +1,5 @@
 import argparse
+import collections
 import json
 import pandas as pd
 import csv
@@ -20,21 +21,14 @@ order = {"out": out_order, "in": in_order} # order of data types for edges
 
 def get_data(data_file):
     # find the input data
-    data_dict = {}
+    data_dict = collections.defaultdict(int)
     if ".csv" not in data_file:
         raise Exception("This {} file is not in CSV format".format(data_file))
     with open(data_file, "r") as csvfile:
-        # creating a csv reader object
-        csvreader = csv.reader(csvfile)
-
-        # extracting field names through first row
-        for row in csvreader:
-            if len(row) > 1:
-                for num in row:
-                    if num not in data_dict.keys():
-                        data_dict[num] = 1
-                    else:
-                        data_dict[num] += 1
+        reader = csv.reader(csvfile)
+        for row in reader:
+            for value in row:
+                data_dict[value] += 1
 
     return data_dict
 
@@ -140,7 +134,7 @@ def make_graph_edges(data_key, data_type, bron_dict, edge_dict, graph, rows_list
     if data_key in bron_dict:
         cve_list = []
         bron_id = bron_dict[data_key]
-        name = data_type + "_" + bron_id
+        name = f"{data_key}: {data_type}_{bron_id}"
         edge_dict[data_type].add(name)
 
         if data_type != "cpe":
