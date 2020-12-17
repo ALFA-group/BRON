@@ -13,10 +13,11 @@ ENTERPRISE_ATTACK_URL = 'https://github.com/mitre/cti/raw/master/enterprise-atta
 CAPEC_URL = 'https://github.com/mitre/cti/raw/master/capec/stix-capec.json'
 CWE_URL = 'https://cwe.mitre.org/data/csv/1000.csv.zip'
 CVE_BASE_URL = 'https://nvd.nist.gov/feeds/json/cve/1.1'
-CVE_ALL_YEARS = ['2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009',
-                 '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017',
-                 '2018', '2019', '2020']
-CVE_RECENT_YEARS = ['2015', '2016', '2017', '2018', '2019', '2020']
+LAST_YEAR = 2021
+FIRST_YEAR = 2002
+RECENT_OFFSET = 5
+CVE_ALL_YEARS = list(map(str, range(FIRST_YEAR, LAST_YEAR)))
+CVE_RECENT_YEARS = list(map(str, range(LAST_YEAR - RECENT_OFFSET, LAST_YEAR)))
 
 OUTPUT_FOLDER = 'download_threat_information'
 THREAT_DATA_TYPES = {
