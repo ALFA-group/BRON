@@ -43,7 +43,7 @@ def main(bron_file_path: str) -> None:
     edge_keys = get_edge_keys()    
     edge_file_handles = {}
     for edge_key in edge_keys:
-        edge_collection_key = "-".join(edge_key)
+        edge_collection_key = get_edge_collection_name(*edge_key)
         edge_file_handles[edge_collection_key] = open(f"{edge_collection_key}.json", "w")
         print(f"Done: {edge_collection_key}")
 
@@ -57,7 +57,6 @@ def main(bron_file_path: str) -> None:
     nx_bron_graph = load_graph_network(bron_file_path)
     print("Loaded nx")
     # Insert nodes
-    collection_data = collections.defaultdict(list)
     nodes_nx = nx_bron_graph.nodes(data=True)
     for cnt, node in enumerate(nodes_nx):
         document = {"_key": node[0]}
@@ -69,14 +68,13 @@ def main(bron_file_path: str) -> None:
     _ = [_.close() for _ in node_file_handles.values()]
     print(f"Done: Nodes")
     # Insert edges
-    edge_data = collections.defaultdict(list)
     edges_nx = nx_bron_graph.edges()
     for cnt, edge in enumerate(edges_nx):
         from_node_key = get_node_key(edge[0])
         from_ = f"{from_node_key}/{edge[0]}"
         to_node_key = get_node_key(edge[1])
         to_ = f"{to_node_key}/{edge[1]}"
-        edge_collection_key = f"{to_node_key}-{from_node_key}"
+        edge_collection_key = get_edge_collection_name(to_node_key, from_node_key)
         document = {'_id': f"{edge_collection_key}/{edge[0]}-{edge[1]}", '_from': from_, '_to':to_}
         json.dump(document, edge_file_handles[edge_collection_key])
         edge_file_handles[edge_collection_key].write("\n")
@@ -88,11 +86,13 @@ def main(bron_file_path: str) -> None:
 def get_node_key(name: str) -> str:
     return name.split('_')[0]
 
+def get_edge_collection_name(to_collection: str, from_collection: str) -> str:
+    return f"{to_collection.capitalize()}{from_collection.capitalize()}"
 
 def arango_import() -> None:
 
     files = os.listdir()
-    edge_keys = ["-".join(_) for _ in get_edge_keys()]
+    edge_keys = [get_edge_collection_name(*_) for _ in get_edge_keys()]
     allowed_names = list(NODE_KEYS) + edge_keys
     for file_ in files:
         name, ext = os.path.splitext(file_)
@@ -108,6 +108,7 @@ def arango_import() -> None:
                 cmd += ["--create-collection-type", "edge"]
 
             cmd_str = " ".join(cmd)
+            # TODO not great to print PWD
             print(cmd_str)
             os.system(cmd_str)
 
