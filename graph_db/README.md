@@ -12,7 +12,6 @@
 ```
 python bron_arango.py -f ${PATH_TO_BRON_JSON}
 # Expected output
-```
 Done: tactic-technique                                                                   
 Done: technique-capec                                                                    
 Done: capec-cwe                                                                          
@@ -75,5 +74,13 @@ threads:                2
 connect timeout:        5
 request timeout:        1200
 ...
+```
+
+## Run a query
+
+```bash
+python graph_db/query_graph_db.py --starting_point_type capec --starting_point example_data/example_input_data/starting_point_capec.csv
+# Expected output is a dictionary of starting point as key and the value is a dictionary of number of connections to the data type from the starting point
+{'125': defaultdict(<class 'int'>, {'cwe': 2, 'technique': 1}), '640': defaultdict(<class 'int'>, {'technique': 1}), '13': defaultdict(<class 'int'>, {'cwe': 10, 'technique': 2})}
 ```
 
