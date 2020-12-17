@@ -89,8 +89,15 @@ def get_node_key(name: str) -> str:
 def get_edge_collection_name(to_collection: str, from_collection: str) -> str:
     return f"{to_collection.capitalize()}{from_collection.capitalize()}"
 
-def arango_import() -> None:
 
+def create_db() -> None:
+    client = arango.ArangoClient(hosts="http://127.0.0.1:8529")
+    sys_db = client.db('_system', username=USER, password=PWD, auth_method="basic")
+    if not sys_db.has_database(DB):
+        sys_db.create_database(DB)
+    
+def arango_import() -> None:
+    create_db()
     files = os.listdir()
     edge_keys = [get_edge_collection_name(*_) for _ in get_edge_keys()]
     allowed_names = list(NODE_KEYS) + edge_keys

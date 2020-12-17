@@ -14,6 +14,7 @@ from graph_db.bron_arango import (
     EDGE_KEYS,
 )
 from path_search.path_search_BRON import get_data
+from BRON.build_BRON import id_dict_paths
 
 
 DIRECTIONS = ("INBOUND", "OUTBOUND")
@@ -37,9 +38,10 @@ def parse_args(args: List[str]) -> Dict[str, Any]:
         "--starting_point_type",
         type=str,
         required=True,
-        help="Data source type: one of Tactic, Technique, CAPEC, CVE, CWE, or CPE",
+        help=f"Data source type is one of: {', '.join(id_dict_paths.keys())}",
     )
     args = vars(parser.parse_args(args))
+    assert args['starting_point_type'] in id_dict_paths.keys()
     return args
 
 
