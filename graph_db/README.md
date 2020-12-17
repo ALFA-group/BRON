@@ -84,3 +84,9 @@ python graph_db/query_graph_db.py --starting_point_type capec --starting_point e
 {'125': defaultdict(<class 'int'>, {'cwe': 2, 'technique': 1}), '640': defaultdict(<class 'int'>, {'technique': 1}), '13': defaultdict(<class 'int'>, {'cwe': 10, 'technique': 2})}
 ```
 
+## Backup and update database
+
+For basic updates there is:
+```
+python graph_db/arango_update_collections.py > tmp.out
+```
