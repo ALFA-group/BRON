@@ -1,3 +1,4 @@
+import os
 import collections
 import sys
 from dataclasses import dataclass
@@ -49,7 +50,7 @@ def get_connections(
     starting_points: List[str], collection_name: str
 ) -> Dict[str, Set["Document"]]:
     connections = collections.defaultdict(set)
-    client = arango.ArangoClient(hosts="http://127.0.0.1:8529")
+    client = arango.ArangoClient(hosts=f"http://{os.environ.get('BRON_ARANGO_IP', '127.0.0.1')}:8529")
     db = client.db(DB, username=USER, password=PWD, auth_method="basic")
     edge_collections = [
         get_edge_collection_name(*_) for _ in EDGE_KEYS if collection_name in _

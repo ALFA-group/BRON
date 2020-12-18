@@ -17,7 +17,7 @@ MAX_ELEMENTS = 1000
 DB = "BRON"
 GRAPH = "BRONGraph"
 USER = "root"
-HOST = "http://localhost:8529"
+HOST = f"http://{os.environ.get('BRON_ARANGO_IP', 'localhost')}:8529"
 PWD = os.environ.get("BRON_ARANGO_PWD", "")
 NODE_KEYS = ("tactic", "technique", "capec", "cwe", "cve", "cpe")
 EDGE_KEYS = (("tactic", "technique"),
@@ -39,12 +39,30 @@ def get_edge_keys() -> List[Tuple[str, str]]:
 
 
 def main(bron_file_path: str) -> None:
+    create_db()
+    host = f"http://{os.environ.get('BRON_ARANGO_IP', 'localhost')}:8529"
+    print(host)
+    client = arango.ArangoClient(hosts=host)
+    db = client.db(DB, username=USER, password=PWD, auth_method="basic")
     
+    if not db.has_graph(GRAPH):
+        bron_graph = db.create_graph(GRAPH)
+    else:
+        bron_graph = db.graph(GRAPH)
+
     edge_keys = get_edge_keys()    
     edge_file_handles = {}
     for edge_key in edge_keys:
         edge_collection_key = get_edge_collection_name(*edge_key)
         edge_file_handles[edge_collection_key] = open(f"{edge_collection_key}.json", "w")
+        if bron_graph.has_edge_definition(edge_collection_key):
+            _ = bron_graph.edge_collection(edge_collection_key)
+        else:
+            _ = bron_graph.create_edge_definition(
+                edge_collection=edge_collection_key,
+                from_vertex_collections=[edge_key[0]],
+                to_vertex_collections=[edge_key[1]]
+            )
         print(f"Done: {edge_collection_key}")
 
     node_file_handles = {}
@@ -91,10 +109,22 @@ def get_edge_collection_name(to_collection: str, from_collection: str) -> str:
 
 
 def create_db() -> None:
-    client = arango.ArangoClient(hosts="http://127.0.0.1:8529")
+    host = f"http://{os.environ.get('BRON_ARANGO_IP', 'localhost')}:8529"
+    print(host)
+    client = arango.ArangoClient(hosts=host)
     sys_db = client.db('_system', username=USER, password=PWD, auth_method="basic")
     if not sys_db.has_database(DB):
         sys_db.create_database(DB)
+
+def create_guest_user() -> None:
+    GUEST = 'guest'
+    client = arango.ArangoClient(hosts=f"http://{os.environ.get('BRON_ARANGO_IP', 'localhost')}:8529")
+    sys_db = client.db('_system', username=USER, password=PWD, auth_method="basic")
+    if not sys_db.has_user(GUEST):
+        sys_db.create_user(username=GUEST, password=GUEST)
+        sys_db.update_permission(GUEST, 'ro', DB)
+        
+    print(sys_db.permissions(GUEST))
     
 def arango_import() -> None:
     create_db()
@@ -108,27 +138,32 @@ def arango_import() -> None:
                    "--create-collection", "true", "--file", file_, "--type", "jsonl",
                    "--server.password", PWD,
                    "--server.database", DB,
-                   "--server.endpoint", "http+tcp://127.0.0.1:8529",
+                   "--server.endpoint", f"http+tcp://{os.environ.get('BRON_ARANGO_IP', '127.0.0.1')}:8529",
                    "--server.authentication", "false",
             ]
             if name in edge_keys:
                 cmd += ["--create-collection-type", "edge"]
 
             cmd_str = " ".join(cmd)
-            # TODO not great to print PWD
-            print(cmd_str)
             os.system(cmd_str)
 
             
 if __name__ == '__main__':
     bron_file_path = '../example_data/example_output_data/BRON.json'
     #bron_file_path = '../full_data/full_output_data/BRON.json'
+    # TODO ip and prot from cli
     parser = argparse.ArgumentParser(description='Create json files to import into ArangoDb from BRON json')
     parser.add_argument("-f", type=str, default=bron_file_path,
                         help="Path to BRON json")
     parser.add_argument("--arango_import", action='store_true', help="Write to arangoimport compatible file. Requires `arangoimport`.")
+    parser.add_argument("--create_guest_user", action='store_true', help="Create guest user")
+    parser.add_argument("--create_db", action='store_true', help="Create BRON db")
     args = parser.parse_args(sys.argv[1:])
-    if not args.arango_import:
+    if args.create_guest_user:
+        create_guest_user()
+    elif args.create_db:
+        create_db()
+    elif not args.arango_import:
         main(args.f)
     else:
         arango_import()

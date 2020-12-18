@@ -27,7 +27,7 @@ def main() -> None:
            "--overwrite", "true",
            "--server.password", PWD,
            "--server.database", DB,
-           "--server.endpoint", "http+tcp://127.0.0.1:8529",
+           "--server.endpoint", f"http+tcp://{os.environ.get('BRON_ARANGO_IP', '127.0.0.1')}:8529",
            "--server.authentication", "false",
     ]
     cmd_str = " ".join(cmd)
