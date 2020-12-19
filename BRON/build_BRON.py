@@ -10,6 +10,7 @@ UNIQUE_ID = 0
 BRON_PATH = "BRON/original_id_to_bron_id"
 name_map_paths = {"tactic_map": "technique_tactic_map.json",
                   "technique_names": "technique_name_map.json",
+                  "tactic_names": "tactic_id_name_map.json",
                   "attack_map": "capec_technique_map.json",
                   "capec_names": "capec_names.json",
                   "capec_cwe": "capec_cwe_mapping.json",
@@ -86,6 +87,7 @@ def write_json(data_type_ids, save_path):
 def add_tactic_technique_edges(graph, input_data_folder, save_path):
     tactic_map = load_json("tactic_map", input_data_folder)
     technique_names = load_json("technique_names", input_data_folder)
+    tactic_names = load_json("tactic_names", input_data_folder)
     technique_id_to_bron_id = {}
     # there are no internal tactic IDs so we map to tactic names
     tactic_name_to_bron_id = {}
@@ -107,20 +109,18 @@ def add_tactic_technique_edges(graph, input_data_folder, save_path):
             technique_node_name = "technique_" + technique_bron_id
 
         tactics = tactic_map[technique]
-        for tact in tactics:
-            tactic_name = tact
-
+        for tactic_name in tactics:
             if tactic_name not in tactic_name_to_bron_id:
                 tactic_bron_id = get_unique_id()
                 tactic_node_name = "tactic_" + tactic_bron_id
                 graph.add_node(
                     tactic_node_name,
-                    original_id="",
+                    original_id=tactic_names[tactic_name],
                     datatype="tactic",
-                    name=tact,
+                    name=tactic_name,
                     metadata={},
                 )
-                tactic_name_to_bron_id[tact] = tactic_bron_id
+                tactic_name_to_bron_id[tactic_name] = tactic_bron_id
             else:
                 tactic_bron_id = tactic_name_to_bron_id[tactic_name]
                 tactic_node_name = "tactic_" + tactic_bron_id

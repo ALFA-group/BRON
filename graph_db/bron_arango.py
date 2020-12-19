@@ -17,6 +17,7 @@ MAX_ELEMENTS = 1000
 DB = "BRON"
 GRAPH = "BRONGraph"
 USER = "root"
+GUEST = 'guest'
 HOST = f"http://{os.environ.get('BRON_ARANGO_IP', 'localhost')}:8529"
 PWD = os.environ.get("BRON_ARANGO_PWD", "")
 NODE_KEYS = ("tactic", "technique", "capec", "cwe", "cve", "cpe")
@@ -38,8 +39,7 @@ def get_edge_keys() -> List[Tuple[str, str]]:
     return edge_keys
 
 
-def main(bron_file_path: str) -> None:
-    create_db()
+def create_graph() -> None:
     host = f"http://{os.environ.get('BRON_ARANGO_IP', 'localhost')}:8529"
     print(host)
     client = arango.ArangoClient(hosts=host)
@@ -51,18 +51,26 @@ def main(bron_file_path: str) -> None:
         bron_graph = db.graph(GRAPH)
 
     edge_keys = get_edge_keys()    
-    edge_file_handles = {}
     for edge_key in edge_keys:
         edge_collection_key = get_edge_collection_name(*edge_key)
-        edge_file_handles[edge_collection_key] = open(f"{edge_collection_key}.json", "w")
-        if bron_graph.has_edge_definition(edge_collection_key):
-            _ = bron_graph.edge_collection(edge_collection_key)
-        else:
+        if not bron_graph.has_edge_definition(edge_collection_key):
             _ = bron_graph.create_edge_definition(
                 edge_collection=edge_collection_key,
                 from_vertex_collections=[edge_key[0]],
                 to_vertex_collections=[edge_key[1]]
             )
+        print(f"Done: {edge_collection_key}")
+
+    
+def main(bron_file_path: str) -> None:
+    create_db()
+    create_graph()
+
+    edge_keys = get_edge_keys()    
+    edge_file_handles = {}
+    for edge_key in edge_keys:
+        edge_collection_key = get_edge_collection_name(*edge_key)
+        edge_file_handles[edge_collection_key] = open(f"{edge_collection_key}.json", "w")
         print(f"Done: {edge_collection_key}")
 
     node_file_handles = {}
@@ -117,17 +125,18 @@ def create_db() -> None:
         sys_db.create_database(DB)
 
 def create_guest_user() -> None:
-    GUEST = 'guest'
     client = arango.ArangoClient(hosts=f"http://{os.environ.get('BRON_ARANGO_IP', 'localhost')}:8529")
     sys_db = client.db('_system', username=USER, password=PWD, auth_method="basic")
     if not sys_db.has_user(GUEST):
         sys_db.create_user(username=GUEST, password=GUEST)
-        sys_db.update_permission(GUEST, 'ro', DB)
+
+    sys_db.update_permission(GUEST, 'ro', DB)
         
     print(sys_db.permissions(GUEST))
     
 def arango_import() -> None:
     create_db()
+    create_graph()
     files = os.listdir()
     edge_keys = [get_edge_collection_name(*_) for _ in get_edge_keys()]
     allowed_names = list(NODE_KEYS) + edge_keys
@@ -145,6 +154,7 @@ def arango_import() -> None:
                 cmd += ["--create-collection-type", "edge"]
 
             cmd_str = " ".join(cmd)
+            # TODO handle overwriting
             os.system(cmd_str)
 
             
