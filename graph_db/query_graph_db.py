@@ -9,7 +9,7 @@ import arango
 
 from graph_db.bron_arango import (
     DB,
-    USER,
+    GUEST,
     PWD,
     get_edge_collection_name,
     EDGE_KEYS,
@@ -47,11 +47,11 @@ def parse_args(args: List[str]) -> Dict[str, Any]:
 
 
 def get_connections(
-    starting_points: List[str], collection_name: str
+        starting_points: List[str], collection_name: str, username: str=GUEST
 ) -> Dict[str, Set["Document"]]:
     connections = collections.defaultdict(set)
     client = arango.ArangoClient(hosts=f"http://{os.environ.get('BRON_ARANGO_IP', '127.0.0.1')}:8529")
-    db = client.db(DB, username=USER, password=PWD, auth_method="basic")
+    db = client.db(DB, username=username, auth_method="basic")
     edge_collections = [
         get_edge_collection_name(*_) for _ in EDGE_KEYS if collection_name in _
     ]
