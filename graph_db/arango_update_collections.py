@@ -1,10 +1,10 @@
+import argparse
+import sys
 import os
 import logging
 
 from graph_db.bron_arango import (
     DB,
-    USER,
-    PWD,
 )
 from download_threat_information.download_threat_data import main as dti_main, CVE_ALL_YEARS, OUTPUT_FOLDER, THREAT_DATA_TYPES
 from download_threat_information.parsing_scripts.parse_attack_tactic_technique import link_tactic_techniques
@@ -18,16 +18,16 @@ logging.basicConfig(filename='arango_update_collections.log', format='%(asctime)
 BRON_SAVE_PATH = 'update_bron_data'
 
 
-def main() -> None:
+def main(username: str, password: str, ip: str) -> None:
     # TODO make sure to clean out old files
     
     # Backup db
     cmd = ["arangodump",
            "--output-directory", "dump",
            "--overwrite", "true",
-           "--server.password", PWD,
+           "--server.password", password,
            "--server.database", DB,
-           "--server.endpoint", f"http+tcp://{os.environ.get('BRON_ARANGO_IP', '127.0.0.1')}:8529",
+           "--server.endpoint", f"http+tcp://{ip}:8529",
            "--server.authentication", "false",
     ]
     cmd_str = " ".join(cmd)
@@ -71,9 +71,17 @@ def main() -> None:
     logging.info(f"Created arango format from {bron_json_path}")
     # Import new BRON files
     # TODO we can use the meta data that we save when downloading data...
-    arango_import()
+    arango_import(username, password, ip)
     logging.info("Updated arangodb")
 
     
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Create json files to import into ArangoDb from BRON json')
+    parser.add_argument("--username", type=str, required=True,
+                        help="DB username")
+    parser.add_argument("--password", type=str, required=True,
+                        help="DB password")
+    parser.add_argument("--ip", type=str, required=True,
+                        help="DB IP address")
+    args = parser.parse_args(sys.argv[1:])
+    main(args.username, args.password, args.ip)

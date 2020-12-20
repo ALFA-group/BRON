@@ -1,3 +1,6 @@
+import argparse
+import sys
+
 import re
 import requests
 from typing import Dict, Set, List
@@ -32,11 +35,11 @@ def get_report(url: str) -> Dict[str, Set[str]]:
     return result
 
 # Query bron with info
-def get_queries(all_starting_points: Dict[str, List[str]]) -> None:
+def get_queries(all_starting_points: Dict[str, List[str]], ip: str, password: str, username: str) -> None:
     for datatype, starting_points in all_starting_points.items():
         assert datatype in id_dict_paths
         print(datatype)
-        records = get_connection_counts(starting_points, datatype)
+        records = get_connection_counts(starting_points, datatype, username, ip, password)
         print(records)
         
 # Make "network"
@@ -56,11 +59,19 @@ def get_queries(all_starting_points: Dict[str, List[str]]) -> None:
 
 # - BRON display names and metadata
 
-def main() -> None:
+def main(ip: str, password: str, username: str) -> None:
     data = get_report(REPORT_URL)
     data = dict((k, list(v)) for k, v in data.items())
-    get_queries(data)
+    get_queries(data, ip, password, username)
     
     
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='BRON Arango Example')
+    parser.add_argument("--username", type=str, required=True,
+                        help="DB username")
+    parser.add_argument("--password", type=str, required=True,
+                        help="DB password")
+    parser.add_argument("--ip", type=str, required=True,
+                        help="DB IP address")
+    args = parser.parse_args(sys.argv[1:])
+    main(args.ip, args.password, args.username)
