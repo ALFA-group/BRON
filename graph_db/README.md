@@ -9,6 +9,7 @@
 ## Setup
 
 - Create arango files to import
+
 ```
 python bron_arango.py -f ${PATH_TO_BRON_JSON}
 # Expected output

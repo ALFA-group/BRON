@@ -9,8 +9,6 @@ import arango
 
 from graph_db.bron_arango import (
     DB,
-    GUEST,
-    PWD,
     get_edge_collection_name,
     EDGE_KEYS,
 )
@@ -18,7 +16,7 @@ from path_search.path_search_BRON import get_data
 from BRON.build_BRON import id_dict_paths
 
 
-DIRECTIONS = ("INBOUND", "OUTBOUND")
+DIRECTIONS = ("ANY",)
 CONNECTIONS_QUERY = """
 FOR c IN {}
     FILTER c.original_id == "{}"
@@ -41,16 +39,22 @@ def parse_args(args: List[str]) -> Dict[str, Any]:
         required=True,
         help=f"Data source type is one of: {', '.join(id_dict_paths.keys())}",
     )
+    parser.add_argument("--password", type=str, required=True,
+                        help="DB password")
+    parser.add_argument("--ip", type=str, required=True,
+                        help="DB IP address")
+    parser.add_argument("--username", type=str, required=True,
+                        help="DB password")
     args = vars(parser.parse_args(args))
     assert args['starting_point_type'] in id_dict_paths.keys()
     return args
 
 
 def get_connections(
-        starting_points: List[str], collection_name: str, username: str=GUEST
+        starting_points: List[str], collection_name: str, username: str, ip: str, password: str
 ) -> Dict[str, Set["Document"]]:
     connections = collections.defaultdict(set)
-    client = arango.ArangoClient(hosts=f"http://{os.environ.get('BRON_ARANGO_IP', '127.0.0.1')}:8529")
+    client = arango.ArangoClient(hosts=f"http://{ip}:8529")
     db = client.db(DB, username=username, auth_method="basic")
     edge_collections = [
         get_edge_collection_name(*_) for _ in EDGE_KEYS if collection_name in _
@@ -77,9 +81,9 @@ def get_connections(
 
 
 def get_connection_counts(
-    starting_points: List[str], collection_name: str
+        starting_points: List[str], collection_name: str, username: str, ip: str, password: str
 ) -> Dict[str, Dict[str, int]]:
-    connections = get_connections(starting_points, collection_name)
+    connections = get_connections(starting_points, collection_name, username, ip, password)
     connection_counts = {}
     for key, values in connections.items():
         connection_counts[key] = collections.defaultdict(int)
@@ -97,12 +101,13 @@ class Document:
 
 
 def main(**kwargs: Dict[str, Any]) -> None:
-    starting_point_file, starting_point_type = kwargs.values()
+    starting_point_file, starting_point_type, password, ip, username = kwargs.values()
     # Get queries from file
     starting_points = get_data(starting_point_file)
-    data = get_connection_counts(starting_points.keys(), starting_point_type)
+    data = get_connection_counts(starting_points.keys(), starting_point_type, username, ip, password)
     print(data)
 
+    
 if __name__ == "__main__":
     kwargs = parse_args(sys.argv[1:])
     main(**kwargs)
