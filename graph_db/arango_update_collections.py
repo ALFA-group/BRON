@@ -77,8 +77,6 @@ def main(username: str, password: str, ip: str) -> None:
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Create json files to import into ArangoDb from BRON json')
-    parser.add_argument("-f", type=str, default=bron_file_path,
-                        help="Path to BRON.json")
     parser.add_argument("--username", type=str, required=True,
                         help="DB username")
     parser.add_argument("--password", type=str, required=True,
