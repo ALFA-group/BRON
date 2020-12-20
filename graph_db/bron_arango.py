@@ -64,6 +64,18 @@ def main(bron_file_path: str, username: str, password: str, ip: str) -> None:
         edge_file_handles[edge_collection_key] = open(f"{edge_collection_key}.json", "w")
         logging.info(f"Done: {edge_collection_key}")
 
+    
+def main(bron_file_path: str) -> None:
+    create_db()
+    create_graph()
+
+    edge_keys = get_edge_keys()    
+    edge_file_handles = {}
+    for edge_key in edge_keys:
+        edge_collection_key = get_edge_collection_name(*edge_key)
+        edge_file_handles[edge_collection_key] = open(f"{edge_collection_key}.json", "w")
+        print(f"Done: {edge_collection_key}")
+
     node_file_handles = {}
     for collection in NODE_KEYS:
         node_file_handles[collection] = open(f"{collection}.json", 'w')        
