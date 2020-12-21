@@ -47,7 +47,7 @@ def link_tactic_techniques(file_name, save_path):
 
             technique_tactic_dict[technique_id] = list(tactics_set)
 
-    save_files = {name_map_paths['capec_names']: capec_technique_dict,
+    save_files = {name_map_paths['attack_map']: capec_technique_dict,
                   name_map_paths['tactic_map']: technique_tactic_dict,
                   name_map_paths['technique_names']: technique_id_name_dict,
                   name_map_paths['tactic_names']: tactic_id_name_dict,

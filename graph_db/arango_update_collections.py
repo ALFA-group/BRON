@@ -67,7 +67,7 @@ def main(username: str, password: str, ip: str) -> None:
 
     # BRON to arango format
     bron_json_path = os.path.join(BRON_SAVE_PATH, "BRON.json")
-    ba_main(bron_json_path)
+    ba_main(bron_json_path, username, password, ip)
     logging.info(f"Created arango format from {bron_json_path}")
     # Import new BRON files
     # TODO we can use the meta data that we save when downloading data...
