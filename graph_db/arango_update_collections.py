@@ -14,7 +14,7 @@ from BRON.build_BRON import build_graph, parse_args as bb_parse_args, BRON_PATH
 from graph_db.bron_arango import main as ba_main, arango_import
 
 # TODO could maybe be bash instead of os.system from python...
-logging.basicConfig(filename='arango_update_collections.log', format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO)
+logging.basicConfig(filename='arango_update_collections.log', format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 BRON_SAVE_PATH = 'update_bron_data'
 
 

@@ -11,7 +11,7 @@ import arango
 from meta_analysis.find_riskiest_software import load_graph_network
 
 
-logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 DB = "BRON"
 GRAPH = "BRONGraph"
 GUEST = 'guest'

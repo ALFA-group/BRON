@@ -28,7 +28,7 @@ def get_data(data_file):
         reader = csv.reader(csvfile)
         for row in reader:
             for value in row:
-                data_dict[value] += 1
+                data_dict[value.strip()] += 1
 
     return data_dict
 
