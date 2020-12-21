@@ -40,6 +40,13 @@ def create_graph(username: str, password: str, ip: str) -> None:
     else:
         bron_graph = db.graph(GRAPH)
 
+    # Create vertex collections
+    for vertex in NODE_KEYS:
+        if not bron_graph.has_vertex_collection(vertex):
+            _ = bron_graph.vertex_collection(vertex)
+
+        logging.info(f"Done vertex_collection: {vertex}")
+        
     edge_keys = get_edge_keys()    
     for edge_key in edge_keys:
         edge_collection_key = get_edge_collection_name(*edge_key)
@@ -49,7 +56,7 @@ def create_graph(username: str, password: str, ip: str) -> None:
                 from_vertex_collections=[edge_key[0]],
                 to_vertex_collections=[edge_key[1]]
             )
-        logging.info(f"Done: {edge_collection_key}")
+        logging.info(f"Done edge_collection: {edge_collection_key}")
 
     
 def main(bron_file_path: str, username: str, password: str, ip: str) -> None:
@@ -65,17 +72,6 @@ def main(bron_file_path: str, username: str, password: str, ip: str) -> None:
         logging.info(f"Done: {edge_collection_key}")
 
     
-def main(bron_file_path: str) -> None:
-    create_db()
-    create_graph()
-
-    edge_keys = get_edge_keys()    
-    edge_file_handles = {}
-    for edge_key in edge_keys:
-        edge_collection_key = get_edge_collection_name(*edge_key)
-        edge_file_handles[edge_collection_key] = open(f"{edge_collection_key}.json", "w")
-        print(f"Done: {edge_collection_key}")
-
     node_file_handles = {}
     for collection in NODE_KEYS:
         node_file_handles[collection] = open(f"{collection}.json", 'w')        
@@ -166,14 +162,14 @@ def arango_import(username: str, password: str, ip: str) -> None:
                    "--server.database", DB,
                    "--server.endpoint", f"http+tcp://{ip}:8529",
                    "--server.authentication", "false",
+                   "--on-duplicate", "update",
             ]
             if name in edge_keys:
                 cmd += ["--create-collection-type", "edge"]
 
             cmd_str = " ".join(cmd)
-            # TODO handle overwriting
-            os.system(cmd_str)
-
+            os.system(cmd_str)        
+        
             
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Create json files to import into ArangoDb from BRON json')
