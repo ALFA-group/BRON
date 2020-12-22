@@ -170,7 +170,23 @@ def arango_import(username: str, password: str, ip: str) -> None:
             cmd_str = " ".join(cmd)
             os.system(cmd_str)        
         
-            
+
+def network_import(network_import: str, username: str, password: str, ip: str) -> None:
+    # TODO what is a good network file format... Now it is home made...
+    with open(network_import, 'r') as fd:
+        network = json.load(fd)
+
+    print(network)
+    host = HOST.format(ip)
+    client = arango.ArangoClient(hosts=host)
+    db = client.db(DB, username=username, password=password, auth_method="basic")
+    # TODO faster to arangoimport?
+    for node in network['nodes'].keys():
+        #TODO here
+        pass
+
+    
+    
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Create json files to import into ArangoDb from BRON json')
     parser.add_argument("-f", type=str,
@@ -181,12 +197,15 @@ if __name__ == '__main__':
                         help="DB password")
     parser.add_argument("--ip", type=str, required=True,
                         help="DB IP address")
-    parser.add_argument("--arango_import", action='store_true', help="Write to arangoimport compatible file. Requires `arangoimport`.")
+    parser.add_argument("--arango_import", action='store_true', help="Use arangoimport with created json files from BRON. Requires `arangoimport`.")
+    parser.add_argument("--network_import", type=str, default='', help="Import a network description.")
     parser.add_argument("--create_guest_user", action='store_true', help="Create guest user")
     parser.add_argument("--create_db", action='store_true', help="Create BRON db")
     args = parser.parse_args(sys.argv[1:])
     if args.create_guest_user:
         create_guest_user(args.username, args.password, args.ip)
+    elif args.network_import != '':
+        network_import(args.network_import, args.username, args.password, args.ip)
     elif args.create_db:
         create_db(args.username, args.password, args.ip)
     elif not args.arango_import:
