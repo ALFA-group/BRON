@@ -64,7 +64,7 @@ def get_connections(
 ) -> Dict[str, Set["Document"]]:
     connections = collections.defaultdict(set)
     client = arango.ArangoClient(hosts=f"http://{ip}:8529")
-    db = client.db(DB, username=username, auth_method="basic")
+    db = client.db(DB, username=username, password=password, auth_method="basic")
     edge_collections = [
         get_edge_collection_name(*_) for _ in EDGE_KEYS if collection_name in _
     ]
@@ -76,7 +76,7 @@ def get_connections(
                 query = CONNECTIONS_QUERY.format(
                     collection_name, starting_point, direction, edge_collection
                 )
-                assert db.aql.validate(query)
+                assert db.aql.validate(query), query
                 cursor = db.aql.execute(query)
                 documents = set()
                 for document in cursor:
@@ -113,16 +113,14 @@ class Document:
 def get_graph_traversal(starting_points: List[str], collection_name: str, username: str, ip: str, password: str
 ) -> Dict[str, Dict[str, int]]:
     client = arango.ArangoClient(hosts=f"http://{ip}:8529")
-    db = client.db(DB, username=username, auth_method="basic")
+    db = client.db(DB, username=username, password=password, auth_method="basic")
     graph = db.graph(GRAPH)
-    collection = db.collection(collection_name)
     data = []
     for starting_point in starting_points:
         query = ID_QUERY.format(
             collection_name, starting_point, starting_point
         )
-        print(query)
-        assert db.aql.validate(query)
+        assert db.aql.validate(query), query
         cursor = db.aql.execute(query)
         start_vertex = set()
         for document in cursor:
