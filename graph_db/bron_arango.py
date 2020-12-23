@@ -11,7 +11,7 @@ import arango
 from meta_analysis.find_riskiest_software import load_graph_network
 
 
-logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 DB = "BRON"
 GRAPH = "BRONGraph"
 GUEST = 'guest'
@@ -40,6 +40,13 @@ def create_graph(username: str, password: str, ip: str) -> None:
     else:
         bron_graph = db.graph(GRAPH)
 
+    # Create vertex collections
+    for vertex in NODE_KEYS:
+        if not bron_graph.has_vertex_collection(vertex):
+            _ = bron_graph.vertex_collection(vertex)
+
+        logging.info(f"Done vertex_collection: {vertex}")
+        
     edge_keys = get_edge_keys()    
     for edge_key in edge_keys:
         edge_collection_key = get_edge_collection_name(*edge_key)
@@ -49,7 +56,7 @@ def create_graph(username: str, password: str, ip: str) -> None:
                 from_vertex_collections=[edge_key[0]],
                 to_vertex_collections=[edge_key[1]]
             )
-        logging.info(f"Done: {edge_collection_key}")
+        logging.info(f"Done edge_collection: {edge_collection_key}")
 
     
 def main(bron_file_path: str, username: str, password: str, ip: str) -> None:
@@ -62,7 +69,7 @@ def main(bron_file_path: str, username: str, password: str, ip: str) -> None:
     for edge_key in edge_keys:
         edge_collection_key = get_edge_collection_name(*edge_key)
         edge_file_handles[edge_collection_key] = open(f"{edge_collection_key}.json", "w")
-        print(f"Done: {edge_collection_key}")
+        logging.info(f"Done: {edge_collection_key}")
 
     node_file_handles = {}
     for collection in NODE_KEYS:
@@ -154,15 +161,31 @@ def arango_import(username: str, password: str, ip: str) -> None:
                    "--server.database", DB,
                    "--server.endpoint", f"http+tcp://{ip}:8529",
                    "--server.authentication", "false",
+                   "--on-duplicate", "update",
             ]
             if name in edge_keys:
                 cmd += ["--create-collection-type", "edge"]
 
             cmd_str = " ".join(cmd)
-            # TODO handle overwriting
-            os.system(cmd_str)
+            os.system(cmd_str)        
+        
 
-            
+def network_import(network_import: str, username: str, password: str, ip: str) -> None:
+    # TODO what is a good network file format... Now it is home made...
+    with open(network_import, 'r') as fd:
+        network = json.load(fd)
+
+    print(network)
+    host = HOST.format(ip)
+    client = arango.ArangoClient(hosts=host)
+    db = client.db(DB, username=username, password=password, auth_method="basic")
+    # TODO faster to arangoimport?
+    for node in network['nodes'].keys():
+        #TODO here
+        pass
+
+    
+    
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Create json files to import into ArangoDb from BRON json')
     parser.add_argument("-f", type=str,
@@ -173,12 +196,15 @@ if __name__ == '__main__':
                         help="DB password")
     parser.add_argument("--ip", type=str, required=True,
                         help="DB IP address")
-    parser.add_argument("--arango_import", action='store_true', help="Write to arangoimport compatible file. Requires `arangoimport`.")
+    parser.add_argument("--arango_import", action='store_true', help="Use arangoimport with created json files from BRON. Requires `arangoimport`.")
+    parser.add_argument("--network_import", type=str, default='', help="Import a network description.")
     parser.add_argument("--create_guest_user", action='store_true', help="Create guest user")
     parser.add_argument("--create_db", action='store_true', help="Create BRON db")
     args = parser.parse_args(sys.argv[1:])
     if args.create_guest_user:
         create_guest_user(args.username, args.password, args.ip)
+    elif args.network_import != '':
+        network_import(args.network_import, args.username, args.password, args.ip)
     elif args.create_db:
         create_db(args.username, args.password, args.ip)
     elif not args.arango_import:

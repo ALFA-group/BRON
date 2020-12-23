@@ -1,14 +1,17 @@
+import json
 import os
 import collections
 import sys
 from dataclasses import dataclass
 from typing import Dict, Any, List, Set
 import argparse
+import logging
 
 import arango
 
 from graph_db.bron_arango import (
     DB,
+    GRAPH,
     get_edge_collection_name,
     EDGE_KEYS,
 )
@@ -16,6 +19,7 @@ from path_search.path_search_BRON import get_data
 from BRON.build_BRON import id_dict_paths
 
 
+logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 DIRECTIONS = ("ANY",)
 CONNECTIONS_QUERY = """
 FOR c IN {}
@@ -23,6 +27,11 @@ FOR c IN {}
     FOR v IN 1..1 {} c {}
         RETURN v
     """
+ID_QUERY = """
+FOR c IN {}
+    FILTER c.original_id == "{}" OR c.name == "{}"
+    RETURN c
+"""
 
 
 def parse_args(args: List[str]) -> Dict[str, Any]:
@@ -31,7 +40,7 @@ def parse_args(args: List[str]) -> Dict[str, Any]:
         "--starting_point",
         type=str,
         required=True,
-        help="Path to CSV file with Tactic, Technique, CAPEC, CWE, CVE, or CPE data",
+        help="Path to CSV file with Tactic, Technique, CAPEC, CWE, CVE, or CPE data. E.g. graphd_db/example_data/starting_points_tactics.csv",
     )
     parser.add_argument(
         "--starting_point_type",
@@ -55,7 +64,7 @@ def get_connections(
 ) -> Dict[str, Set["Document"]]:
     connections = collections.defaultdict(set)
     client = arango.ArangoClient(hosts=f"http://{ip}:8529")
-    db = client.db(DB, username=username, auth_method="basic")
+    db = client.db(DB, username=username, password=password, auth_method="basic")
     edge_collections = [
         get_edge_collection_name(*_) for _ in EDGE_KEYS if collection_name in _
     ]
@@ -67,7 +76,7 @@ def get_connections(
                 query = CONNECTIONS_QUERY.format(
                     collection_name, starting_point, direction, edge_collection
                 )
-                assert db.aql.validate(query)
+                assert db.aql.validate(query), query
                 cursor = db.aql.execute(query)
                 documents = set()
                 for document in cursor:
@@ -100,10 +109,55 @@ class Document:
     name: str
 
 
+
+def get_graph_traversal(starting_points: List[str], collection_name: str, username: str, ip: str, password: str
+) -> Dict[str, Dict[str, int]]:
+    client = arango.ArangoClient(hosts=f"http://{ip}:8529")
+    db = client.db(DB, username=username, password=password, auth_method="basic")
+    graph = db.graph(GRAPH)
+    data = []
+    for starting_point in starting_points:
+        query = ID_QUERY.format(
+            collection_name, starting_point, starting_point
+        )
+        assert db.aql.validate(query), query
+        cursor = db.aql.execute(query)
+        start_vertex = set()
+        for document in cursor:
+            start_vertex = document["_id"]
+
+        # TODO Should get only one document
+        logging.info(f"{collection_name} {starting_point} {start_vertex}")        
+        try:
+            values = graph.traverse(
+                start_vertex=start_vertex,
+                direction="ANY",
+                strategy='bfs',
+                edge_uniqueness='global',
+                vertex_uniqueness='global',
+                # TODO Max depth number of edges? (More results are
+                # provided when it is higher, what does that meann?
+                max_depth=len(EDGE_KEYS)
+            )
+        except TypeError as e:
+            logging.error(e)
+            values = {}
+        logging.info(','.join(map(str, map(len, values.values()))))        
+        with open(f'tmp_{starting_point}.json', 'w') as fd:
+            json.dump(values, fd, indent=2)
+
+    # TODO what to return
+    return data
+
+    
 def main(**kwargs: Dict[str, Any]) -> None:
     starting_point_file, starting_point_type, password, ip, username = kwargs.values()
-    # Get queries from file
     starting_points = get_data(starting_point_file)
+
+    # Traverse graph
+    data = get_graph_traversal(starting_points.keys(), starting_point_type, username, ip, password)
+    
+    # Get queries from file
     data = get_connection_counts(starting_points.keys(), starting_point_type, username, ip, password)
     print(data)
 
