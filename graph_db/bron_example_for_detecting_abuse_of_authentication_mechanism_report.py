@@ -1,3 +1,4 @@
+import collections
 import os
 import json
 import argparse
@@ -74,8 +75,28 @@ def get_queries(all_starting_points: Dict[str, List[str]], ip: str, password: st
 def get_network_matches(results: Dict[str, Any], network_description: Dict[str, Any]) -> Dict[str, Any]:
     # TODO filter queries in Arango? (Is it faster?)
     # TODO use edges
-    
-    return results
+    traversals = results['traversals']
+    cpes = set()
+    for values in network_description['nodes'].values():
+        cpes.add(values['os'])
+        for app in values['apps']:
+            cpes.add(app)
+            
+    matches = collections.defaultdict(set)
+    for key, starting_point in traversals.items():
+        for node in starting_point.keys():
+            print(node)
+            verticies = starting_point[node].get('vertices', [])
+            for vertex in verticies:
+                if vertex['datatype'] == 'cpe':
+                    # TODO more matches
+                    # Exact matches
+                    if vertex['original_id'] in cpes:
+                        matches[key].add(node)
+
+    print(matches)
+        
+    return matches
 
 # TODO
 
@@ -105,7 +126,7 @@ def main(ip: str, password: str, username: str, url: str, network_description_fi
         for key, value in results.items():
             save_file = os.path.join(save_folder, f"{key}_query_bron.json")
             with open(save_file, 'w') as fd:
-                json.dump({key: value}, fd)
+                json.dump({key: value}, fd, indent = 2)
                 
     if network_description_file != "":
         with open(network_description_file, 'r') as fd:
