@@ -19,7 +19,8 @@ from path_search.path_search_BRON import get_data
 from BRON.build_BRON import id_dict_paths
 
 
-logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
+log_file_name = os.path.split(__file__)[-1].replace('.py', '.log')
+logging.basicConfig(filename=f"{log_file_name}", format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 DIRECTIONS = ("ANY",)
 CONNECTIONS_QUERY = """
 FOR c IN {}
@@ -115,7 +116,7 @@ def get_graph_traversal(starting_points: List[str], collection_name: str, userna
     client = arango.ArangoClient(hosts=f"http://{ip}:8529")
     db = client.db(DB, username=username, password=password, auth_method="basic")
     graph = db.graph(GRAPH)
-    data = []
+    data = {}
     for starting_point in starting_points:
         query = ID_QUERY.format(
             collection_name, starting_point, starting_point
@@ -142,6 +143,7 @@ def get_graph_traversal(starting_points: List[str], collection_name: str, userna
         except TypeError as e:
             logging.error(e)
             values = {}
+        data[starting_point] = values
         logging.info(','.join(map(str, map(len, values.values()))))        
         with open(f'tmp_{starting_point}.json', 'w') as fd:
             json.dump(values, fd, indent=2)

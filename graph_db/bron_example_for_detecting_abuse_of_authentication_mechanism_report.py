@@ -1,8 +1,11 @@
+import collections
+import os
+import json
 import argparse
 import sys
-
 import re
 import requests
+import logging
 from typing import Dict, Set, List, Any
 
 from pdfminer.high_level import extract_text
@@ -12,6 +15,8 @@ from graph_db.query_graph_db import get_connection_counts, get_graph_traversal
 from BRON.build_BRON import id_dict_paths
 
 
+log_file_name = os.path.split(__file__)[-1].replace('.py', '.log')
+logging.basicConfig(filename=f"{log_file_name}", format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 REPORT_URL = 'https://media.defense.gov/2020/Dec/17/2002554125/-1/-1/0/AUTHENTICATION_MECHANISMS_CSA_U_OO_198854_20.PDF'
 MDR_URL = 'https://www.microsoft.com/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/'
 # TODO get 403 for MDR_HTML so it is amnually downloaded...
@@ -24,6 +29,7 @@ t_re_pattern = "(T\d{4}(\.\d{3})?)"
 t_prog = re.compile(t_re_pattern)
 cve_re_pattern = "CVE-\d{4}-\d{4,7}"
 cve_prog = re.compile(cve_re_pattern)
+
 
 def get_report(url: str) -> Dict[str, Set[str]]:
     response = requests.get(url, timeout=5)
@@ -55,28 +61,50 @@ def get_report(url: str) -> Dict[str, Set[str]]:
 
 # Query bron with info
 def get_queries(all_starting_points: Dict[str, List[str]], ip: str, password: str, username: str) -> Dict[str, Any]:
-    results = {}
+    results = {'records': {}, 'traversals': {}}
     for datatype, starting_points in all_starting_points.items():
         assert datatype in id_dict_paths
-        print(datatype)
+        logging.info(f"Query {datatype}")
         records = get_connection_counts(starting_points, datatype, username, ip, password)
-        results['records'] = records
-        print(records)
+        results['records'][datatype] = records
         traversals = get_graph_traversal(starting_points, datatype, username, ip, password)
-        print(len(traversals))
-        results['traversals'] = traversals
+        results['traversals'][datatype] = traversals
 
+    print(f"Query results records: {results['records']}")
+    n_traversals = dict([(_, len(_)) for _ in results['traversals']])
+    print(f"Query results number of traversals: {n_traversals}")
     return results
-# Make "network"
+
 
 # Query bron with network for report
+def get_network_matches(results: Dict[str, Any], network_description: Dict[str, Any]) -> Dict[str, Any]:
+    # TODO filter queries in Arango? (Is it faster?)
+    # TODO use edges
+    traversals = results['traversals']
+    cpes = set()
+    for values in network_description['nodes'].values():
+        cpes.add(values['os'])
+        for app in values['apps']:
+            cpes.add(app)
 
+    print(f"Number of configurations in CPE format in network {len(cpes)}")
+    matches = collections.defaultdict(set)
+    for key, starting_point in traversals.items():
+        for node in starting_point.keys():
+            logging.info(f"Match {key} {node}")
+            verticies = starting_point[node].get('vertices', [])
+            for vertex in verticies:
+                if vertex['datatype'] == 'cpe':
+                    # TODO more matches
+                    # Exact matches
+                    if vertex['original_id'] in cpes:
+                        matches[key].add(node)
+
+    print(f"Network matches: {matches}")
+        
+    return matches
 
 # TODO
-
-# - BRON edges
-
-# - Public temp on aws
 
 # - Docker file
 
@@ -84,22 +112,52 @@ def get_queries(all_starting_points: Dict[str, List[str]], ip: str, password: st
 
 # - BRON display names and metadata
 
-def main(ip: str, password: str, username: str, url: str) -> Dict[str, Any]:
-    data = get_report(url)
-    data = dict((k, list(v)) for k, v in data.items())
-    results = get_queries(data, ip, password, username)
+def main(ip: str, password: str, username: str, url: str, network_description_file: str="", save_folder: str="", load_folder: str="") -> Dict[str, Any]:
+    if load_folder != "":
+        results = {}
+        for _file in os.listdir(load_folder):
+            if _file.endswith('query_bron.json'):
+                with open(os.path.join(load_folder, _file), 'r') as fd:
+                    data = json.load(fd)
+                    results.update(data)
+                    
+    else:
+        data = get_report(url)
+        data = dict((k, list(v)) for k, v in data.items())
+        results = get_queries(data, ip, password, username)
+
+    if save_folder != "":
+        # TODO save earlier to reduce memory use
+        os.makedirs(save_folder, exist_ok=True)
+        for key, value in results.items():
+            save_file = os.path.join(save_folder, f"{key}_query_bron.json")
+            with open(save_file, 'w') as fd:
+                json.dump({key: value}, fd, indent = 2)
+                
+    if network_description_file != "":
+        with open(network_description_file, 'r') as fd:
+            network_description = json.load(fd)
+            
+        results = get_network_matches(results, network_description)
+
     return results
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='BRON Arango Example')
+    parser = argparse.ArgumentParser(description='BRON ArangoDB Example')
     parser.add_argument("--username", type=str, required=True,
-                        help="DB username")
+                        help="DB username. E.g. guest")
     parser.add_argument("--password", type=str, required=True,
-                        help="DB password")
+                        help="DB password. E.g. guest")
     parser.add_argument("--ip", type=str, required=True,
-                        help="DB IP address")
+                        help="DB IP address. E.g. bron.alfa.csail.mit.edu")
     parser.add_argument("--url", type=str, default='',
                         help="URL to parse and pass through BRON")
+    parser.add_argument("--network_description_file", type=str, default='',
+                        help="Path to network description. Currently a json with 'nodes' and 'edges'. E.g. graph_db/example_data/network_file_bron.json")
+    parser.add_argument("--save_folder", type=str, default='',
+                        help="Save results in folder")
+    parser.add_argument("--load_folder", type=str, default='',
+                        help="Load results from folder. Will not do any queries.")
     args = parser.parse_args(sys.argv[1:])
-    _ = main(args.ip, args.password, args.username, args.url)
+    _ = main(**vars(args))
