@@ -11,7 +11,8 @@ import arango
 from meta_analysis.find_riskiest_software import load_graph_network
 
 
-logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
+log_file_name = os.path.split(__file__)[-1].replace('.py', '.log')
+logging.basicConfig(filename=f"{log_file_name}", format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 DB = "BRON"
 GRAPH = "BRONGraph"
 GUEST = 'guest'

@@ -19,7 +19,8 @@ from path_search.path_search_BRON import get_data
 from BRON.build_BRON import id_dict_paths
 
 
-logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
+log_file_name = os.path.split(__file__)[-1].replace('.py', '.log')
+logging.basicConfig(filename=f"{log_file_name}", format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 DIRECTIONS = ("ANY",)
 CONNECTIONS_QUERY = """
 FOR c IN {}

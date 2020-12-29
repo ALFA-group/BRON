@@ -1,0 +1,49 @@
+{
+  "nodes": {
+    "RosaBiln": {
+      "os": "cpe:2.3:o:microsoft:windows_server_2003:-:*:*:*:*:*:*:*",
+      "apps": [
+        "cpe:2.3:a:corel:coreldraw_photo_paint_x8:18.1.0.661:*:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:internet_explorer:11:*:*:*:*:*:*:*",
+        "cpe:2.3:a:symantec:proxyclient:3.4:*:*:*:*:windows:*:*",
+        "cpe:2.3:a:microsoft:skype:7.36:*:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:internet_explorer:*:*:*:*:*:*:*:*",
+        "cpe:2.3:a:mozilla:firefox_esr:*:*:*:*:*:*:*:*",
+        "cpe:2.3:a:google:gmail:-:*:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:outlook_2013_rt:-:sp1:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:excel_2013_rt:sp1:*:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:office_2007:-:sp3:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:word:2016:*:*:*:*:*:*:*",
+        "cpe:2.3:a:adobe:acrobat_reader_dc:*:*:*:*:classic:*:*:*",
+        "cpe:2.3:a:microsoft:endpoint_protection:-:*:*:*:*:*:*:*"
+      ]
+    },
+    "RosaABC": {
+      "os": "cpe:2.3:o:microsoft:windows_server_2003:-:*:*:*:*:*:*:*",
+      "apps": [
+        "cpe:2.3:a:corel:coreldraw_photo_paint_x8:18.1.0.661:*:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:internet_explorer:11:*:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:skype_for_business:2015:cu8:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:internet_explorer:*:*:*:*:*:*:*:*",
+        "cpe:2.3:a:google:gmail:-:*:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:excel_2007:-:sp3:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:excel_2010:*:sp2:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:excel_2013_rt:sp1:*:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:office_online_server:*:*:*:*:*:*:*:*",
+        "cpe:2.3:a:microsoft:word:2016:*:*:*:*:*:*:*",
+        "cpe:2.3:a:adobe:acrobat_reader_dc:*:*:*:*:classic:*:*:*",
+        "cpe:2.3:a:microsoft:endpoint_protection:-:*:*:*:*:*:*:*"
+      ]
+    }
+  },
+  "edges": [
+    {
+      "to": "RosaABC",
+      "from": "RosaBiln"
+    },
+    {
+      "to": "RosaABC",
+      "from": "RosaBiln"
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import argparse
 import sys
 import re
 import requests
+import logging
 from typing import Dict, Set, List, Any
 
 from pdfminer.high_level import extract_text
@@ -14,6 +15,8 @@ from graph_db.query_graph_db import get_connection_counts, get_graph_traversal
 from BRON.build_BRON import id_dict_paths
 
 
+log_file_name = os.path.split(__file__)[-1].replace('.py', '.log')
+logging.basicConfig(filename=f"{log_file_name}", format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 REPORT_URL = 'https://media.defense.gov/2020/Dec/17/2002554125/-1/-1/0/AUTHENTICATION_MECHANISMS_CSA_U_OO_198854_20.PDF'
 MDR_URL = 'https://www.microsoft.com/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/'
 # TODO get 403 for MDR_HTML so it is amnually downloaded...
@@ -26,6 +29,7 @@ t_re_pattern = "(T\d{4}(\.\d{3})?)"
 t_prog = re.compile(t_re_pattern)
 cve_re_pattern = "CVE-\d{4}-\d{4,7}"
 cve_prog = re.compile(cve_re_pattern)
+
 
 def get_report(url: str) -> Dict[str, Set[str]]:
     response = requests.get(url, timeout=5)
@@ -60,14 +64,15 @@ def get_queries(all_starting_points: Dict[str, List[str]], ip: str, password: st
     results = {'records': {}, 'traversals': {}}
     for datatype, starting_points in all_starting_points.items():
         assert datatype in id_dict_paths
-        print(datatype)
+        logging.info(f"Query {datatype}")
         records = get_connection_counts(starting_points, datatype, username, ip, password)
         results['records'][datatype] = records
-        print(records)
         traversals = get_graph_traversal(starting_points, datatype, username, ip, password)
-        print(len(traversals))
         results['traversals'][datatype] = traversals
 
+    print(f"Query results records: {results['records']}")
+    n_traversals = dict([(_, len(_)) for _ in results['traversals']])
+    print(f"Query results number of traversals: {n_traversals}")
     return results
 
 
@@ -81,11 +86,12 @@ def get_network_matches(results: Dict[str, Any], network_description: Dict[str, 
         cpes.add(values['os'])
         for app in values['apps']:
             cpes.add(app)
-            
+
+    print(f"Number of configurations in CPE format in network {len(cpes)}")
     matches = collections.defaultdict(set)
     for key, starting_point in traversals.items():
         for node in starting_point.keys():
-            print(node)
+            logging.info(f"Match {key} {node}")
             verticies = starting_point[node].get('vertices', [])
             for vertex in verticies:
                 if vertex['datatype'] == 'cpe':
@@ -94,7 +100,7 @@ def get_network_matches(results: Dict[str, Any], network_description: Dict[str, 
                     if vertex['original_id'] in cpes:
                         matches[key].add(node)
 
-    print(matches)
+    print(f"Network matches: {matches}")
         
     return matches
 
@@ -154,5 +160,4 @@ if __name__ == '__main__':
     parser.add_argument("--load_folder", type=str, default='',
                         help="Load results from folder. Will not do any queries.")
     args = parser.parse_args(sys.argv[1:])
-    args.url = MDR_URL
     _ = main(**vars(args))
