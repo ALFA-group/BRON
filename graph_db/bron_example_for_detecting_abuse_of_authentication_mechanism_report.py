@@ -70,9 +70,9 @@ def get_queries(all_starting_points: Dict[str, List[str]], ip: str, password: st
         traversals = get_graph_traversal(starting_points, datatype, username, ip, password)
         results['traversals'][datatype] = traversals
 
-    print(f"Query results records: {results['records']}")
+    print(f"Query results records: {json.dumps(results['records'], indent=1)}")
     n_traversals = dict([(_, len(_)) for _ in results['traversals']])
-    print(f"Query results number of traversals: {n_traversals}")
+    print(f"Query results number of traversals: {json.dumps(n_traversals, indent=1)}")
     return results
 
 
@@ -100,7 +100,8 @@ def get_network_matches(results: Dict[str, Any], network_description: Dict[str, 
                     if vertex['original_id'] in cpes:
                         matches[key].add(node)
 
-    print(f"Network matches: {matches}")
+    matches = dict([(k, list(v)) for k, v in matches.items()])
+    print(f"Network matches: {json.dumps(matches, indent=1)}")
         
     return matches
 
