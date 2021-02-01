@@ -2,7 +2,7 @@
 
 Threat data from [MITRE ATT&CK](https://attack.mitre.org/), [CAPEC](https://capec.mitre.org/), [CWE](https://cwe.mitre.org/) and [CVE](https://nvd.nist.gov) data sources are linked together in a graph called BRON. The data types are linked with bidirectional edges in the following manner:
 ```
-Tactic <--> Technique <--> Attack Pattern <--> Weekness <--> Vulnerability <--> Affected Product Configuration
+Tactic <--> Technique <--> Attack Pattern <--> Weakness <--> Vulnerability <--> Affected Product Configuration
 ```
 
 ## Installation
