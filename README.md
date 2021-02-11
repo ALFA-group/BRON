@@ -5,6 +5,8 @@ Threat data from [MITRE ATT&CK](https://attack.mitre.org/), [CAPEC](https://cape
 Tactic <--> Technique <--> Attack Pattern <--> Weakness <--> Vulnerability <--> Affected Product Configuration
 ```
 
+See [graph_db](graph_db) for a public instance of graph data base implementaion [bron.alfa.csail.mit.edu](http://bron.alfa.csail.mit.edu:8529)
+
 ## Installation
 
 - Python version > = 3.8
@@ -51,10 +53,10 @@ There are 4 attributes for each node:
 arXiv report: [https://arxiv.org/abs/2010.00533](https://arxiv.org/abs/2010.00533)
 
 ```
-@misc{hemberg2020bron,
-      title={BRON -- Linking Attack Tactics, Techniques, and Patterns with Defensive Weaknesses, Vulnerabilities and Affected Platform Configurations}, 
+@misc{hemberg2021linking,
+      title={Linking Threat Tactics, Techniques, and Patterns with Defensive Weaknesses, Vulnerabilities and Affected Platform Configurations for Cyber Hunting}, 
       author={Erik Hemberg and Jonathan Kelly and Michal Shlapentokh-Rothman and Bryn Reinstadler and Katherine Xu and Nick Rutar and Una-May O'Reilly},
-      year={2020},
+      year={2021},
       eprint={2010.00533},
       archivePrefix={arXiv},
       primaryClass={cs.CR}
