@@ -134,7 +134,7 @@ def make_graph_edges(data_key, data_type, bron_dict, edge_dict, graph, rows_list
     if data_key in bron_dict:
         cve_list = []
         bron_id = bron_dict[data_key]
-        name = f"{data_key}: {data_type}_{bron_id}"
+        name = f"{data_type}_{bron_id}"
         edge_dict[data_type].add(name)
 
         if data_type != "cpe":
