@@ -10,7 +10,7 @@ import gzip
 # TODO add some verbosity
 
 ENTERPRISE_ATTACK_URL = 'https://github.com/mitre/cti/raw/master/enterprise-attack/enterprise-attack.json'
-CAPEC_URL = 'https://github.com/mitre/cti/raw/master/capec/stix-capec.json'
+CAPEC_URL = 'https://github.com/mitre/cti/raw/master/capec/2.1/stix-capec.json'
 CWE_URL = 'https://cwe.mitre.org/data/csv/1000.csv.zip'
 CVE_BASE_URL = 'https://nvd.nist.gov/feeds/json/cve/1.1'
 LAST_YEAR = 2021
