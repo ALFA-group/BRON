@@ -1,0 +1,40 @@
+version: "3.5"
+services:
+  brondb:
+    container_name: brondb
+    image: arangodb:3.8.1
+    environment:
+      ARANGO_ROOT_PASSWORD_FILE: /run/secrets/arango_root_password
+    ports:
+      - 8529:8529
+    secrets:
+      - arango_root_password
+    volumes:
+      - brondb_data_container:/var/lib/arangodb3
+      - brondb_apps_data_container:/var/lib/arangodb3-apps
+  bootstrap:
+    container_name: bootstrap
+    build: .
+    image: bronbootstrap
+    working_dir: /usr/local/bron/graph_db 
+    command: bash bootstrap.sh
+    environment:
+      DATA_DIR: /data
+      ARANGO_ROOT_PASSWORD_FILE: /run/secrets/arango_root_password
+    secrets:
+      - arango_root_password
+    volumes:
+      - bootstrap_data_container:/data
+    links:
+      - brondb
+    depends_on:
+      - brondb
+
+secrets:
+  arango_root_password:
+    file: ./graph_db/arango_root_password
+
+volumes:
+  brondb_data_container:
+  brondb_apps_data_container:
+  bootstrap_data_container:

@@ -4,10 +4,30 @@ Threat data from [MITRE ATT&CK](https://attack.mitre.org/), [CAPEC](https://cape
 ```
 Tactic <--> Technique <--> Attack Pattern <--> Weakness <--> Vulnerability <--> Affected Product Configuration
 ```
-
+## Deployment
 See [graph_db](graph_db) for a public instance of graph data base implementaion [bron.alfa.csail.mit.edu](http://bron.alfa.csail.mit.edu:8529)
 
-## Installation
+Pre-requisites:
+- Docker ([installing Docker](https://docs.docker.com/engine/install/))
+- Docker Compose ([installing Compose](https://docs.docker.com/compose/install/))
+
+To deploy BRON on top of ArangoDB, clone this repository and run:
+```
+docker-compose up -d
+```
+
+The deployment starts two containers:
+- `brondb`: an ArangoDB server hosting the BRON graph and collections
+- `bootstrap`: an ephemeral container that builds BRON and loads it into the graph database
+
+It may take a few minutes for the bootstrap to conclude. It will download and analyze the required datasets, build BRON, and import it into the database. You can check its completion by monitoring the `bootstrap` container logs.
+```
+docker logs -f bootstrap
+```
+
+> Note: this deployment uses docker secrets for setting the database password; it should be changed in the `./graph\_db/arango\_root\_password` file.
+
+## Programmatic APIs Installation
 
 - Python version > = 3.8
 - Run `pip install -r requirements.txt` to install requirements
