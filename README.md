@@ -24,8 +24,9 @@ It may take a few minutes for the bootstrap to conclude. It will download and an
 ```
 docker logs -f bootstrap
 ```
+To access the graph database console, point your browser to `http://localhost:8529`, login, and select BRON as database. 
 
-> Note: this deployment uses docker secrets for setting the database password; it should be changed in the `./graph\_db/arango\_root\_password` file.
+> Note: this deployment uses docker secrets for setting the database password; its value can be changed in `./graph_db/arango_root_password`.
 
 ## Programmatic APIs Installation
 
