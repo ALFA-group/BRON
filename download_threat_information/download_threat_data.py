@@ -116,8 +116,11 @@ def _download_cve(cve_years):
     _write_meta_data(threat_data_type='CVE', file_path=file_path)
 
 
-def main(cve_years) -> None:
-    assert os.path.exists(OUTPUT_FOLDER)
+def main(cve_years, out_path=None) -> None:
+    global OUTPUT_FOLDER
+    if out_path:
+        OUTPUT_FOLDER = out_path
+    os.makedirs(OUTPUT_FOLDER, exist_ok=True)
     _download_attack()
     _download_capec()
     _download_cwe()
