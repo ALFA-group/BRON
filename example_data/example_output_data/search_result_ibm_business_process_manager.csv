@@ -1,5 +1,0 @@
-,tactic,technique,capec,cwe,cve,risk_score,cpe,attack,Node Type
-0,set(),set(),set(),set(),{'cve_01487'},5.949999999999999,{'cpe_01490'},,connected
-1,set(),set(),set(),set(),{'cve_01487'},5.949999999999999,{'cpe_01488'},,connected
-2,set(),set(),set(),set(),{'cve_01487'},5.949999999999999,{'cpe_01492'},,connected
-3,12,266,519,251,217,1013.9999999999999,277,0.0,Total Number
