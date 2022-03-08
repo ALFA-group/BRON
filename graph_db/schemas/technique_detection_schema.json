@@ -1,0 +1,33 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"technique_detection",
+    "description":"A detection of an ATT&CK technique. TODO currently this makes no sense",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. E.g. 'technique_detection_00000'",
+          "type":"string",
+          "pattern": "technique_detection_\\d{5}"
+       },
+       "original_id":{
+        "description":"ID from MITRE ATT&CK. E.g. 'T1001'",
+        "type":"string",
+        "pattern": "(T\\d{4}(\\.\\d{3})?)"
+       },
+       "datatype":{
+        "description":"Name of datasource",
+        "type":"string", 
+        "pattern": "technique_detection"
+       },
+       "name":{
+        "description":"The name of the detection. TODO write pattern",
+        "type":"string"
+       }
+    },
+    "required":[
+        "_key",
+        "name",
+        "datatype",
+        "original_id"
+     ]
+  }

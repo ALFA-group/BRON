@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"CveCpe",
+    "description":"A link between a vulnerability and a product configuration",
+    "type":"object",
+    "properties":{
+      "_from":{
+         "description":"The vulnerability identifier in BRON.",
+         "type":"string",
+         "pattern": "cve/cve_\\d{5}"
+      },
+      "_to":{
+         "description":"The product configuration identifier in BRON.",
+         "type":"string",
+         "pattern": "cpe/cpe_\\d{5}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

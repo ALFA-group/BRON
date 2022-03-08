@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"CapecCapec_mitigation",
+    "description":"A link between an attack pattern and a attack pattern mitigation",
+    "type":"object",
+    "properties":{
+      "_from":{
+         "description":"The attack pattern identifier in BRON.",
+         "type":"string",
+         "pattern": "capec/capec_\\d{5}"
+      },
+      "_to":{
+         "description":"The attack pattern mitigation identifier in BRON.",
+         "type":"string",
+         "pattern": "capec_mitigation/capec_mitigation_\\d{5}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"TechniqueTechnique",
+    "description":"A link between a technique and a sub technique",
+    "type":"object",
+    "properties":{
+      "_from":{
+         "description":"The technique identifier in BRON.",
+         "type":"string",
+         "pattern": "technique/technique_\\d{5}"
+      },
+      "_to":{
+         "description":"The sub technique identifier in BRON.",
+         "type":"string",
+         "pattern": "technique/technique_\\d{5}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

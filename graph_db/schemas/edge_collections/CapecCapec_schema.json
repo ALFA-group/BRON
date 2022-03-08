@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"CapecCapec",
+    "description":"A link between an attack pattern and another attack pattern",
+    "type":"object",
+    "properties":{
+      "_from":{
+         "description":"The attack pattern identifier in BRON.",
+         "type":"string",
+         "pattern": "capec/capec_\\d{5}"
+      },
+      "_to":{
+         "description":"The sub attack pattern identifier in BRON.",
+         "type":"string",
+         "pattern": "capec/capec_\\d{5}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

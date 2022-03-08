@@ -1,0 +1,33 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"engage_activity",
+    "description":"A defensive activity from MITRE ENGAGE",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. E.g. 'engage_activity_00000'",
+          "type":"string",
+          "pattern": "engage_activity_\\d{5}"
+       },
+       "original_id":{
+        "description":"ID from MITRE ENGAGE. E.g. 'EAC0001'",
+        "type":"string",
+        "pattern": "[ES]AC\\d{4}"
+       },
+       "datatype":{
+        "description":"Name of datasource",
+        "type":"string", 
+        "pattern": "engage_activity"
+       },
+       "name":{
+        "description":"The name of the activity. TODO write pattern",
+        "type":"string"
+       }
+    },
+    "required":[
+        "_key",
+        "name",
+        "datatype",
+        "original_id"
+     ]
+  }

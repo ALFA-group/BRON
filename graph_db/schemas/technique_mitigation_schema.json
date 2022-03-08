@@ -1,0 +1,33 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"technique_mitigation",
+    "description":"A mitigation of an ATT&CK technique.",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. E.g. 'technique_mitigation_00000'",
+          "type":"string",
+          "pattern": "technique_mitigation_\\d{5}"
+       },
+       "original_id":{
+        "description":"ID from MITRE ATT&CK. E.g. 'M1013'",
+        "type":"string",
+        "pattern": "M\\d{4}"
+       },
+       "datatype":{
+        "description":"Name of datasource",
+        "type":"string", 
+        "pattern": "technique_mitigation"
+       },
+       "name":{
+        "description":"The name of the mitigation. TODO write pattern",
+        "type":"string"
+       }
+    },
+    "required":[
+        "_key",
+        "name",
+        "datatype",
+        "original_id"
+     ]
+  }

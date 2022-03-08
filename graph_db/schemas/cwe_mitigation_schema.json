@@ -1,0 +1,52 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"cwe_mitigation",
+    "description":"A weakness mitigation from MITRE CWE",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. E.g. 'cwe_mitigation_00000'",
+          "type":"string",
+          "pattern": "cwe_mitigation_\\d{5}"
+       },
+       "original_id":{
+        "description":"ID from MITRE CWE. E.g. '1'",
+        "type":"string",
+        "pattern": "\\d"
+       },
+       "datatype":{
+        "description":"Name of datasource",
+        "type":"string", 
+        "pattern": "cwe_mitigation"
+       },
+       "name":{
+        "description":"The name of the weakness. TODO write pattern",
+        "type":"string"
+       },
+       "metadata":{
+         "description":"Metadata. Information taken from the Potential Mitigations",
+         "type":"object",
+         "properties": {
+             "Description": {
+                 "description": "The description",
+                 "type": "string"
+             },
+             "Phase": {
+                 "description": "The phase. TODO pattern?",
+                 "type": "string"
+             }
+             },
+             "required":[
+                 "Description",
+                 "Phase"
+              ]         
+        }
+    },
+    "required":[
+        "_key",
+        "name",
+        "metadata",
+        "datatype",
+        "original_id"
+     ]
+  }
