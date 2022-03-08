@@ -1,0 +1,16 @@
+requests
+matplotlib
+tqdm
+beautifulsoup4
+rdflib
+networkx
+scipy
+jsonschema
+urllib3
+pandas
+python-dotenv
+stix2
+seaborn
+pdfminer-six
+numpy
+python-arango
