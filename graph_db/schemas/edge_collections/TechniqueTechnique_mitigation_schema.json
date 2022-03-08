@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"TechniqueTechnique_mitigation",
+    "description":"A link between a technique and a mitigation",
+    "type":"object",
+    "properties":{
+      "_to":{
+         "description":"The mitigation identifier in BRON.",
+         "type":"string",
+         "pattern": "technique_mitigation/technique_mitigation_\\d{5}"
+      },
+      "_from":{
+         "description":"The technique identifier in BRON.",
+         "type":"string",
+         "pattern": "technique/technique_\\d{5}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

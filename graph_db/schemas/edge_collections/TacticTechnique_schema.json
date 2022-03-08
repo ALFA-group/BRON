@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"TacticTechnique",
+    "description":"A link between a tactic and a technique",
+    "type":"object",
+    "properties":{
+      "_from":{
+         "description":"The tactic identifier in BRON.",
+         "type":"string",
+         "pattern": "tactic/tactic_\\d{5}"
+      },
+      "_to":{
+         "description":"The technique identifier in BRON.",
+         "type":"string",
+         "pattern": "technique/technique_\\d{5}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

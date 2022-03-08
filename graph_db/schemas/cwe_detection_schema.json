@@ -1,0 +1,52 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"cwe_detection",
+    "description":"A weakness detection from MITRE CWE",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. E.g. 'cwe_detection_00017'",
+          "type":"string",
+          "pattern": "cwe_detection_\\d{5}"
+       },
+       "original_id":{
+        "description":"ID from MITRE CWE. E.g. '1'",
+        "type":"string",
+        "pattern": "\\d"
+       },
+       "datatype":{
+        "description":"Name of datasource",
+        "type":"string", 
+        "pattern": "cwe_detection"
+       },
+       "name":{
+        "description":"The name of the weakness. TODO write pattern",
+        "type":"string"
+       },
+       "metadata":{
+         "description":"Metadata. Information taken from the Detection Methods",
+         "type":"object",
+         "properties": {
+             "Description": {
+                 "description": "The description",
+                 "type": "string"
+             },
+             "Method": {
+                 "description": "The Method. TODO pattern?",
+                 "type": "string"
+             }
+             },
+             "required":[
+                 "Description",
+                 "Method"
+              ]         
+        }
+    },
+    "required":[
+        "_key",
+        "name",
+        "metadata",
+        "datatype",
+        "original_id"
+     ]
+  }

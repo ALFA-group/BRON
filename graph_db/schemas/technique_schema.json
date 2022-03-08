@@ -1,0 +1,52 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"technique",
+    "description":"A tactic from MITRE ATT&CK",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. E.g. 'technique_00001'",
+          "type":"string",
+          "pattern": "technique_\\d{5}"
+       },
+       "original_id":{
+        "description":"ID from MITRE ATT&CK. E.g. 'T1001'",
+        "type":"string",
+        "pattern": "(T\\d{4}(\\.\\d{3})?)"
+       },
+       "datatype":{
+        "description":"Name of datasource",
+        "type":"string", 
+        "pattern": "technique"
+       },
+       "name":{
+        "description":"The name of the technique. TODO write pattern",
+        "type":"string"
+       },
+       "metadata":{
+        "description":"Metadata",
+        "type":"object",
+        "properties": {
+            "description": {
+                "description": "The full description",
+                "type": "string"
+            },
+            "short_description": {
+                "description": "The first paragraph of the description. TODO write pattern",
+                "type": "string"
+            }
+            },
+            "required":[
+                "description",
+                "short_description"
+             ]         
+       }
+    },
+    "required":[
+        "_key",
+        "name",
+        "metadata",
+        "datatype",
+        "original_id"
+     ]
+  }

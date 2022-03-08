@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"Engage_goalEngage_approach",
+    "description":"A link between a defensive approach and a defensive activity",
+    "type":"object",
+    "properties":{
+      "_to":{
+         "description":"The approach identifier in BRON.",
+         "type":"string",
+         "pattern": "engage_approach/engage_approach_\\d{5}"
+      },
+      "_from":{
+         "description":"The goal identifier in BRON.",
+         "type":"string",
+         "pattern": "engage_goal/engage_goal_\\d{5}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

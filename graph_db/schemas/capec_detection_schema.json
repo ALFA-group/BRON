@@ -1,0 +1,38 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"capec_detection",
+    "description":"An attack pattern detection from MITRE CAPEC",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. E.g. 'capec_detection_00581'",
+          "type":"string",
+          "pattern": "capec_detection_\\d{5}"
+       },
+       "original_id":{
+        "description":"ID from MITRE CAPEC. E.g. '1'",
+        "type":"string",
+        "pattern": "\\d"
+       },
+       "datatype":{
+        "description":"Name of datasource",
+        "type":"string", 
+        "pattern": "capec_detection"
+       },
+       "name":{
+        "description":"The name of the attack pattern. TODO write pattern",
+        "type":"string"
+       },
+       "metadata":{
+        "description":"Indicators field in CAPEC entry",
+        "type":"string"
+       }
+    },
+    "required":[
+        "_key",
+        "name",
+        "metadata",
+        "datatype",
+        "original_id"
+     ]
+  }

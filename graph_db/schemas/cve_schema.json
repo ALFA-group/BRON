@@ -1,0 +1,55 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"cve",
+    "description":"An attack pattern from NIST CVE",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. E.g. 'cve_00581'",
+          "type":"string",
+          "pattern": "cve_\\d{5,}"
+       },
+       "original_id":{
+        "description":"ID from NIST CVE. E.g. ''",
+        "type":"string",
+        "pattern": "CVE-\\d{4}-\\d{4,7}"
+       },
+       "datatype":{
+        "description":"Name of datasource",
+        "type":"string", 
+        "pattern": "cve"
+       },
+       "name":{
+        "description":"The name of the vulnerability. TODO write pattern",
+        "type":"string"
+       },
+       "metadata":{
+        "description":"Metadata",
+        "type":"object",
+        "properties": {
+            "description": {
+                "description": "The description",
+                "type": "string"
+            },
+            "weight": {
+                "description": "The CVSS score",
+                "type": "number",
+                "minimum": 0,
+                "maximum": 10
+
+            }
+            },
+            "required":[
+                "description",
+                "weight"
+             ]         
+       }
+    },
+    "required":[
+        "_key",
+        "name",
+        "metadata",
+        "datatype",
+        "original_id"
+     ]
+  }

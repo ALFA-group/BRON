@@ -1,0 +1,47 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"d3fend_mitigation",
+    "description":"A mitigation from MITRE D3FEND",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. E.g. 'd3fend_mitigation_00000'",
+          "type":"string",
+          "pattern": "d3fend_mitigation_\\d{5}"
+       },
+       "original_id":{
+        "description":"ID from MITRE D3FEND. E.g. 'ActiveCertificateAnalysis'. TODO pattern",
+        "type":"string"
+       },
+       "datatype":{
+        "description":"Name of datasource",
+        "type":"string", 
+        "pattern": "d3fend_mitigation"
+       },
+       "name":{
+        "description":"The name of the mitigation. TODO write pattern",
+        "type":"string"
+       },
+       "metadata":{
+         "description":"Metadata.",
+         "type":"object",
+         "properties": {
+             "d3fend-id": {
+                 "description": "The D3FEND ID. TODO D3FEND ID regexp",
+                 "type": "string",
+                 "pattern": "D3-[A-Z]+"
+             }
+             },
+             "required":[
+                 "d3fend-id"
+              ]         
+        }
+    },
+    "required":[
+        "_key",
+        "name",
+        "metadata",
+        "datatype",
+        "original_id"
+     ]
+  }

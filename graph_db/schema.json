@@ -1,0 +1,40 @@
+{
+    "vertex_collections": {
+        "d3fend_mitigation": {"unique": ["name", "metadata/d3fend-id", "original_id"]},
+        "engage_activity": {"unique": ["original_id", "name"]},
+        "engage_approach": {"unique": ["original_id", "name"]},
+        "engage_goal": {"unique": ["original_id", "name"]},
+        "tactic": {"unique": ["original_id", "name"]},
+        "technique": {"unique": ["original_id", "name"]},
+        "technique_mitigation": {"unique": []},
+        "technique_detection": {"unique": []},
+        "capec": {"unique": ["original_id", "name"]},
+        "capec_mitigation": {"unique": ["metadata"]},
+        "capec_detection": {"unique": ["metadata"]},
+        "cwe": {"unique": ["original_id", "name"]},
+        "cwe_mitigation": {"unique": ["metadata/Description"]},
+        "cwe_detection": {"unique": ["metadata/Description"]},
+        "cve": {"unique": ["original_id"]},
+        "cpe": {"unique": []}
+        },
+    "edge_collections": {
+        "D3fend_mitigationTechnique": {},
+        "Engage_approachEngage_activity": {},
+        "Engage_goalEngage_approach": {},
+        "TechniqueEngage_activity": {},
+        "TacticTechnique": {},
+        "TechniqueTechnique_mitigation": {},
+        "TechniqueTechnique_detection": {},
+        "TechniqueCapec": {},
+        "CapecCapec_mitigation": {},
+        "CapecCapec_detection": {},
+        "CapecCwe": {},
+        "CweCwe_mitigation": {},
+        "CweCwe_detection": {},
+        "CweCve": {},
+        "CveCpe": {},
+        "CweCwe": {},
+        "CapecCapec": {},
+        "TechniqueTechnique": {}    
+    }
+}
