@@ -1,9 +1,11 @@
-# BRON - Link and evaluate public threat data for Cyber Hunting
+# BRON - Link and evaluate public threat and mitigation data for Cyber Hunting
 
-Threat data from [MITRE ATT&CK](https://attack.mitre.org/), [CAPEC](https://capec.mitre.org/), [CWE](https://cwe.mitre.org/) and [CVE](https://nvd.nist.gov) data sources are linked together in a graph called BRON. The data types are linked with bidirectional edges in the following manner:
-```
-Tactic <--> Technique <--> Attack Pattern <--> Weakness <--> Vulnerability <--> Affected Product Configuration
-```
+[![BRON December 2021](docs/figures/BRON.png)](docs/figures/BRON.png)
+
+Threat data from [MITRE ATT&CK](https://attack.mitre.org/), [CAPEC](https://capec.mitre.org/), [CWE](https://cwe.mitre.org/) , [CVE](https://nvd.nist.gov), [MITRE Engage](https://engage.mitre.org/) and [MITRE D3FEND](https://d3fend.mitre.org/) data sources are linked together in a graph called BRON. The data types are linked with bidirectional edges. Orange nodes in figure have "offensive" information. Blue nodes in figure are "defensive" information.
+
+Website: [bron.alfa.csail.mit.edu/info.html](http://bron.alfa.csail.mit.edu/info.html)
+
 ## Deployment
 See [graph_db](graph_db) for a public instance of graph data base implementaion [bron.alfa.csail.mit.edu](http://bron.alfa.csail.mit.edu:8529)
 
@@ -30,44 +32,56 @@ To access the graph database console, point your browser to `http://localhost:85
 
 ## Programmatic APIs Installation
 
-- Python version > = 3.8
-- Run `pip install -r requirements.txt` to install requirements
+Python version > = 3.8
 
-## Getting Started with Tutorials
-Four tutorials are available in the `tutorials` folder on the following topics:
-- How to download and parse the threat data used for BRON (`download_threat_data_tutorial.ipynb`)
-- How to build BRON and find paths in BRON (`bron_tutorial.ipynb`)
-- How to build the full BRON and find paths in BRON (`full_bron.ipynb`)
-- How to perform meta-analyses using BRON (`meta_analysis_tutorial.ipynb`)
-- How to perform extra meta-analyses using BRON (`extra_meta_analysis_tutorial.ipynb`)
+### Pip
+- Create a `pip` environment
+```
+python3 -m venv bron_venv
+source ./bron_venv/bin/activate
+pip install -r requirements.txt
+```
 
-These tutorials include example code and outputs using data in the `example_data` folder.
+## Getting Started 
+
+Build BRON on localhost (requires an arangodb installation)
+```
+PYTHONPATH=. python tutorials/build_bron.py --username root --password $(cat arango_root_password) --ip 127.0.0.1
+tail -n 1 build_bron.log
+```
+
+This should produce a `build_bron.log` file that ends with `END building BRON`.
+
+## Tutorials
+Tutorials are available in the `tutorials` folder on the following topics:
+- Using BRON in Arangodb, `tutorials/using_bron_graphdb.py`
+- Building a text corpus based on BRON, `tutorials/build_bron_corpus.ipynb`
 
 ## Usage
 ```
-usage: build_BRON.py [-h] --input_data_folder INPUT_DATA_FOLDER --save_path SAVE_PATH [--only_recent_cves]
+usage: build_bron.py [-h] --username USERNAME --password PASSWORD --ip IP [--clean] [--clean_local_files] [--delete_mitigations] [--no_download] [--no_parsing] [--no_building] [--no_arangodb]
+                     [--no_mitigations] [--no_validation]
 
-Create BRON graph from threat data
+Build BRON in Arango DB
 
 optional arguments:
   -h, --help            show this help message and exit
-  --input_data_folder INPUT_DATA_FOLDER
-                        Folder path to input threat data
-  --save_path SAVE_PATH
-                        Folder path to save BRON graph and files, e.g. example_data/example_output_data
-  --only_recent_cves    Make BRON with CVEs from 2015 to 2020 only
+  --username USERNAME   DB username
+  --password PASSWORD   DB password
+  --ip IP               DB IP address
+  --clean               Clean all files and db
+  --clean_local_files   Clean all local files
+  --delete_mitigations  Clean all mitigation collections
+  --no_download         Do not download data
+  --no_parsing          Do not parse data
+  --no_building         Do not build BRON
+  --no_arangodb         Do not create and import to Arangodb
+  --no_mitigations      Do not create and import mitigations
+  --no_validation       Do not validate entries imported to the ArangoDb
 ```
 
-An example BRON with its input threat data can be found in the `example_data` folder.
-
 ## Structure of BRON
-Each entry of threat data is a node in BRON that has 4 attributes. The node has a unique name in BRON of the form (threat data type)\_(unique 5 digit id) where the threat data type is either Tactic, Technique, CAPEC, CWE, CVE, or Affected Product Configuration (sometimes called CPE).
-
-There are 4 attributes for each node:
-- Original_id: ID of threat data in MITRE/NIST if it exists
-- Datatype: One of Tactic, Technique, CAPEC, CWE, CVE, or CPE
-- Name: Name of threat data in MITRE/NIST if it exists
-- Metadata: Any additional information that is contained in MITRE/NIST
+See `graph_db/schemas`
 
 ## Bibliography
 
@@ -83,4 +97,3 @@ arXiv report: [https://arxiv.org/abs/2010.00533](https://arxiv.org/abs/2010.0053
       primaryClass={cs.CR}
 }
 ```
-

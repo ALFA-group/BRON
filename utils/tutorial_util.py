@@ -1,8 +1,8 @@
 import os
-import time
 import pprint
 
-def print_files_in_folder(folder : str) -> None:
+
+def print_files_in_folder(folder: str) -> None:
     files = {}
     for _file in os.listdir(folder):
         file_path = os.path.join(folder, _file)

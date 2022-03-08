@@ -15,4 +15,4 @@ COPY . .
 ENV DATA_DIR=$dir
 
 ENV PYTHONPATH="$PYTHONPATH:/usr/local/bron"
-CMD cd graph_db && ./bootstrap.sh
+CMD ./bootstrap.sh

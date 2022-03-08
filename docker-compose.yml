@@ -16,7 +16,7 @@ services:
     container_name: bootstrap
     build: .
     image: bronbootstrap
-    working_dir: /usr/local/bron/graph_db 
+    working_dir: /usr/local/bron 
     command: bash bootstrap.sh
     environment:
       DATA_DIR: /data
@@ -32,7 +32,7 @@ services:
 
 secrets:
   arango_root_password:
-    file: ./graph_db/arango_root_password
+    file: ./arango_root_password
 
 volumes:
   brondb_data_container:

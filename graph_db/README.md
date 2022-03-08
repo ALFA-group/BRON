@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Build BRON, so there exists a `BRON.json` file
+- Build BRON, so there exists a `BORN.json` file
 
 - Install ArangoDB https://www.arangodb.com/download-major/
 
