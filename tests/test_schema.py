@@ -373,9 +373,7 @@ class TestSchema(unittest.TestCase):
         self.assertTrue(True)
 
     def test_bron_graph_db_CapecCwe_schema(self):
-        file_path = os.path.join(
-            "graph_db/schemas/edge_collections", "CapecCwe_schema.json"
-        )
+        file_path = os.path.join("graph_db/schemas/edge_collections", "CapecCwe_schema.json")
         with open(file_path, "r") as fd:
             schema = json.load(fd)
 
@@ -386,9 +384,7 @@ class TestSchema(unittest.TestCase):
         self.assertTrue(True)
 
     def test_bron_graph_db_CveCpe_schema(self):
-        file_path = os.path.join(
-            "graph_db/schemas/edge_collections", "CveCpe_schema.json"
-        )
+        file_path = os.path.join("graph_db/schemas/edge_collections", "CveCpe_schema.json")
         with open(file_path, "r") as fd:
             schema = json.load(fd)
 
@@ -399,9 +395,7 @@ class TestSchema(unittest.TestCase):
         self.assertTrue(True)
 
     def test_bron_graph_db_CweCve_schema(self):
-        file_path = os.path.join(
-            "graph_db/schemas/edge_collections", "CweCve_schema.json"
-        )
+        file_path = os.path.join("graph_db/schemas/edge_collections", "CweCve_schema.json")
         with open(file_path, "r") as fd:
             schema = json.load(fd)
 
@@ -463,9 +457,7 @@ class TestSchema(unittest.TestCase):
         self.assertTrue(True)
 
     def test_bron_graph_db_TacticTechnique_schema(self):
-        file_path = os.path.join(
-            "graph_db/schemas/edge_collections", "TacticTechnique_schema.json"
-        )
+        file_path = os.path.join("graph_db/schemas/edge_collections", "TacticTechnique_schema.json")
         with open(file_path, "r") as fd:
             schema = json.load(fd)
 
@@ -476,9 +468,7 @@ class TestSchema(unittest.TestCase):
         self.assertTrue(True)
 
     def test_bron_graph_db_TechniqueCapec_schema(self):
-        file_path = os.path.join(
-            "graph_db/schemas/edge_collections", "TechniqueCapec_schema.json"
-        )
+        file_path = os.path.join("graph_db/schemas/edge_collections", "TechniqueCapec_schema.json")
         with open(file_path, "r") as fd:
             schema = json.load(fd)
 

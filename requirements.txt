@@ -14,3 +14,11 @@ seaborn
 pdfminer-six
 numpy
 python-arango
+pyyaml
+scikit-learn
+
+
+
+
+
+

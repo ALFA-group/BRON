@@ -11,7 +11,8 @@
        },
        "original_id":{
         "description":"ID from MITRE D3FEND. E.g. 'ActiveCertificateAnalysis'. TODO pattern",
-        "type":"string"
+           "type": "string",
+           "pattern": "D3-[A-Z]+"
        },
        "datatype":{
         "description":"Name of datasource",
@@ -26,15 +27,14 @@
          "description":"Metadata.",
          "type":"object",
          "properties": {
-             "d3fend-id": {
-                 "description": "The D3FEND ID. TODO D3FEND ID regexp",
-                 "type": "string",
-                 "pattern": "D3-[A-Z]+"
-             }
-             },
-             "required":[
-                 "d3fend-id"
-              ]         
+            "description": {
+                "description": "The full comment",
+                "type": "string"
+            }
+            },
+            "required":[
+                "description"
+             ]         
         }
     },
     "required":[

@@ -36,9 +36,7 @@ class TestMitigations(unittest.TestCase):
         username = "root"
         ip = str(os.environ.get("BRON_SERVER_IP"))
         client = arango.ArangoClient(hosts=f"http://{ip}:8529")
-        db = client.db(
-            "BRON", username=username, password=password, auth_method="basic"
-        )
+        db = client.db("BRON", username=username, password=password, auth_method="basic")
         mitigation_collections = ("cwe", "capec", "technique")
         variants = ("mitigation", "detection")
         for mitigation_collection in mitigation_collections:
@@ -46,9 +44,7 @@ class TestMitigations(unittest.TestCase):
                 if mitigation_collection == "technique" and variant == "mitigation":
                     pass
                 mitigation_collection_name = f"{mitigation_collection}_{variant}"
-                self.check_orphans(
-                    db, mitigation_collection_name, mitigation_collection
-                )
+                self.check_orphans(db, mitigation_collection_name, mitigation_collection)
 
         client.close()
 
@@ -61,9 +57,7 @@ class TestCWEMitigations(unittest.TestCase):
         username = "root"
         ip = str(os.environ.get("BRON_SERVER_IP"))
         client = arango.ArangoClient(hosts=f"http://{ip}:8529")
-        db = client.db(
-            "BRON", username=username, password=password, auth_method="basic"
-        )
+        db = client.db("BRON", username=username, password=password, auth_method="basic")
         cwe_mitigation_ids = set()
         cwe_mitigations = db.collection("cwe_mitigation").all()
         for cwe_mitigation_id in cwe_mitigations:

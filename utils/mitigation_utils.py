@@ -1,18 +1,29 @@
+import collections
+import json
 import logging
 import os
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Set
 
 import arango
 import pandas as pd
+from tqdm import tqdm
 
-from graph_db.bron_arango import DB, GRAPH, HOST, get_edge_collection_name
+from graph_db.bron_arango import (
+    DB,
+    GRAPH,
+    HOST,
+    get_edge_collection_name,
+    get_schema,
+    validate_entry,
+)
 
 
 def check_duplicates(df: "pd.DataFrame", keys: List[str]):
-    oringal_size = df.shape[0]
-    deduplicated_df = df[keys].drop_duplicates()
-    deduplicated_size = deduplicated_df.shape[0]
-    assert oringal_size == deduplicated_size
+    original_size = df.shape[1]
+    deduplicated_df = df.drop_duplicates(subset=keys)
+    deduplicated_size = deduplicated_df.shape[1]
+    assert original_size == deduplicated_size, f"{original_size} != {deduplicated_size}"
+    return deduplicated_df
 
 
 def get_collection_names(basename: str) -> Tuple[str]:
@@ -54,9 +65,7 @@ def update_BRON_graph_db(
         name = os.path.join(out_dir, f"import_{key}.jsonl")
         import_into_arango(username, password, ip, name, edge_collection, key)
         if edge_collection:
-            update_graph_in_graph_db(
-                username, password, ip, edge_key=edge_collections[key]
-            )
+            update_graph_in_graph_db(username, password, ip, edge_key=edge_collections[key])
         else:
             update_graph_in_graph_db(username, password, ip, collection_name=key)
 
@@ -89,9 +98,7 @@ def update_graph_in_graph_db(
                 from_vertex_collections=[edge_key[0]],
                 to_vertex_collections=[edge_key[1]],
             )
-            logging.info(
-                f"Created edge_collection: {edge_key_collection} ({edge_key}) to {GRAPH}"
-            )
+            logging.info(f"Created edge_collection: {edge_key_collection} ({edge_key}) to {GRAPH}")
 
     client.close()
 
@@ -130,9 +137,7 @@ def import_into_arango(
 
     cmd_str = " ".join(cmd)
     os.system(cmd_str)
-    logging.info(
-        f"Imported {name} from {file_} to {DB} on {ip} (Edge collection = {edge_keys})"
-    )
+    logging.info(f"Imported {name} from {file_} to {DB} on {ip} (Edge collection = {edge_keys})")
 
 
 def clean_BRON_mitigation(
@@ -147,6 +152,17 @@ def clean_BRON_mitigation(
     client.close()
 
 
+def clean_BRON_collections(username: str, password: str, ip: str, collections: Set[str]) -> None:
+    client = arango.ArangoClient(hosts=f"http://{ip}:8529")
+    db = client.db(DB, username=username, password=password, auth_method="basic")
+    for key in collections:
+        if db.has_collection(key):
+            db.delete_collection(key)
+            logging.info(f"Collection deleted {key} from {ip}")
+
+    client.close()
+
+
 def query_bron(collection, filter_q):
     result = collection.find(filter_q)
     if result.empty():
@@ -157,3 +173,87 @@ def query_bron(collection, filter_q):
         logging.warning(f"Duplicate result for: {result}")
 
     return result.pop()
+
+
+def query_bron_aql(collection_name: str, filter_q: str, db) -> Optional[Dict[str, str]]:
+    query = f"""
+    FOR c in {collection_name}
+        FILTER c.original_id == "{filter_q}"
+        RETURN c
+    """
+    assert db.aql.validate(query)
+    cursor = db.aql.execute(query)
+    result = [c for c in cursor]
+    if not result:
+        logging.warning(f"Empty result for: {filter_q}")
+        return None
+    if len(result) > 1:
+        logging.warning(f"Duplicate result for: {result}")
+
+    return result[0]
+
+
+def write_jsonl(file_path: str, data: List[Any]):
+    with open(file_path, "w") as fd:
+        for item in data:
+            fd.write(json.dumps(item))
+            fd.write("\n")
+
+    logging.info(f"Wrote {len(data)} to file {file_path}")
+
+
+def read_jsonl(file_path: str) -> List[Any]:
+    data = []
+    with open(file_path, "r") as fd:
+        for line in fd:
+            data.append(json.loads(line))
+
+    logging.info(f"Read {len(data)} from file {file_path}")
+    return data
+
+
+def link_data(
+    db,
+    file_path: str,
+    edge_name: str,
+    dst: str,
+    validation: bool,
+    id_map: Dict[str, str],
+    collection_name,
+    basename: str,
+    data: Dict[str, List[Dict[str, str]]],
+    id_key: str,
+):
+    logging.info(f"Linking {file_path} data for {edge_name} with {dst}.")
+    df = pd.read_json(file_path, lines=True)
+    if validation:
+        schema = get_schema(edge_name)
+
+    collection_ = db.collection(collection_name)
+    errors = collections.defaultdict(int)
+    query_miss = collections.defaultdict(int)
+    for i in tqdm(range(len(df))):
+        value = df.loc[i]
+        result = query_bron(collection_, {"original_id": str(value[dst])})
+
+        if result is None:
+            query_miss[str(value[dst])]
+            continue
+
+        _id = value[id_key]
+        try:
+            _from = f"{basename}/{id_map[_id]}"
+        except KeyError as e:
+            errors[str(e)] += 1
+            continue
+
+        _to = result["_id"]
+        entry = {"_id": f"{edge_name}/{_from}-{_to}", "_from": _from, "_to": _to}
+        if validation:
+            validate_entry(entry, schema)
+
+        data[edge_name].append(entry)
+
+    logging.info(f"Errors for {len(errors)} ids {sum(errors.values())} times")
+    logging.info(f"Query misses for {len(query_miss)} ids {sum(query_miss.values())} times")
+    logging.info(f"Done Linking for {collection_.name}")

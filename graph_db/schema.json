@@ -15,6 +15,8 @@
         "cwe_mitigation": {"unique": ["metadata/Description"]},
         "cwe_detection": {"unique": ["metadata/Description"]},
         "cve": {"unique": ["original_id"]},
+        "software": {"unique": ["original_id"]},
+        "group": {"unique": ["original_id"]},
         "cpe": {"unique": []}
         },
     "edge_collections": {
@@ -35,6 +37,11 @@
         "CveCpe": {},
         "CweCwe": {},
         "CapecCapec": {},
-        "TechniqueTechnique": {}    
+        "TechniqueTechnique": {},
+        "SoftwareTechnique": {},
+        "GroupTechnique": {},
+        "GroupSoftware": {},
+	"TechniqueTechnique": {}    
+	
     }
 }

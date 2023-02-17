@@ -4,6 +4,10 @@ FROM arangodb:3.8.1 AS deps
 # This stage installs dependencies to build and load BRON into arangodb. 
 FROM python:3.8-slim AS runtime
 
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y git
+    
 WORKDIR /usr/local/bron
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt

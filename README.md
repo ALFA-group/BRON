@@ -1,14 +1,47 @@
 # BRON - Link and evaluate public threat and mitigation data for Cyber Hunting
 
-[![BRON December 2021](docs/figures/BRON.png)](docs/figures/BRON.png)
+[![BRON February 2023](docs/figures/BRON_drawing.png)](docs/figures/BRON_drawing.png)
 
-Threat data from [MITRE ATT&CK](https://attack.mitre.org/), [CAPEC](https://capec.mitre.org/), [CWE](https://cwe.mitre.org/) , [CVE](https://nvd.nist.gov), [MITRE Engage](https://engage.mitre.org/) and [MITRE D3FEND](https://d3fend.mitre.org/) data sources are linked together in a graph called BRON. The data types are linked with bidirectional edges. Orange nodes in figure have "offensive" information. Blue nodes in figure are "defensive" information.
-
-Website: [bron.alfa.csail.mit.edu/info.html](http://bron.alfa.csail.mit.edu/info.html)
+Threat data from [MITRE ATT&CK](https://attack.mitre.org/), [CAPEC](https://capec.mitre.org/), [CWE](https://cwe.mitre.org/) , [CVE](https://nvd.nist.gov), [MITRE Engage](https://engage.mitre.org/), [MITRE D3FEND](https://d3fend.mitre.org/), [MITRE CAR](https://car.mitre.org/)  and , [exploitdb](https://exploit-db.com/) data sources are linked together in a graph called BRON. The data types are linked with bidirectional edges. Orange nodes in figure have "offensive" information. Blue nodes in figure are "defensive" information.
 
 ## Deployment
 See [graph_db](graph_db) for a public instance of graph data base implementaion [bron.alfa.csail.mit.edu](http://bron.alfa.csail.mit.edu:8529)
 
+### Ubuntu
+```
+# Python 
+sudo apt install python3 pyhton3-venv python3-dev
+# Arango
+curl -OL https://download.arangodb.com/arangodb310/DEBIAN/Release.key
+sudo apt-key add - < Release.key
+echo 'deb https://download.arangodb.com/arangodb310/DEBIAN/ /' | sudo tee /etc/apt/sources.list.d/arangodb.list
+sudo apt-get install apt-transport-https
+sudo apt-get update
+sudo apt-get install arangodb3=3.10.2-1
+
+# Python venv
+python3 -m venv ~/.venvs/BRON-dev
+# Activate venv
+source ~/.venvs/BRON-dev/bin/activate
+# Pythonpath
+export PYTHONPATH=.
+
+# BRON environment variables
+export BRON_PWD={The password you set when you installed arango}
+export BRON_SERVER_IP=127.0.0.1
+```
+
+Build BRON
+```
+python3 tutorials/build_bron.py --username=root --password=${BRON_PWD} --ip=${BRON_SERVER_IP}
+```
+
+Test
+```
+python -m unittest tests.test_bron_graph_db
+```
+
+### Docker
 Pre-requisites:
 - Docker ([installing Docker](https://docs.docker.com/engine/install/))
 - Docker Compose ([installing Compose](https://docs.docker.com/compose/install/))
@@ -46,7 +79,7 @@ pip install -r requirements.txt
 
 Build BRON on localhost (requires an arangodb installation)
 ```
-PYTHONPATH=. python tutorials/build_bron.py --username root --password $(cat arango_root_password) --ip 127.0.0.1
+python tutorials/build_bron.py --username root --password $(cat arango_root_password) --ip 127.0.0.1
 tail -n 1 build_bron.log
 ```
 
@@ -55,7 +88,7 @@ This should produce a `build_bron.log` file that ends with `END building BRON`.
 ## Tutorials
 Tutorials are available in the `tutorials` folder on the following topics:
 - Using BRON in Arangodb, `tutorials/using_bron_graphdb.py`
-- Building a text corpus based on BRON, `tutorials/build_bron_corpus.ipynb`
+
 
 ## Usage
 ```

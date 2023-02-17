@@ -18,6 +18,7 @@ from download_threat_information.parsing_scripts.parse_cve import parse_cve_file
 import download_threat_information.parsing_scripts.parse_capec_cwe as parse_capec_cwe
 import download_threat_information.parsing_scripts.parse_attack_tactic_technique as parse_attack
 import offense.build_offensive_BRON as build_offensive_BRON
+from offense.build_software_and_groups import build_software_and_groups, SG_OUT_DATA_DIR
 import graph_db.bron_arango as bron_arango
 import mitigations.d3fend_mitigations as d3fend
 import mitigations.engage_mitigations as engage
@@ -38,13 +39,9 @@ def parse_args(args: List[str]) -> Any:
     parser.add_argument("--ip", type=str, required=True, help="DB IP address")
     # Clean
     parser.add_argument("--clean", action="store_true", help="Clean all files and db")
-    parser.add_argument(
-        "--clean_local_files", action="store_true", help="Clean all local files"
-    )
+    parser.add_argument("--clean_local_files", action="store_true", help="Clean all local files")
     # Mainly used for debugging
-    parser.add_argument(
-        "--no_download", action="store_true", help="Do not download data"
-    )
+    parser.add_argument("--no_download", action="store_true", help="Do not download data")
     parser.add_argument("--no_parsing", action="store_true", help="Do not parse data")
     parser.add_argument("--no_building", action="store_true", help="Do not build BRON")
     parser.add_argument(
@@ -131,6 +128,7 @@ def _arangodb(username: str, password: str, ip: str, no_validation):
     logging.info("Import BRON into Arangodb")
     update_edges_between_same_datasources(username, password, ip, not no_validation)
     logging.info("Import same datasource links into Arangodb")
+    build_software_and_groups(SG_OUT_DATA_DIR, username, password, ip, not no_validation)
 
 
 def clean(username: str, password: str, ip: str, clean_local_files: bool = True):

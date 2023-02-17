@@ -145,9 +145,7 @@ def clean_BRON_cwe_mitigation(username: str, password: str, ip: str) -> None:
     clean_BRON_mitigation(username, password, ip, CWE_MITIGATION_BRON_DATA)
 
 
-def main(
-    cwe_file_path: str, username: str, password: str, ip: str, validation: bool = True
-):
+def main(cwe_file_path: str, username: str, password: str, ip: str, validation: bool = True):
     os.makedirs(CWE_OUT_DATA_DIR, exist_ok=True)
     _make_bron_data(cwe_file_path, username, password, ip, validation)
 

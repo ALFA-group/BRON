@@ -1,0 +1,56 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"group",
+    "description":"A group in ATT&CK.",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. E.g. 'group_00000'",
+          "type":"string",
+          "pattern": "group_\\d{5}"
+       },
+       "original_id":{
+        "description":"ID from MITRE ATT&CK. E.g. 'G1013'",
+        "type":"string",
+        "pattern": "G\\d{4}"
+       },
+       "datatype":{
+        "description":"Name of datasource",
+        "type":"string", 
+        "pattern": "group"
+       },
+       "name":{
+        "description":"The name of the group. TODO write pattern",
+        "type":"string"
+       },
+       "metadata":{
+        "description":"Metadata",
+        "type":"object",
+        "properties": {
+            "description": {
+                "description": "The full description",
+                "type": "string"
+            },
+            "aliases": {
+                "description": "The aliases. TODO write pattern and that the type is list",
+                "type": "array",
+		"items": {
+		    "type": "string"
+		}
+            }
+            },
+            "required":[
+                "description",
+                "aliases"
+             ]         
+       }
+	
+    },
+    "required":[
+        "_key",
+        "name",
+	"metadata",
+        "datatype",
+        "original_id"
+     ]
+  }

@@ -59,9 +59,7 @@ def make_edges(
     logging.info(f"Done {edge_file} to {out_file}")
 
 
-def update_edges_between_same_datasources(
-    username: str, password: str, ip: str, validation: True
-):
+def update_edges_between_same_datasources(username: str, password: str, ip: str, validation: True):
     datasource_edge_files = (
         (
             "data/attacks/technique_sub_technique_map.json",
@@ -82,9 +80,7 @@ def update_edges_between_same_datasources(
     client = arango.ArangoClient(hosts=f"http://{ip}:8529")
     db = client.db(DB, username=username, password=password, auth_method="basic")
     for edge_file, schema_file, collection_name in datasource_edge_files:
-        logging.info(
-            f"Begin make edges with {edge_file} {schema_file} {collection_name}"
-        )
+        logging.info(f"Begin make edges with {edge_file} {schema_file} {collection_name}")
         schema = {}
         if validation:
             with open(schema_file, "r") as fd:
@@ -92,9 +88,7 @@ def update_edges_between_same_datasources(
         edge_collection = schema_file.split("/")[-1].replace("_schema.json", "")
         out_file = os.path.join(os.path.dirname(edge_file), f"{edge_collection}.jsonl")
         make_edges(out_file, validation, edge_file, schema, collection_name, db)
-        import_into_arango(
-            username, password, ip, out_file, edge_keys=True, name=schema["title"]
-        )
+        import_into_arango(username, password, ip, out_file, edge_keys=True, name=schema["title"])
         update_graph_in_graph_db(
             username,
             password,
@@ -116,9 +110,7 @@ if __name__ == "__main__":
         handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
     )
 
-    parser = argparse.ArgumentParser(
-        description="Create edges between same datasources"
-    )
+    parser = argparse.ArgumentParser(description="Create edges between same datasources")
     args = parser.parse_args(sys.argv[1:])
     dotenv.load_dotenv()
     password_ = str(os.environ.get("BRON_PWD"))

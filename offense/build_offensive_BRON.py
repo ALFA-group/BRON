@@ -52,9 +52,7 @@ def build_graph(save_path: str, input_data_folder: str, recent_cves: bool = Fals
     tactic_graph = add_tactic_technique_edges(main_graph, input_data_folder, save_path)
     attack_graph = add_capec_technique_edges(tactic_graph, input_data_folder, save_path)
     update_graph = add_capec_cwe_edges(attack_graph, input_data_folder, save_path)
-    final_graph = add_cve_cpe_cwe(
-        update_graph, recent_cves, input_data_folder, save_path
-    )
+    final_graph = add_cve_cpe_cwe(update_graph, recent_cves, input_data_folder, save_path)
     BRON_file_path = os.path.join(save_path, "BRON.json")
     with open(BRON_file_path, "w") as fd:
         json.dump(
@@ -130,9 +128,7 @@ def add_tactic_technique_edges(
     ) as fd:
         technique_descriptions = json.load(fd)
 
-    with open(
-        os.path.join(input_data_folder, DESCRIPTION_MAP_PATHS["tactic_descriptions"])
-    ) as fd:
+    with open(os.path.join(input_data_folder, DESCRIPTION_MAP_PATHS["tactic_descriptions"])) as fd:
         tactic_descriptions = json.load(fd)
 
     technique_id_to_bron_id = {}
@@ -187,9 +183,7 @@ def add_tactic_technique_edges(
     for technique in tactic_map:
         technique_original_id = technique
         if not technique_original_id:
-            logging.warning(
-                f"No technique id. Check upstream parsing of technique data"
-            )
+            logging.warning(f"No technique id. Check upstream parsing of technique data")
             continue
 
         technique_bron_id = technique_id_to_bron_id[technique_original_id]
@@ -224,9 +218,7 @@ def add_capec_technique_edges(
     with open(path, "r") as f:
         technique_id_to_bron_id = json.load(f)
 
-    with open(
-        os.path.join(input_data_folder, DESCRIPTION_MAP_PATHS["capec_descriptions"])
-    ) as fd:
+    with open(os.path.join(input_data_folder, DESCRIPTION_MAP_PATHS["capec_descriptions"])) as fd:
         capec_descriptions = json.load(fd)
 
     capec_id_to_bron_id = {}
@@ -255,9 +247,7 @@ def add_capec_technique_edges(
             logging.warning(
                 f"CAPEC {capec_original_id} linking to {attack_map[capec_original_id]} does not exist as a node"
             )
-            missing_capec_technique[capec_original_id].append(
-                attack_map[capec_original_id]
-            )
+            missing_capec_technique[capec_original_id].append(attack_map[capec_original_id])
             continue
 
         capec_bron_id = capec_id_to_bron_id[capec_original_id]
@@ -292,9 +282,7 @@ def add_capec_cwe_edges(
     with open(path, "r") as json_file:
         capec_id_to_bron_id = json.load(json_file)
 
-    with open(
-        os.path.join(input_data_folder, DESCRIPTION_MAP_PATHS["cwe_descriptions"])
-    ) as fd:
+    with open(os.path.join(input_data_folder, DESCRIPTION_MAP_PATHS["cwe_descriptions"])) as fd:
         cwe_descriptions = json.load(fd)
 
     cwe_id_to_bron_id = {}
@@ -385,9 +373,7 @@ def add_cve_cpe_cwe(
             if not cwe.isalpha():
                 if cwe_original_id not in cwe_id_to_bron_id:
                     # TODO handle CWE view and categories
-                    logging.warning(
-                        f"CWE {cwe_original_id} linking CVE {cve} does not exist"
-                    )
+                    logging.warning(f"CWE {cwe_original_id} linking CVE {cve} does not exist")
                     missing_cwe_cve[cwe_original_id].append(cve)
                     continue
 

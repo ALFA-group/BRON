@@ -28,9 +28,7 @@ def parse_capec_xml_to_csv(capec_xml_file: str, save_path: str) -> None:
     els = root.findall("./capec-3:Attack_Patterns/capec-3:Attack_Pattern", ns)
     for el in els:
         if el.attrib["Status"] == "Deprecated":
-            logging.info(
-                f"Deprecated CAPEC entry {el.attrib['ID']} {el.attrib['Name']}"
-            )
+            logging.info(f"Deprecated CAPEC entry {el.attrib['ID']} {el.attrib['Name']}")
             continue
 
         # TODO read from schema
@@ -79,9 +77,7 @@ def parse_capec_xml_to_csv(capec_xml_file: str, save_path: str) -> None:
 
         # TODO the CanPrecede relation (this is difficult in a property graph, but more useful in a knowledge graph)
         # Related Attack Patterns
-        ms = el.findall(
-            "./capec-3:Related_Attack_Patterns/capec-3:Related_Attack_Pattern", ns
-        )
+        ms = el.findall("./capec-3:Related_Attack_Patterns/capec-3:Related_Attack_Pattern", ns)
         for m in ms:
             nature = m.attrib["Nature"]
             if nature in ("ChildOf", "ParentOf"):
@@ -109,9 +105,7 @@ def parse_capec_xml_to_csv(capec_xml_file: str, save_path: str) -> None:
 
         ds = el.findall("./capec-3:Resources_Required/capec-3:Resource", ns)
         for d in ds:
-            values["Resources Required"].append(
-                d.text.strip() if d.text is not None else ""
-            )
+            values["Resources Required"].append(d.text.strip() if d.text is not None else "")
 
         ds = el.findall("./capec-3:Consequences/capec-3:Consequence", ns)
         for d in ds:
@@ -127,9 +121,7 @@ def parse_capec_xml_to_csv(capec_xml_file: str, save_path: str) -> None:
 
     assert os.path.exists(file_name)
 
-    els = root.findall(
-        "./capec-3:External_References/capec-3:External_Reference/capec-3:URL", ns
-    )
+    els = root.findall("./capec-3:External_References/capec-3:External_Reference/capec-3:URL", ns)
     for el in els:
         text = el.text
         if text is not None and text.strip():
@@ -242,9 +234,7 @@ def parse_cwe_xml_to_csv(cwe_file: str, save_path: str, download_path: str) -> N
                     internal_links[el.attrib["ID"]].add(m.attrib["CWE_ID"])
 
         ds = el.findall("./cwe-6:Applicable_Platforms/cwe-6:Language", ns)
-        values["Applicable Platforms"] = [
-            _.attrib["Class"] for _ in ds if "Class" in _.attrib
-        ]
+        values["Applicable Platforms"] = [_.attrib["Class"] for _ in ds if "Class" in _.attrib]
 
         ds = el.findall("./cwe-6:Common_Consequences/cwe-6:Consequence", ns)
         for d in ds:
@@ -263,9 +253,7 @@ def parse_cwe_xml_to_csv(cwe_file: str, save_path: str, download_path: str) -> N
 
     assert os.path.exists(file_name)
 
-    els = root.findall(
-        "./cwe-6:External_References/cwe-6:External_Reference/cwe-6:URL", ns
-    )
+    els = root.findall("./cwe-6:External_References/cwe-6:External_Reference/cwe-6:URL", ns)
     for el in els:
         text = el.text
         if text is not None and text.strip():
@@ -383,12 +371,8 @@ if __name__ == "__main__":
     )
 
     parser = argparse.ArgumentParser(description="Parse raw_CAPEC.json and raw_CWE.zip")
-    parser.add_argument(
-        "--capec_file", type=str, required=True, help="File path to raw_CAPEC.json"
-    )
-    parser.add_argument(
-        "--cwe_file", type=str, required=True, help="File path to raw_CWE.zip"
-    )
+    parser.add_argument("--capec_file", type=str, required=True, help="File path to raw_CAPEC.json")
+    parser.add_argument("--cwe_file", type=str, required=True, help="File path to raw_CWE.zip")
     parser.add_argument(
         "--save_path", type=str, required=True, help="Folder path to save parsed data"
     )
