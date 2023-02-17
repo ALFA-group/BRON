@@ -43,9 +43,7 @@ def parse_args(args: List[str]) -> Dict[str, Any]:
     parser = argparse.ArgumentParser(description="Query Engage and BRON")
     parser.add_argument("--username", type=str, default=GUEST, help="DB username")
     parser.add_argument("--password", type=str, default=GUEST, help="DB password")
-    parser.add_argument(
-        "--ip", type=str, default="bron.alfa.csail.mit.edu", help="DB IP address"
-    )
+    parser.add_argument("--ip", type=str, default="bron.alfa.csail.mit.edu", help="DB IP address")
     parser.add_argument(
         "--network_description_file",
         type=str,

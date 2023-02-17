@@ -14,6 +14,7 @@ from mitigations.query_d3fend import (
     find_mitigation_label,
     find_techniques_from_mitigations,
     find_mitigations,
+    find_mitigation_comment,
 )
 from graph_db.bron_arango import (
     DB,
@@ -32,9 +33,7 @@ D3FEND_ONTOLOGY_OWL = "https://d3fend.mitre.org/ontologies/d3fend.owl"
 D3FEND_ONTOLOGY_TTL = "https://d3fend.mitre.org/ontologies/d3fend.ttl"
 OUT_DIR = "data/mitigations/d3fend"
 D3FEND_MITIGATION_COLLECTION = "d3fend_mitigation"
-D3FEND_MITIGATIONS_FILE_PATH = os.path.join(
-    OUT_DIR, f"{D3FEND_MITIGATION_COLLECTION}.json"
-)
+D3FEND_MITIGATIONS_FILE_PATH = os.path.join(OUT_DIR, f"{D3FEND_MITIGATION_COLLECTION}.json")
 D3FEND_MITIGATIONS_TECHNIQUE_COLLECTION_KEYS = ("d3fend_mitigation", "technique")
 D3FEND_MITIGATIONS_TECHNIQUE_COLLECTION = get_edge_collection_name(
     *D3FEND_MITIGATIONS_TECHNIQUE_COLLECTION_KEYS
@@ -82,9 +81,7 @@ def _download_ontologies():
         logging.info(f"Store {ontology} to {file_path}")
 
 
-def update_BRON_graph_db(
-    username: str, password: str, ip: str, validation: bool = False
-) -> None:
+def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool = False) -> None:
     logging.info(f"Begin update of {ip} with D3FEND")
     g = rdflib.Graph()
     _ = g.parse(D3FEND_ONTOLOGY_TTL, format="turtle")
@@ -102,12 +99,14 @@ def update_BRON_graph_db(
     for cnt, mitigation_id in enumerate(mitigation_ids):
         mitigation = mitigations[mitigation_id]
         label = find_mitigation_label(mitigation, g)
+        comment = find_mitigation_comment(mitigation, g)
         graph_db_id = f"{D3FEND_MITIGATION_COLLECTION}_{cnt:05}"
         entry = {
             "_key": graph_db_id,
             "name": str(label),
-            "metadata": {"d3fend-id": str(mitigation_id)},
-            "original_id": str(mitigation),
+            # TODO add description
+            "metadata": {"description": comment},
+            "original_id": str(mitigation_id),
             "datatype": D3FEND_MITIGATION_COLLECTION,
         }
         if validation:
@@ -171,9 +170,7 @@ def update_BRON_graph_db(
         False,
         D3FEND_MITIGATION_COLLECTION,
     )
-    update_graph_in_graph_db(
-        username, password, ip, collection_name=D3FEND_MITIGATION_COLLECTION
-    )
+    update_graph_in_graph_db(username, password, ip, collection_name=D3FEND_MITIGATION_COLLECTION)
     import_into_arango(
         username,
         password,

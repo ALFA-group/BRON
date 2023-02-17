@@ -7,8 +7,8 @@ import json
 
 import arango
 import pandas as pd
-from graph_db.bron_arango import get_schema, get_schemas, validate_entry
 
+from graph_db.bron_arango import get_schema, get_schemas, validate_entry
 from mitigations.capec_mitigations import clean_BRON_mitigation
 from mitigations.cwe_mitigations import query_bron
 import utils.mitigation_utils as mitigation_utils
@@ -29,9 +29,7 @@ mitigation_utils.get_mitigation_collection_names_wrapper(
 )
 
 
-def _make_bron_data(
-    save_path: str, username: str, password: str, ip: str, validation: bool = True
-):
+def _make_bron_data(save_path: str, username: str, password: str, ip: str, validation: bool = True):
     logging.info(f"Begin technique mitgations for BRON for {ip}")
     client = arango.ArangoClient(hosts=f"http://{ip}:8529")
     db = client.db("BRON", username=username, password=password, auth_method="basic")
@@ -122,9 +120,7 @@ def _make_bron_data(
 
     client.close()
     for key, value in TECHNIQUE_MITIGATION_BRON_DATA.items():
-        file_path = os.path.join(
-            TECHNIQUE_MITIGATION_OUT_DATA_DIR, f"import_{key}.jsonl"
-        )
+        file_path = os.path.join(TECHNIQUE_MITIGATION_OUT_DATA_DIR, f"import_{key}.jsonl")
         with open(file_path, "w") as fd:
             for line in value:
                 json.dump(line, fd)
@@ -149,9 +145,7 @@ def clean_BRON_technique_mitigation(username: str, password: str, ip: str) -> No
     clean_BRON_mitigation(username, password, ip, TECHNIQUE_MITIGATION_BRON_DATA)
 
 
-def main(
-    save_path: str, username: str, password: str, ip: str, validation: bool = True
-):
+def main(save_path: str, username: str, password: str, ip: str, validation: bool = True):
     os.makedirs(TECHNIQUE_MITIGATION_OUT_DATA_DIR, exist_ok=True)
     _make_bron_data(save_path, username, password, ip, validation)
 

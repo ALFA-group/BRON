@@ -1,3 +1,4 @@
+import subprocess
 from typing import Dict, List, Optional, Tuple, Any
 import os
 import json
@@ -6,6 +7,7 @@ import argparse
 import logging
 
 import arango
+from arango.http import DefaultHTTPClient
 import jsonschema
 from tqdm import tqdm
 
@@ -25,6 +27,13 @@ EDGE_KEYS = (
     ("cve", "cpe"),
 )
 SCHEMA_FOLER = "graph_db/schemas"
+DOWNLOAD_PATH = "data/BRON_collection_downloads"
+
+
+class NoTimeoutHttpClient(DefaultHTTPClient):
+    """Extend the default arango http client, to remove timeouts for bulk data."""
+
+    REQUEST_TIMEOUT = None
 
 
 def get_edge_keys() -> List[Tuple[str, str]]:
@@ -79,9 +88,7 @@ def main(
     edge_file_handles = {}
     for edge_key in edge_keys:
         edge_collection_key = get_edge_collection_name(*edge_key)
-        edge_file_handles[edge_collection_key] = open(
-            f"{edge_collection_key}.json", "w"
-        )
+        edge_file_handles[edge_collection_key] = open(f"{edge_collection_key}.json", "w")
         logging.info(f"Done: {edge_collection_key}")
 
     node_file_handles = {}
@@ -163,9 +170,7 @@ def get_edge_collection_name(from_collection: str, to_collection: str) -> str:
 def create_db(username: str, password: str, ip: str) -> None:
     host = HOST.format(ip)
     client = arango.ArangoClient(hosts=host)
-    sys_db = client.db(
-        "_system", username=username, password=password, auth_method="basic"
-    )
+    sys_db = client.db("_system", username=username, password=password, auth_method="basic")
     if not sys_db.has_database(DB):
         sys_db.create_database(DB)
         logging.info(f"Created {DB} at {host}")
@@ -176,9 +181,7 @@ def create_db(username: str, password: str, ip: str) -> None:
 def create_guest_user(username: str, password: str, ip: str) -> None:
     host = HOST.format(ip)
     client = arango.ArangoClient(hosts=host)
-    sys_db = client.db(
-        "_system", username=username, password=password, auth_method="basic"
-    )
+    sys_db = client.db("_system", username=username, password=password, auth_method="basic")
     if not sys_db.has_user(GUEST):
         sys_db.create_user(username=GUEST, password=GUEST)
         logging.info(f"Created user {GUEST} at {HOST} in {DB}")
@@ -226,9 +229,40 @@ def arango_import(username: str, password: str, ip: str) -> None:
             logging.info(f"Imported {name} from {file_} to {DB} on {ip}")
 
 
-def network_import(
-    network_import_file: str, username: str, password: str, ip: str
+def arango_import_collection(
+    username: str, password: str, ip: str, name: str, file_: str, edge: bool
 ) -> None:
+    logging.info(f"BEGIN Import {name} from {file_} to {DB} on {ip} edge {edge}")
+    cmd = [
+        "arangoimport",
+        "--collection",
+        name,
+        "--create-collection",
+        "true",
+        "--file",
+        file_,
+        "--type",
+        "jsonl",
+        "--server.password",
+        password,
+        "--server.database",
+        DB,
+        "--server.endpoint",
+        f"http+tcp://{ip}:8529",
+        "--server.authentication",
+        "false",
+        "--on-duplicate",
+        "ignore",
+    ]
+    if edge:
+        cmd += ["--create-collection-type", "edge"]
+
+    cmd_str = " ".join(cmd)
+    os.system(cmd_str)
+    logging.info(f"Imported {name} from {file_} to {DB} on {ip}")
+
+
+def network_import(network_import_file: str, username: str, password: str, ip: str) -> None:
     # TODO what is a good network file format... Now it is home made...
     with open(network_import_file, "r") as fd:
         network = json.load(fd)
@@ -284,10 +318,69 @@ def validate_entry(entry: Dict[str, Any], schema: Dict[str, Any]) -> None:
     try:
         jsonschema.validate(instance=entry, schema=schema)
     except jsonschema.exceptions.ValidationError as err:
-        logging.error(
-            f"Invalid json for {entry} for schema {schema['title']}. Error:\n{err}"
-        )
+        logging.error(f"Invalid json for {entry} for schema {schema['title']}. Error:\n{err}")
         raise jsonschema.exceptions.ValidationError(err)
+
+
+def download_collections_wrapper(username: str, password: str, ip: str, **kwargs) -> None:
+    logging.info(f"Begin download all collections")
+    with open("graph_db/schema.json", "r") as fd:
+        schema = json.load(fd)
+
+    _collections = []
+    for collections in schema.values():
+        _collections.extend(collections)
+
+    download_collections(username, password, ip, _collections)
+    logging.info(f"Done download all collections")
+
+
+def download_collections(
+    username: str,
+    password: str,
+    ip: str,
+    collections: List[str],
+    download_path: str = DOWNLOAD_PATH,
+) -> None:
+    logging.info(
+        f"Begin download collections {collections} to {download_path} for {username} from {ip}"
+    )
+    os.makedirs(download_path, exist_ok=True)
+    logging.info(f"Begin downlaod from {ip}")
+    for collection_name in tqdm(collections):
+        cmd = [
+            "arangoexport",
+            "--collection",
+            collection_name,
+            "--type",
+            "jsonl",
+            "--output-directory",
+            download_path,
+            "--server.password",
+            password,
+            "--server.database",
+            DB,
+            "--server.endpoint",
+            f"http+tcp://{ip}:8529",
+            "--server.authentication",
+            "false",
+            "--overwrite",
+            "true",
+        ]
+        subprocess.run(cmd)
+        assert os.path.exists(os.path.join(download_path, f"{collection_name}.jsonl"))
+
+    logging.info(f"End download from {ip} to {download_path}")
+
+
+def get_bron_db(
+    username: str,
+    password: str,
+    ip: str,
+) -> "arnago.Client":
+    logging.info(f"Get {DB} from {ip} for {username}")
+    client = arango.ArangoClient(hosts=f"http://{ip}:8529", http_client=NoTimeoutHttpClient())
+    return client
 
 
 if __name__ == "__main__":
@@ -313,10 +406,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--network_import", type=str, default="", help="Import a network description."
     )
-    parser.add_argument(
-        "--create_guest_user", action="store_true", help="Create guest user"
-    )
+    parser.add_argument("--create_guest_user", action="store_true", help="Create guest user")
     parser.add_argument("--create_db", action="store_true", help="Create BRON db")
+    parser.add_argument("--download", action="store_true", help="Download BRON db")
     parser.add_argument(
         "--same_datasource_links",
         action="store_true",
@@ -329,6 +421,8 @@ if __name__ == "__main__":
         network_import(args.network_import, args.username, args.password, args.ip)
     elif args.create_db:
         create_db(args.username, args.password, args.ip)
+    elif args.download:
+        download_collections_wrapper(args.username, args.password, args.ip)
     elif not args.arango_import:
         main(args.f, args.username, args.password, args.ip)
     elif args.same_datasource_links:

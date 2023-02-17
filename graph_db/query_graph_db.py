@@ -3,17 +3,19 @@ import os
 import collections
 import sys
 from dataclasses import dataclass
-from typing import Dict, Any, List, Set
+from typing import Dict, Any, List, Optional, Set
 import argparse
 import logging
 
 import requests
 import arango
+import pandas as pd
 
 from utils.bron_utils import get_csv_data
 from graph_db.bron_arango import (
     DB,
     GRAPH,
+    get_bron_db,
     get_edge_collection_name,
     EDGE_KEYS,
 )
@@ -80,9 +82,7 @@ def get_connections(
     connections = collections.defaultdict(set)
     client = arango.ArangoClient(hosts=f"http://{ip}:8529")
     db = client.db(DB, username=username, password=password, auth_method="basic")
-    edge_collections = [
-        get_edge_collection_name(*_) for _ in EDGE_KEYS if collection_name in _
-    ]
+    edge_collections = [get_edge_collection_name(*_) for _ in EDGE_KEYS if collection_name in _]
     assert 1 <= len(edge_collections) <= 2
     for starting_point in starting_points:
         # TODO not getting inbound outbound right... Comes from how data is added to arangodb
@@ -95,9 +95,7 @@ def get_connections(
                 cursor = db.aql.execute(query)
                 documents = set()
                 for document in cursor:
-                    d = Document(
-                        document["datatype"], document["original_id"], document["name"]
-                    )
+                    d = Document(document["datatype"], document["original_id"], document["name"])
                     documents.add(d)
                 connections[starting_point].update(documents)
 
@@ -111,9 +109,7 @@ def get_connection_counts(
     ip: str,
     password: str,
 ) -> Dict[str, Dict[str, int]]:
-    connections = get_connections(
-        starting_points, collection_name, username, ip, password
-    )
+    connections = get_connections(starting_points, collection_name, username, ip, password)
     connection_counts = {}
     for key, values in connections.items():
         connection_counts[key] = collections.defaultdict(int)
@@ -209,9 +205,7 @@ def traverse_graph_from_original_id(
             continue
 
         # TODO Should get only one document
-        logging.info(
-            f"{collection_name} {starting_point} {start_vertex} for {direction}"
-        )
+        logging.info(f"{collection_name} {starting_point} {start_vertex} for {direction}")
         try:
             # TODO inbound edges and depth, can be costly for CVE
             # TODO make bespoke AQL queries
@@ -243,14 +237,51 @@ def traverse_graph_from_original_id(
     return data
 
 
+def query_bron_paths(
+    username: str,
+    password: str,
+    ip: str,
+    query_template: str,
+    src_collection: str,
+    values: List[str],
+    n_exemplars: Optional[int] = None,
+):
+    client = get_bron_db(username, password, ip)
+    db = client.db(
+        DB,
+        username=username,
+        password=password,
+        auth_method="basic",
+        verify=True,
+    )
+    paths = []
+    for record in values:
+        if n_exemplars is not None and len(paths) > n_exemplars:
+            break
+        query = query_template.format(src_id=record)
+        assert db.aql.validate(query), query
+        cursor = db.aql.execute(query)
+        for result in cursor:
+            entry = {}
+            entry[src_collection] = record
+            entry["cvss"] = result["cvss"]
+            for i, datatype in enumerate(result["collections"]):
+                entry[datatype] = result["_ids"][i]
+
+            paths.append(entry)
+
+    client.close()
+
+    _df = pd.DataFrame(paths)
+    return _df
+
+
 def main(**kwargs: Dict[str, Any]) -> None:
     starting_point_file, starting_point_type, password, ip, username = kwargs.values()
     starting_points = get_csv_data(starting_point_file)
 
     # Traverse graph
-    data = get_graph_traversal(
-        starting_points.keys(), starting_point_type, username, ip, password
-    )
+    data = get_graph_traversal(starting_points.keys(), starting_point_type, username, ip, password)
 
     # Get queries from file
     data = get_connection_counts(

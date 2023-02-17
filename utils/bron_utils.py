@@ -1,18 +1,8 @@
 import json
-import csv
-import gzip
-import re
-
 import networkx as nx
 
 
 UNIQUE_ID = 0
-ta_re_pattern = "TA00\d{2}"
-ta_prog = re.compile(ta_re_pattern)
-t_re_pattern = "(T\d{4}(\.\d{3})?)"
-t_prog = re.compile(t_re_pattern)
-cve_re_pattern = "CVE-\d{4}-\d{4,7}"
-cve_prog = re.compile(cve_re_pattern)
 
 
 def get_unique_id():

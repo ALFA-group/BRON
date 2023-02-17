@@ -149,9 +149,7 @@ def _download_engage():
         logging.info(f"Stored: {file_path}")
 
 
-def update_BRON_graph_db(
-    username: str, password: str, ip: str, validation: bool = True
-) -> None:
+def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool = True) -> None:
     logging.info(f"Begin update graph db at {ip} with engage")
     client = arango.ArangoClient(hosts=f"http://{ip}:8529")
     db = client.db("BRON", username=username, password=password, auth_method="basic")
@@ -209,9 +207,7 @@ def update_BRON_graph_db(
                                 _to = f"{collection_names[1]}/{bron_id_map[vals[1][1]]}"
                             else:
                                 _to = f"{vals[idx][1]}"
-                                _from = (
-                                    f"{collection_names[0]}/{bron_id_map[vals[0][1]]}"
-                                )
+                                _from = f"{collection_names[0]}/{bron_id_map[vals[0][1]]}"
 
                         else:
                             _from = f"{collection_names[0]}/{bron_id_map[vals[0][1]]}"
@@ -274,9 +270,7 @@ def parse_args(args: List[str]) -> Any:
     parser.add_argument("--username", type=str, required=True, help="DB username")
     parser.add_argument("--password", type=str, required=True, help="DB password")
     parser.add_argument("--ip", type=str, required=True, help="DB IP address")
-    parser.add_argument(
-        "--no_download", action="store_true", help="Do not download data"
-    )
+    parser.add_argument("--no_download", action="store_true", help="Do not download data")
     parser.add_argument(
         "--arango_import",
         action="store_true",

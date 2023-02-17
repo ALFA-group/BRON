@@ -16,9 +16,7 @@ class TestBRONGraphDB(unittest.TestCase):
         username = "root"
         ip = str(os.environ.get("BRON_SERVER_IP"))
         client = arango.ArangoClient(hosts=f"http://{ip}:8529")
-        db = client.db(
-            "BRON", username=username, password=password, auth_method="basic"
-        )
+        db = client.db("BRON", username=username, password=password, auth_method="basic")
         db_collections = db.collections()
         client.close()
         expected_collections = set()
@@ -27,9 +25,7 @@ class TestBRONGraphDB(unittest.TestCase):
                 expected_collections.add(element)
 
         expected_collections = set(expected_collections)
-        db_collections = set(
-            [_["name"] for _ in db_collections if not _["name"].startswith("_")]
-        )
+        db_collections = set([_["name"] for _ in db_collections if not _["name"].startswith("_")])
         self.assertTrue(
             len(db_collections - expected_collections) == 0,
             f"{db_collections} != {expected_collections}\nDiff:\n {db_collections - expected_collections}",
@@ -43,9 +39,7 @@ class TestTechniques(unittest.TestCase):
         username = "root"
         ip = str(os.environ.get("BRON_SERVER_IP"))
         client = arango.ArangoClient(hosts=f"http://{ip}:8529")
-        db = client.db(
-            "BRON", username=username, password=password, auth_method="basic"
-        )
+        db = client.db("BRON", username=username, password=password, auth_method="basic")
         technique_ids = set()
         technique_documents = db.collection("technique").all()
         for technique_id in technique_documents:

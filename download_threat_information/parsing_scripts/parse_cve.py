@@ -35,9 +35,7 @@ def parse_cve_file(filename, save_file):
             if "baseMetricV2" in item["impact"]:
                 score = item["impact"]["baseMetricV2"]["cvssV2"]["baseScore"]
             if "baseMetricV3" in item["impact"]:
-                score = (
-                    score + item["impact"]["baseMetricV3"]["cvssV3"]["baseScore"]
-                ) / 2
+                score = (score + item["impact"]["baseMetricV3"]["cvssV3"]["baseScore"]) / 2
 
             # TODO assert more score range
             assert score >= 0
@@ -65,9 +63,7 @@ if __name__ == "__main__":
     )
 
     parser = argparse.ArgumentParser(description="Parse CVE File")
-    parser.add_argument(
-        "--cve_path", type=str, required=True, help="File path to raw_CVE.json.gz"
-    )
+    parser.add_argument("--cve_path", type=str, required=True, help="File path to raw_CVE.json.gz")
     parser.add_argument(
         "--save_path",
         type=str,

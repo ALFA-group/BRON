@@ -140,9 +140,7 @@ def clean_BRON_capec_mitigation(username: str, password: str, ip: str) -> None:
     clean_BRON_mitigation(username, password, ip, CAPEC_MITIGATION_BRON_DATA)
 
 
-def main(
-    capec_file_path: str, username: str, password: str, ip: str, validation: bool = True
-):
+def main(capec_file_path: str, username: str, password: str, ip: str, validation: bool = True):
     os.makedirs(CAPEC_OUT_DATA_DIR, exist_ok=True)
     _make_bron_data(capec_file_path, username, password, ip, validation)
 

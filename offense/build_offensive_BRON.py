@@ -52,9 +52,7 @@ def build_graph(save_path: str, input_data_folder: str, recent_cves: bool = Fals
     tactic_graph = add_tactic_technique_edges(main_graph, input_data_folder, save_path)
     attack_graph = add_capec_technique_edges(tactic_graph, input_data_folder, save_path)
     update_graph = add_capec_cwe_edges(attack_graph, input_data_folder, save_path)
-    final_graph = add_cve_cpe_cwe(
-        update_graph, recent_cves, input_data_folder, save_path
-    )
+    final_graph = add_cve_cpe_cwe(update_graph, recent_cves, input_data_folder, save_path)
     BRON_file_path = os.path.join(save_path, "BRON.json")
     with open(BRON_file_path, "w") as fd:
         json.dump(
@@ -116,12 +114,8 @@ def write_json(data_type_ids: Dict[str, str], save_path: str):
         logging.info(f"Wrote {data_type} to {path}")
 
 
-def add_tactic_technique_edges(
-    graph: "nx.Graph", input_data_folder: str, save_path: str
-) -> "nx.Graph":
-    logging.info(
-        f"Begin adding Tactic and Technique nodes and edges from {input_data_folder}"
-    )
+def add_tactic_technique_edges(graph: "Graph", input_data_folder: str, save_path: str) -> "Graph":
+    logging.info(f"Begin adding Tactic and Technique nodes and edges from {input_data_folder}")
     tactic_map = load_json("tactic_map", input_data_folder)
     technique_names = load_json("technique_names", input_data_folder)
     tactic_names = load_json("tactic_names", input_data_folder)
@@ -130,9 +124,7 @@ def add_tactic_technique_edges(
     ) as fd:
         technique_descriptions = json.load(fd)
 
-    with open(
-        os.path.join(input_data_folder, DESCRIPTION_MAP_PATHS["tactic_descriptions"])
-    ) as fd:
+    with open(os.path.join(input_data_folder, DESCRIPTION_MAP_PATHS["tactic_descriptions"])) as fd:
         tactic_descriptions = json.load(fd)
 
     technique_id_to_bron_id = {}
@@ -187,9 +179,7 @@ def add_tactic_technique_edges(
     for technique in tactic_map:
         technique_original_id = technique
         if not technique_original_id:
-            logging.warning(
-                f"No technique id. Check upstream parsing of technique data"
-            )
+            logging.warning(f"No technique id. Check upstream parsing of technique data")
             continue
 
         technique_bron_id = technique_id_to_bron_id[technique_original_id]
@@ -212,21 +202,15 @@ def add_tactic_technique_edges(
     return graph
 
 
-def add_capec_technique_edges(
-    graph: "nx.Graph", input_data_folder: str, save_path: str
-) -> "nx.Graph":
-    logging.info(
-        f"Begin adding CAPEC and Technique nodes and edges from {input_data_folder}"
-    )
+def add_capec_technique_edges(graph: "Graph", input_data_folder: str, save_path: str) -> "Graph":
+    logging.info(f"Begin adding CAPEC and Technique nodes and edges from {input_data_folder}")
     attack_map = load_json("attack_map", input_data_folder)
     capec_names = load_json("capec_names", input_data_folder)
     path = os.path.join(save_path, BRON_PATH, "technique_id_to_bron_id.json")
     with open(path, "r") as f:
         technique_id_to_bron_id = json.load(f)
 
-    with open(
-        os.path.join(input_data_folder, DESCRIPTION_MAP_PATHS["capec_descriptions"])
-    ) as fd:
+    with open(os.path.join(input_data_folder, DESCRIPTION_MAP_PATHS["capec_descriptions"])) as fd:
         capec_descriptions = json.load(fd)
 
     capec_id_to_bron_id = {}
@@ -255,9 +239,7 @@ def add_capec_technique_edges(
             logging.warning(
                 f"CAPEC {capec_original_id} linking to {attack_map[capec_original_id]} does not exist as a node"
             )
-            missing_capec_technique[capec_original_id].append(
-                attack_map[capec_original_id]
-            )
+            missing_capec_technique[capec_original_id].append(attack_map[capec_original_id])
             continue
 
         capec_bron_id = capec_id_to_bron_id[capec_original_id]
@@ -281,9 +263,7 @@ def add_capec_technique_edges(
     return graph
 
 
-def add_capec_cwe_edges(
-    graph: "nx.Graph", input_data_folder: str, save_path: str
-) -> "nx.Graph":
+def add_capec_cwe_edges(graph: "Graph", input_data_folder: str, save_path: str) -> "Graph":
     logging.info(f"Begin adding CAPEC and CWE nodes and edges from {input_data_folder}")
     # make capec and cwe node and add edge between the two of them
     capec_cwe = load_json("capec_cwe", input_data_folder)
@@ -292,9 +272,7 @@ def add_capec_cwe_edges(
     with open(path, "r") as json_file:
         capec_id_to_bron_id = json.load(json_file)
 
-    with open(
-        os.path.join(input_data_folder, DESCRIPTION_MAP_PATHS["cwe_descriptions"])
-    ) as fd:
+    with open(os.path.join(input_data_folder, DESCRIPTION_MAP_PATHS["cwe_descriptions"])) as fd:
         cwe_descriptions = json.load(fd)
 
     cwe_id_to_bron_id = {}
@@ -337,11 +315,9 @@ def add_capec_cwe_edges(
 
 
 def add_cve_cpe_cwe(
-    graph: "nx.Graph", recent_cves: bool, input_data_folder: str, save_path: str
-) -> "nx.Graph":
-    logging.info(
-        f"Begin adding CVE, CPE and CWE nodes and edges from {input_data_folder}"
-    )
+    graph: "Graph", recent_cves: bool, input_data_folder: str, save_path: str
+) -> "Graph":
+    logging.info(f"Begin adding CVE, CPE and CWE nodes and edges from {input_data_folder}")
     if recent_cves:
         cve_map = load_json("cve_map_last_five_years", input_data_folder)
         logging.info(f"Only recent CVEs")
@@ -385,9 +361,7 @@ def add_cve_cpe_cwe(
             if not cwe.isalpha():
                 if cwe_original_id not in cwe_id_to_bron_id:
                     # TODO handle CWE view and categories
-                    logging.warning(
-                        f"CWE {cwe_original_id} linking CVE {cve} does not exist"
-                    )
+                    logging.warning(f"CWE {cwe_original_id} linking CVE {cve} does not exist")
                     missing_cwe_cve[cwe_original_id].append(cve)
                     continue
 
@@ -418,7 +392,7 @@ def parse_cpe(cpe_string: str) -> Dict[str, str]:
 
 def _add_cpe_node(
     cpe_original_id: str,
-    graph: "nx.Graph",
+    graph: "Graph",
     cpe_id_to_bron_id: Dict[str, str],
     end_point: str,
 ):
