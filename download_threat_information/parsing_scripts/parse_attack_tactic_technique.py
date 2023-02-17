@@ -392,31 +392,7 @@ def parse_attack(file_name: str, save_path: str, domain: str = "mitre-attack", p
                     "description": entry["description"],
                     "id": id_,
                 }
-<<<<<<< HEAD
-                # TODO do not filter here
-                if platform == "cloud":
-                    platform_value = entry.get("x_mitre_platforms", "")
-                    cloud_platform = any([True for _ in platform_value if _ in CLOUD_PLATFORMS])
-                    if cloud_platform:
-                        data_value["metadata"] = {"platform": platform_value}
-                    else:
-                        continue
-
                 values["technique"].append(data_value)
-                # TODO very strict in matching
-                technique_ics_technique_link = _get_technique_ics_technique_links(entry)
-                if technique_ics_technique_link:
-                    values["technique_ics_technique_links"].append(technique_ics_technique_link)
-
-                technique_ics_tactic_link = _get_technique_ics_tactic_links(entry, domain)
-                if technique_ics_tactic_link:
-                    values["technique_tactic_links"].append(
-                        {technique_id: technique_ics_tactic_link}
-                    )
-=======
-
-                values["technique"].append(data_value)
->>>>>>> 061735f (Flake8)
 
                 attack_id_to_technique_id_map[id_] = technique_id
             elif type_ == "x-mitre-tactic":
