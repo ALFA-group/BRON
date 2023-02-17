@@ -273,7 +273,7 @@ def parse_cwe_xml_to_csv(cwe_file: str, save_path: str, download_path: str) -> N
     logging.info(f"Parsed {cwe_file} to {save_path}")
 
 
-def _load_cwe_file(save_path: str) -> "DataFrame":
+def _load_cwe_file(save_path: str) -> "pd.DataFrame":
     file_name = os.path.join(save_path, CWE_XML_FILE_NAME)
     with open(file_name, "r") as fd:
         cwe_data = pd.read_json(fd)
@@ -281,7 +281,7 @@ def _load_cwe_file(save_path: str) -> "DataFrame":
     return cwe_data
 
 
-def _load_capec_file(save_path: str) -> "DataFrame":
+def _load_capec_file(save_path: str) -> "pd.DataFrame":
     file_name = os.path.join(save_path, CAPEC_XML_FILE_NAME)
     with open(file_name, "r") as fd:
         capec_data = pd.read_json(fd)

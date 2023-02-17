@@ -1,3 +1,5 @@
+import gzip
+import csv
 import json
 import networkx as nx
 

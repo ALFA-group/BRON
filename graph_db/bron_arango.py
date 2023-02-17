@@ -377,7 +377,7 @@ def get_bron_db(
     username: str,
     password: str,
     ip: str,
-) -> "arnago.Client":
+) -> "arango.Client":
     logging.info(f"Get {DB} from {ip} for {username}")
     client = arango.ArangoClient(hosts=f"http://{ip}:8529", http_client=NoTimeoutHttpClient())
     return client

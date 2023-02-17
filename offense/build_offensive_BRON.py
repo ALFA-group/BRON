@@ -114,8 +114,12 @@ def write_json(data_type_ids: Dict[str, str], save_path: str):
         logging.info(f"Wrote {data_type} to {path}")
 
 
-def add_tactic_technique_edges(graph: "Graph", input_data_folder: str, save_path: str) -> "Graph":
-    logging.info(f"Begin adding Tactic and Technique nodes and edges from {input_data_folder}")
+def add_tactic_technique_edges(
+    graph: "nx.Graph", input_data_folder: str, save_path: str
+) -> "nx.Graph":
+    logging.info(
+        f"Begin adding Tactic and Technique nodes and edges from {input_data_folder}"
+    )
     tactic_map = load_json("tactic_map", input_data_folder)
     technique_names = load_json("technique_names", input_data_folder)
     tactic_names = load_json("tactic_names", input_data_folder)
@@ -202,8 +206,12 @@ def add_tactic_technique_edges(graph: "Graph", input_data_folder: str, save_path
     return graph
 
 
-def add_capec_technique_edges(graph: "Graph", input_data_folder: str, save_path: str) -> "Graph":
-    logging.info(f"Begin adding CAPEC and Technique nodes and edges from {input_data_folder}")
+def add_capec_technique_edges(
+    graph: "nx.Graph", input_data_folder: str, save_path: str
+) -> "nx.Graph":
+    logging.info(
+        f"Begin adding CAPEC and Technique nodes and edges from {input_data_folder}"
+    )
     attack_map = load_json("attack_map", input_data_folder)
     capec_names = load_json("capec_names", input_data_folder)
     path = os.path.join(save_path, BRON_PATH, "technique_id_to_bron_id.json")
@@ -263,7 +271,9 @@ def add_capec_technique_edges(graph: "Graph", input_data_folder: str, save_path:
     return graph
 
 
-def add_capec_cwe_edges(graph: "Graph", input_data_folder: str, save_path: str) -> "Graph":
+def add_capec_cwe_edges(
+    graph: "nx.Graph", input_data_folder: str, save_path: str
+) -> "nx.Graph":
     logging.info(f"Begin adding CAPEC and CWE nodes and edges from {input_data_folder}")
     # make capec and cwe node and add edge between the two of them
     capec_cwe = load_json("capec_cwe", input_data_folder)
@@ -315,9 +325,11 @@ def add_capec_cwe_edges(graph: "Graph", input_data_folder: str, save_path: str) 
 
 
 def add_cve_cpe_cwe(
-    graph: "Graph", recent_cves: bool, input_data_folder: str, save_path: str
-) -> "Graph":
-    logging.info(f"Begin adding CVE, CPE and CWE nodes and edges from {input_data_folder}")
+    graph: "nx.Graph", recent_cves: bool, input_data_folder: str, save_path: str
+) -> "nx.Graph":
+    logging.info(
+        f"Begin adding CVE, CPE and CWE nodes and edges from {input_data_folder}"
+    )
     if recent_cves:
         cve_map = load_json("cve_map_last_five_years", input_data_folder)
         logging.info(f"Only recent CVEs")
@@ -392,7 +404,7 @@ def parse_cpe(cpe_string: str) -> Dict[str, str]:
 
 def _add_cpe_node(
     cpe_original_id: str,
-    graph: "Graph",
+    graph: "nx.Graph",
     cpe_id_to_bron_id: Dict[str, str],
     end_point: str,
 ):

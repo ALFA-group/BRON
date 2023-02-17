@@ -18,7 +18,7 @@ from graph_db.bron_arango import (
 )
 
 
-def check_duplicates(df: "DataFrame", keys: List[str]):
+def check_duplicates(df: "pd.DataFrame", keys: List[str]):
     original_size = df.shape[1]
     deduplicated_df = df.drop_duplicates(subset=keys)
     deduplicated_size = deduplicated_df.shape[1]
