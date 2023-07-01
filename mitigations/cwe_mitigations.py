@@ -105,18 +105,21 @@ def _make_bron_data(
             cnt += 1
 
             edge_name = "CweCwe_detection"
-            result = query_bron(cwe_bron, {"original_id": str(value["ID"])})
-            assert (
-                result is not None
-            ), f"ERROR: There must be a CWE that connects to the CWE detection. {entry}"
+            try:
+                result = query_bron(cwe_bron, {"original_id": str(value["ID"])})
+                assert (
+                    result is not None
+                ), f"ERROR: There must be a CWE that connects to the CWE detection. {entry}"
 
-            _to = f"{datatype}/{_id}"
-            _from = result["_id"]
-            entry = {"_id": f"{edge_name}/{_from}-{_to}", "_from": _from, "_to": _to}
-            if validation:
-                validate_entry(entry, schemas[edge_name])
+                _to = f"{datatype}/{_id}"
+                _from = result["_id"]
+                entry = {"_id": f"{edge_name}/{_from}-{_to}", "_from": _from, "_to": _to}
+                if validation:
+                    validate_entry(entry, schemas[edge_name])
 
-            CWE_MITIGATION_BRON_DATA[edge_name].append(entry)
+                CWE_MITIGATION_BRON_DATA[edge_name].append(entry)
+            except AssertionError as e:
+                logging.error(e)
 
     client.close()
     for key, value in CWE_MITIGATION_BRON_DATA.items():
