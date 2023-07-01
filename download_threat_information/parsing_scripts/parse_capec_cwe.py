@@ -15,6 +15,7 @@ CWE_CWE_LINK_FILE_NAME = "cwe_cwe_map.json"
 CAPEC_XML_FILE_NAME = "capec_from_xml.json"
 CAPEC_EXTERNAL_REF_FILE_NAME = "capec_external_references.json"
 CAPEC_CAPEC_LINK_FILE_NAME = "capec_capec_map.json"
+CWE_VERSION_TAG = "cwe-7"
 
 
 def parse_capec_xml_to_csv(capec_xml_file: str, save_path: str) -> None:
@@ -157,7 +158,7 @@ def parse_cwe_xml_to_csv(cwe_file: str, save_path: str, download_path: str) -> N
     cwe_xml_file = os.path.join(download_path, files[0])
     internal_links = collections.defaultdict(set)
     data = {"Weaknesses": [], "External References": set()}
-    ns = {"cwe-6": "http://cwe.mitre.org/cwe-6"}
+    ns = {CWE_VERSION_TAG: f"http://cwe.mitre.org/{CWE_VERSION_TAG}"}
     INFO = {
         "Mitigation": ("Phase", "Description"),
         "Detection": ("Method", "Description"),
@@ -165,7 +166,7 @@ def parse_cwe_xml_to_csv(cwe_file: str, save_path: str, download_path: str) -> N
     # Parsing the XML file
     xmlparse = Xet.parse(cwe_xml_file)
     root = xmlparse.getroot()
-    els = root.findall("./cwe-6:Weaknesses/cwe-6:Weakness", ns)
+    els = root.findall(f"./{CWE_VERSION_TAG}:Weaknesses/{CWE_VERSION_TAG}:Weakness", ns)
     for el in els:
         if el.attrib["Status"] == "Deprecated":
             logging.info(f"Deprecated CWE entry {el.attrib['ID']} {el.attrib['Name']}")
@@ -182,20 +183,20 @@ def parse_cwe_xml_to_csv(cwe_file: str, save_path: str, download_path: str) -> N
         }
         data["Weaknesses"].append(values)
         # TODO use findtext
-        d = el.find("./cwe-6:Description", ns)
+        d = el.find(f"./{CWE_VERSION_TAG}:Description", ns)
         values["Description"] = d.text if d is not None else ""
-        d = el.find("./cwe-6:Extended_Description", ns)
+        d = el.find(f"./{CWE_VERSION_TAG}:Extended_Description", ns)
         values["Extended_Description"] = d.text if d is not None else ""
-        ds = el.findall("./cwe-6:Background_Details/cwe-6:Background_Detail", ns)
+        ds = el.findall(f"./{CWE_VERSION_TAG}:Background_Details/{CWE_VERSION_TAG}:Background_Detail", ns)
         values["Background Details"] = ""
         if ds:
             values["Background Details"] = "\n".join([_.text.strip() for _ in ds])
 
-        ms = el.findall("./cwe-6:Potential_Mitigations/cwe-6:Mitigation", ns)
+        ms = el.findall(f"./{CWE_VERSION_TAG}:Potential_Mitigations/{CWE_VERSION_TAG}:Mitigation", ns)
         for m in ms:
             info = {"Phase": "NA"}
             for tag in INFO["Mitigation"]:
-                match = m.find(f"./cwe-6:{tag}", namespaces=ns)
+                match = m.find(f"./{CWE_VERSION_TAG}:{tag}", namespaces=ns)
                 if match is not None:
                     if tag == "Description":
                         text = "".join(match.itertext())
@@ -207,11 +208,11 @@ def parse_cwe_xml_to_csv(cwe_file: str, save_path: str, download_path: str) -> N
                 assert len(info) == len(INFO["Mitigation"])
                 values["Potential Mitigations"].append(info)
 
-        ms = el.findall("./cwe-6:Detection_Methods/cwe-6:Detection_Method", ns)
+        ms = el.findall(f"./{CWE_VERSION_TAG}:Detection_Methods/{CWE_VERSION_TAG}:Detection_Method", ns)
         for m in ms:
             info = {}
             for tag in INFO["Detection"]:
-                match = m.find(f"./cwe-6:{tag}", namespaces=ns)
+                match = m.find(f"./{CWE_VERSION_TAG}:{tag}", namespaces=ns)
                 if match is not None:
                     if tag == "Description":
                         text = "".join(match.itertext())
@@ -224,7 +225,7 @@ def parse_cwe_xml_to_csv(cwe_file: str, save_path: str, download_path: str) -> N
                 values["Detection Methods"].append(info)
 
         # Related Attack Patterns
-        ms = el.findall("./cwe-6:Related_Weaknesses/cwe-6:Related_Weakness", ns)
+        ms = el.findall(f"./{CWE_VERSION_TAG}:Related_Weaknesses/{CWE_VERSION_TAG}:Related_Weakness", ns)
         for m in ms:
             nature = m.attrib["Nature"]
             if nature in ("ChildOf", "ParentOf"):
@@ -233,18 +234,18 @@ def parse_cwe_xml_to_csv(cwe_file: str, save_path: str, download_path: str) -> N
                 else:
                     internal_links[el.attrib["ID"]].add(m.attrib["CWE_ID"])
 
-        ds = el.findall("./cwe-6:Applicable_Platforms/cwe-6:Language", ns)
+        ds = el.findall(f"./{CWE_VERSION_TAG}:Applicable_Platforms/{CWE_VERSION_TAG}:Language", ns)
         values["Applicable Platforms"] = [_.attrib["Class"] for _ in ds if "Class" in _.attrib]
 
-        ds = el.findall("./cwe-6:Common_Consequences/cwe-6:Consequence", ns)
+        ds = el.findall(f"./{CWE_VERSION_TAG}:Common_Consequences/{CWE_VERSION_TAG}:Consequence", ns)
         for d in ds:
             info = {}
             values["Common Consequences"].append(info)
             for t in d:
-                key = _remove_namespace(t.tag, ns["cwe-6"])
+                key = _remove_namespace(t.tag, ns[CWE_VERSION_TAG])
                 info[key] = t.text
 
-        ds = el.find("./cwe-6:Likelihood_Of_Exploit", ns)
+        ds = el.find(f"./{CWE_VERSION_TAG}:Likelihood_Of_Exploit", ns)
         values["Likelihood of Exploit"] = ds.text if ds is not None else ""
 
     file_name = os.path.join(save_path, CWE_XML_FILE_NAME)
@@ -253,7 +254,7 @@ def parse_cwe_xml_to_csv(cwe_file: str, save_path: str, download_path: str) -> N
 
     assert os.path.exists(file_name)
 
-    els = root.findall("./cwe-6:External_References/cwe-6:External_Reference/cwe-6:URL", ns)
+    els = root.findall(f"./{CWE_VERSION_TAG}:External_References/{CWE_VERSION_TAG}:External_Reference/{CWE_VERSION_TAG}:URL", ns)
     for el in els:
         text = el.text
         if text is not None and text.strip():
