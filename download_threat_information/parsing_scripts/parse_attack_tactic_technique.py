@@ -7,8 +7,10 @@ import collections
 from typing import Dict, Any
 
 import stix2
+import pandas as pd
 
 from offense.build_offensive_BRON import DESCRIPTION_MAP_PATHS, NAME_MAP_PATHS
+from download_threat_information.parsing_scripts.parse_capec_cwe import load_capec_file
 
 
 # TODO refactor separation of mitigation and attacks. I.e. BRON is attacks, then extension is mitigations which should be separable
@@ -23,7 +25,6 @@ TECHNIQUE_MITIGATION_VALUES = (
 def link_tactic_techniques(file_name_: str, save_path: str):
     logging.info(f"Begin link ATT&CK Tactic and Technique in {file_name_}")
     technique_tactic_dict = {}
-    capec_technique_dict = {}
     technique_id_name_dict = {}
     tactic_id_name_dict = {}
     tactic_descriptions = {}
@@ -49,14 +50,7 @@ def link_tactic_techniques(file_name_: str, save_path: str):
                         if "url" in ref.keys():
                             if "https://attack.mitre.org/techniques/" in ref["url"]:
                                 technique_id = ref["external_id"]
-                            if ref["source_name"] == "capec":
-                                capec_id = ref["external_id"]
-                                split = capec_id.split("-")
-                                if split[1] not in capec_technique_dict.keys():
-                                    capec_technique_dict[split[1]] = [technique_id]
-                                else:
-                                    capec_technique_dict[split[1]].append(technique_id)
-
+                                
             if entry_id.startswith("x-mitre-tactic--"):
                 # TODO messy
                 external_id = entry["external_references"][0]["external_id"]
@@ -92,7 +86,6 @@ def link_tactic_techniques(file_name_: str, save_path: str):
                 technique_tactic_dict[technique_id] = list(tactics_set)
 
     save_files = {
-        NAME_MAP_PATHS["attack_map"]: capec_technique_dict,
         NAME_MAP_PATHS["tactic_map"]: technique_tactic_dict,
         NAME_MAP_PATHS["technique_names"]: technique_id_name_dict,
         NAME_MAP_PATHS["tactic_names"]: tactic_id_name_dict,
@@ -107,6 +100,14 @@ def link_tactic_techniques(file_name_: str, save_path: str):
 
         assert os.path.exists(file_path)
         logging.info(f"Wrote to disk: {file_name_}")
+
+
+def load_technique_file(save_path: str) -> Dict[str, str]:
+    file_name = os.path.join(save_path, NAME_MAP_PATHS["technique_names"])
+    with open(file_name, "r") as fd:
+        technique_data = json.load(fd)
+
+    return technique_data
 
 
 def _get_attack_id(entry: Dict[str, Any]) -> str:
@@ -319,6 +320,29 @@ def link_technique_technique(file_path: str, save_path: str):
     )
 
 
+def link_capec_technique(save_path: str):
+    logging.info(f"Begin linking capec to technique from {save_path}")
+    capec_objects = load_capec_file(save_path)
+    techniques = load_technique_file(save_path)
+    capec_technique_dict = collections.defaultdict(list)
+    for row in capec_objects.iterrows():
+        capec_entry = row[1]
+        capec_id = capec_entry["ID"]
+        technique_maps = capec_entry["Taxonomy_Mappings"]
+        for technique_map in technique_maps:
+            assert not technique_map.startswith("T")
+            technique_id = f"T{technique_map}"
+            if technique_id in techniques.keys():
+                capec_technique_dict[capec_id].append(technique_id)
+
+    assert len(capec_technique_dict) > 0
+    out_file = os.path.join(save_path, NAME_MAP_PATHS["attack_map"])
+    with open(out_file, "w") as fd:
+        fd.write(json.dumps(capec_technique_dict, indent=4, sort_keys=True))
+
+    logging.info(f"End linking CAPEC to technique to {out_file}")
+
+    
 def parse_attack(file_name: str, save_path: str, domain: str = "mitre-attack", platform: str = ""):
     logging.info(f"Begin parse ATT&CK data from {file_name}")
     # TODO for handling of bronsprak
@@ -512,4 +536,5 @@ if __name__ == "__main__":
         link_technique_technique(args.filename, args.save_path)
         sys.exit(0)
 
-    link_tactic_techniques(args.filename, args.save_path)
+    link_capec_technique(args.save_path)
+    link_tactic_techniques(args.filename, args.save_path)    
