@@ -104,6 +104,10 @@ def _parse():
         os.path.join(DOWNLOAD_PATH, "raw_enterprise_attack.json"), BRON_SAVE_PATH
     )
     logging.info("Linked Techniques")
+    parse_attack.link_capec_technique(
+        BRON_SAVE_PATH
+    )
+    logging.info("Linked CAPEC and Techniques")
 
 
 def _build():

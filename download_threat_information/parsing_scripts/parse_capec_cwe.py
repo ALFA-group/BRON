@@ -139,7 +139,7 @@ def parse_capec_xml_to_csv(capec_xml_file: str, save_path: str) -> None:
         data_ = dict([(k, list(v)) for k, v in internal_links.items()])
         json.dump(data_, fd, indent=1)
 
-    logging.info(f"Parsd CAPEC {capec_xml_file} to {save_path}")
+    logging.info(f"Parsed CAPEC {capec_xml_file} to {save_path}")
 
 
 def _remove_namespace(tag: str, namespace: str) -> str:
@@ -282,7 +282,7 @@ def _load_cwe_file(save_path: str) -> "pd.DataFrame":
     return cwe_data
 
 
-def _load_capec_file(save_path: str) -> "pd.DataFrame":
+def load_capec_file(save_path: str) -> "pd.DataFrame":
     file_name = os.path.join(save_path, CAPEC_XML_FILE_NAME)
     with open(file_name, "r") as fd:
         capec_data = pd.read_json(fd)
@@ -302,7 +302,7 @@ def parse_capec_cwe_files(save_path):
     }
 
     # Load CAPEC and CWE data
-    capec_objects = _load_capec_file(save_path)
+    capec_objects = load_capec_file(save_path)
     cwe_data = _load_cwe_file(save_path)
     # Make capec_names_dict
     for row in capec_objects.iterrows():
