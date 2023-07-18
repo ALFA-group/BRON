@@ -3,12 +3,26 @@ import argparse
 import gzip
 import os
 import logging
-
+from typing import Dict, Any, Tuple, Set
 
 RECENT_CVE_MAP_FILE = "cve_map_cpe_cwe_score_last_five_years.json"
 CVE_MAP_FILE = "cve_map_cpe_cwe_score.json"
 
 
+def match_cpes(node: Dict[str, Any], cpes: Set):
+    if not node['children']:
+        if "cpe_match" in node:
+            for cpe_node in node["cpe_match"]:
+                if cpe_node["vulnerable"]:
+                    cpes.add(cpe_node['cpe23Uri'])
+                                
+    elif node['children']:
+        for cpe_node in node["children"]:
+            match_cpes(cpe_node, cpes)
+            
+    else:
+        raise ValueError(f"{node['operator']} value must be OR or AND")
+    
 def parse_cve_file(filename, save_file):
     logging.info(f"Begin parse CVE files from {filename}")
     cve_dict = {}
@@ -21,13 +35,7 @@ def parse_cve_file(filename, save_file):
             cve_id = item["cve"]["CVE_data_meta"]["ID"]
             cve_description = item["cve"]["description"]["description_data"][0]["value"]
             for cpe_node in item["configurations"]["nodes"]:
-                if "cpe_match" not in cpe_node:
-                    continue
-
-                for cpe in cpe_node["cpe_match"]:
-                    if cpe["vulnerable"]:
-                        cpes.add(cpe["cpe23Uri"])
-
+                match_cpes(cpe_node, cpes)
                 for p_data in item["cve"]["problemtype"]["problemtype_data"]:
                     for desc in p_data["description"]:
                         cwes.add(desc["value"].split("-")[1])
@@ -35,7 +43,9 @@ def parse_cve_file(filename, save_file):
             if "baseMetricV2" in item["impact"]:
                 score = item["impact"]["baseMetricV2"]["cvssV2"]["baseScore"]
             if "baseMetricV3" in item["impact"]:
-                score = (score + item["impact"]["baseMetricV3"]["cvssV3"]["baseScore"]) / 2
+                score = (
+                    score + item["impact"]["baseMetricV3"]["cvssV3"]["baseScore"]
+                ) / 2
 
             # TODO assert more score range
             assert score >= 0
@@ -63,7 +73,9 @@ if __name__ == "__main__":
     )
 
     parser = argparse.ArgumentParser(description="Parse CVE File")
-    parser.add_argument("--cve_path", type=str, required=True, help="File path to raw_CVE.json.gz")
+    parser.add_argument(
+        "--cve_path", type=str, required=True, help="File path to raw_CVE.json.gz"
+    )
     parser.add_argument(
         "--save_path",
         type=str,
