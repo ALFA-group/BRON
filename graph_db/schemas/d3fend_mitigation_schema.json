@@ -12,7 +12,7 @@
        "original_id":{
         "description":"ID from MITRE D3FEND. E.g. 'ActiveCertificateAnalysis'. TODO pattern",
            "type": "string",
-           "pattern": "D3-[A-Z]+"
+           "pattern": "D3[A-Z]?-[A-Z]+"
        },
        "datatype":{
         "description":"Name of datasource",
