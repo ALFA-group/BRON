@@ -58,7 +58,7 @@
                         },
                         "Note": {
                             "description": "",
-                            "type": "string"
+                            "type": ["string", "null"]
                         }
                     },
                     "required": ["Scope"]
