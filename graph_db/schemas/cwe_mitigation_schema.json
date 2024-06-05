@@ -5,9 +5,9 @@
     "type":"object",
     "properties":{
        "_key":{
-          "description":"The unique identifier for BRON. E.g. 'cwe_mitigation_00000'",
+          "description":"The unique identifier for BRON. ",
           "type":"string",
-          "pattern": "cwe_mitigation_\\d{5}"
+          "pattern": "CWE-\\d{1,4}"
        },
        "original_id":{
         "description":"ID from MITRE CWE. E.g. '1'",
@@ -21,7 +21,8 @@
        },
        "name":{
         "description":"The name of the weakness. TODO write pattern",
-        "type":"string"
+        "type":"string",
+        "minLength": 1
        },
        "metadata":{
          "description":"Metadata. Information taken from the Potential Mitigations",
@@ -29,7 +30,8 @@
          "properties": {
              "Description": {
                  "description": "The description",
-                 "type": "string"
+                 "type": "string",
+                 "minLength": 1
              },
              "Phase": {
                  "description": "The phase. TODO pattern?",

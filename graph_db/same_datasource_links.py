@@ -8,9 +8,8 @@ import logging
 import arango
 import dotenv
 
-from graph_db.bron_arango import DB, validate_entry
+from graph_db.bron_arango import DB, create_edge_document, validate_entry, import_into_arango
 from utils.mitigation_utils import (
-    import_into_arango,
     query_bron,
     update_graph_in_graph_db,
 )
@@ -44,12 +43,9 @@ def make_edges(
             except TypeError as e:
                 logging.error(f"{value} not found in {bron_collection}. {e}")
                 continue
-
-            entry = {"_from": _from, "_to": _to}
-            if validation:
-                validate_entry(entry, schema)
-
-            edges.append(entry)
+            
+            document = create_edge_document(_from, _to, schema, validation)            
+            edges.append(document)
 
     with open(out_file, "w") as fd:
         for edge in edges:

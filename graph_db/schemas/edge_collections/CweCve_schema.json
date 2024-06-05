@@ -7,12 +7,12 @@
       "_to":{
          "description":"The vulnerability identifier in BRON.",
          "type":"string",
-         "pattern": "cve/cve_\\d{5}"
+         "pattern": "cve/CVE-\\d{4}-\\d{4,7}"
       },
       "_from":{
          "description":"The weakness identifier in BRON.",
          "type":"string",
-         "pattern": "cwe/cwe_\\d{5}"
+         "pattern": "cwe/CWE-\\d{1,4}"
       }
  },
     "required":[

@@ -7,12 +7,12 @@
       "_from":{
          "description":"The vulnerability identifier in BRON.",
          "type":"string",
-         "pattern": "cve/cve_\\d{5}"
+         "pattern": "cve/CVE-\\d{4}-\\d{4,7}"
       },
       "_to":{
          "description":"The product configuration identifier in BRON.",
          "type":"string",
-         "pattern": "cpe/cpe_\\d{5}"
+         "pattern": "cpe/cpe:2\\.3:[aho\\*\\-](:(((\\?*|\\*?)([a-zA-Z0-9\\-\\._]|(\\\\[\\\\\\*\\?!\"#$$%&'\\(\\)\\+,/:;<=>@\\[\\]\\^`\\{\\|}~]))+(\\?*|\\*?))|[\\*\\-])){5}(:(([a-zA-Z]{2,3}(-([a-zA-Z]{2}|[0-9]{3}))?)|[\\*\\-]))(:(((\\?*|\\*?)([a-zA-Z0-9\\-\\._]|(\\\\[\\\\\\*\\?!\"#$$%&'\\(\\)\\+,/:;<=>@\\[\\]\\^`\\{\\|}~]))+(\\?*|\\*?))|[\\*\\-])){4}"
       }
  },
     "required":[

@@ -7,12 +7,12 @@
       "_to":{
          "description":"The defensive mitigation identifier in BRON.",
          "type":"string",
-         "pattern": "d3fend_mitigation/d3fend_mitigation_\\d{5}"
+         "pattern": "d3fend_mitigation/D3[A-Z]?-[A-Z]+"
       },
       "_from":{
          "description":"The technique identifier in BRON.",
          "type":"string",
-         "pattern": "technique/technique_\\d{5}"
+         "pattern": "technique/(T\\d{4}(\\.\\d{3})?)"
       }
  },
     "required":[

@@ -5,9 +5,9 @@
     "type":"object",
     "properties":{
        "_key":{
-          "description":"The unique identifier for BRON. E.g. 'd3fend_mitigation_00000'",
+          "description":"The unique identifier for BRON. Same as data source",
           "type":"string",
-          "pattern": "d3fend_mitigation_\\d{5}"
+          "pattern": "D3[A-Z]?-[A-Z]+"
        },
        "original_id":{
         "description":"ID from MITRE D3FEND. E.g. 'ActiveCertificateAnalysis'. TODO pattern",
@@ -21,7 +21,8 @@
        },
        "name":{
         "description":"The name of the mitigation. TODO write pattern",
-        "type":"string"
+        "type":"string",
+        "minLength": 1
        },
        "metadata":{
          "description":"Metadata.",
@@ -29,7 +30,8 @@
          "properties": {
             "description": {
                 "description": "The full comment",
-                "type": "string"
+                "type": "string",
+                "minLength": 1
             }
             },
             "required":[

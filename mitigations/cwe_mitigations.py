@@ -8,7 +8,7 @@ import json
 import arango
 import pandas as pd
 import utils
-from graph_db.bron_arango import get_schemas, validate_entry
+from graph_db.bron_arango import create_edge_document, get_schemas, validate_entry
 
 from utils.mitigation_utils import (
     clean_BRON_mitigation,
@@ -50,10 +50,10 @@ def _make_bron_data(
     df = df.sort_values(by=["ID"])
     cnt = 0
     for row in df.iterrows():
-        value = row[1]
+        value = row[1]    
         for mitigation in value["Potential Mitigations"]:
             datatype = "cwe_mitigation"
-            _id = f"{datatype}_{cnt:05}"
+            _id = f'CWE-{str(value["ID"])}'
             entry = {
                 "_key": _id,
                 "original_id": str(value["ID"]),
@@ -61,12 +61,12 @@ def _make_bron_data(
                 "metadata": mitigation,
                 "datatype": datatype,
             }
+            schema = schemas[datatype]
             if validation:
-                validate_entry(entry, schemas[datatype])
+                validate_entry(entry, schema)
 
             CWE_MITIGATION_BRON_DATA[datatype].append(entry)
             cnt += 1
-            edge_name = "CweCwe_mitigation"
             # TODO fixs this, should not happen...
             try:
                 result = query_bron(cwe_bron, {"original_id": str(value["ID"])})
@@ -75,22 +75,16 @@ def _make_bron_data(
                 ), f"There must be a CWE that connects to the CWE mitigation. {entry}"
 
                 _to = f"{datatype}/{_id}"
-                _from = result["_id"]
-                entry = {
-                    "_id": f"{edge_name}/{_from}-{_to}",
-                    "_from": _from,
-                    "_to": _to,
-                }
-                if validation:
-                    validate_entry(entry, schemas[edge_name])
-
-                CWE_MITIGATION_BRON_DATA[edge_name].append(entry)
+                _from = result["_id"]                
+                edge_name = "CweCwe_mitigation"
+                document = create_edge_document(_from, _to, schemas[edge_name], validation)                
+                CWE_MITIGATION_BRON_DATA[edge_name].append(document)
             except AssertionError as e:
                 logging.error(e)
 
         for mitigation in value["Detection Methods"]:
             datatype = "cwe_detection"
-            _id = f"{datatype}_{cnt:05}"
+            _id = f'CWE-{str(value["ID"])}'
             entry = {
                 "_key": _id,
                 "original_id": str(value["ID"]),
@@ -113,11 +107,8 @@ def _make_bron_data(
 
                 _to = f"{datatype}/{_id}"
                 _from = result["_id"]
-                entry = {"_id": f"{edge_name}/{_from}-{_to}", "_from": _from, "_to": _to}
-                if validation:
-                    validate_entry(entry, schemas[edge_name])
-
-                CWE_MITIGATION_BRON_DATA[edge_name].append(entry)
+                document = create_edge_document(_from, _to, schemas[edge_name], validation)
+                CWE_MITIGATION_BRON_DATA[edge_name].append(document)
             except AssertionError as e:
                 logging.error(e)
 

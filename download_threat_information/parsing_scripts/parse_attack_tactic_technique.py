@@ -35,7 +35,7 @@ def link_tactic_techniques(file_name_: str, save_path: str):
         object_list = data["objects"]
         for entry in object_list:
             if entry.get("x_mitre_deprecated", False) or entry.get("revoked", False):
-                logging.info(f"Revoked or deprecated entry {entry.get('name')} {entry.get('id')}")
+                logging.debug(f"Revoked or deprecated entry {entry.get('name')} {entry.get('id')}")
                 continue
 
             tactics_set = set()
@@ -148,42 +148,55 @@ def parse_enterprise_attack(file_name: str, save_path: str):
         "intrusion-set",
         "tool",
         "malware",
+        "x-mitre-data-source",
+        "x-mitre-data-component"
     }
-    ATTACK_RELATIONSHIP_DATA = {"mitigates", "uses"}
+    ATTACK_RELATIONSHIP_DATA = {"mitigates", "uses", "detects"}
     REF_BRON_MAP = {
         "malware": "software",
         "tool": "software",
         "intrusion-set": "group",
         "attack-pattern": "technique",
+        "x-mitre-data-source": "detection",
+        "x-mitre-data-component": "detection"
     }
     values = collections.defaultdict(list)
     with open(file_name, "r") as fd:
         data = json.load(fd)
 
     attack_id_to_technique_id_map = {}
+    detection_source_to_component_map = {}
     for entry in data["objects"]:
         id_ = entry.get("id", "")
         name_ = entry.get("name", "")
         type_ = entry.get("type", "")
         if type_ in ATTACK_DATA:
             if entry.get("x_mitre_deprecated", False) or entry.get("revoked", False):
-                logging.info(f"Revoked or deprecated entry {entry.get('name')} {entry.get('id')}")
+                logging.debug(f"Revoked or deprecated entry {entry.get('name')} {entry.get('id')}")
                 continue
 
-            if type_ == "attack-pattern" and entry.get("x_mitre_detection", ""):
-                technique_id = _get_attack_id(entry)
-                category = "x_mitre_detection"
-                # TODO look at the data component and data source types
-                # TODO this makes no sense, there is no detection information here. Look at "indicators" instead
+            if type_ == "x-mitre-data-source":
+                detection_id = _get_attack_id(entry)
                 values["technique_detection"].append(
                     {
                         "name": name_,
-                        "original_id": technique_id,
-                        "detection": entry[category],
+                        "original_id": detection_id,
                         "id": id_,
+                        "description": entry["description"]
                     }
                 )
-                attack_id_to_technique_id_map[id_] = technique_id
+                attack_id_to_technique_id_map[id_] = detection_id
+            elif type_ == "x-mitre-data-component":
+                detection_id = id_
+                values["technique_detection_component"].append(
+                    {
+                        "name": name_,
+                        "original_id": detection_id,
+                        "id": id_,
+                        "description": entry["description"]
+                    }
+                )
+                detection_source_to_component_map[id_] = entry.get("x_mitre_data_source_ref")
             elif type_ == "intrusion-set":
                 group_id = _get_attack_id(entry)
                 assert group_id.startswith("G")
@@ -198,6 +211,20 @@ def parse_enterprise_attack(file_name: str, save_path: str):
                     }
                 )
                 attack_id_to_technique_id_map[id_] = group_id
+
+            elif type_ == "attack-pattern":
+                technique_id = _get_attack_id(entry)
+                assert technique_id.startswith("T")
+                # TODO will we get duplicates?
+                values["technique"].append(
+                    {
+                        "name": name_,
+                        "original_id": technique_id,
+                        "description": entry["description"],
+                        "id": id_,
+                    }
+                )
+                attack_id_to_technique_id_map[id_] = technique_id
 
             elif type_ in ("tool", "malware"):
                 software_id = _get_attack_id(entry)
@@ -232,7 +259,7 @@ def parse_enterprise_attack(file_name: str, save_path: str):
             if entry["relationship_type"] not in ATTACK_RELATIONSHIP_DATA:
                 continue
             if entry.get("x_mitre_deprecated", False) or entry.get("revoked", False):
-                logging.info(
+                logging.debug(
                     f"Relationships Revoked or deprecated entry {entry.get('name')} {entry.get('id')}"
                 )
                 continue
@@ -257,9 +284,31 @@ def parse_enterprise_attack(file_name: str, save_path: str):
                         }
                     )
 
+            elif entry["relationship_type"] == "detects":
+                if (
+                    source in detection_source_to_component_map.keys()
+                    and target in attack_id_to_technique_id_map.keys()
+                    and target != source
+                    and target_id != source_id
+                ):
+                    data_source_uuid = detection_source_to_component_map[source]
+                    data_source_id = attack_id_to_technique_id_map[data_source_uuid]
+                    values["technique_technique_detection_component_mapping"].append(
+                        {
+                            # TODO handle detection component ids
+                            #"technique_detection_component_id": source_id,
+                            "technique_data_source_id": data_source_id,
+                            "technique_id": target_id,
+                        }
+                    )
+
             elif entry["relationship_type"] == "uses":
                 source_prefix = source.split("--")[0]
                 target_prefix = target.split("--")[0]
+                if source_prefix == 'campaign' or target_prefix == 'campaign':
+                    logging.debug(f"Skipping campaign {source_prefix} {target_prefix}")
+                    continue
+                
                 try:
                     src_bron_type = REF_BRON_MAP[source_prefix]
                     tgt_bron_type = REF_BRON_MAP[target_prefix]
@@ -281,10 +330,10 @@ def parse_enterprise_attack(file_name: str, save_path: str):
                         }
                     )
 
+    assert 'software_technique_mapping' in values.keys()
     for key, value in values.items():
         file_path = os.path.join(save_path, f"{key}.jsonl")
         with open(file_path, "w") as fd:
-            print(f"Save {fd.name} {len(value)}")
             for line in value:
                 json.dump(line, fd)
                 fd.write("\n")
@@ -341,165 +390,6 @@ def link_capec_technique(save_path: str):
         fd.write(json.dumps(capec_technique_dict, indent=4, sort_keys=True))
 
     logging.info(f"End linking CAPEC to technique to {out_file}")
-
-    
-def parse_attack(file_name: str, save_path: str, domain: str = "mitre-attack", platform: str = ""):
-    logging.info(f"Begin parse ATT&CK data from {file_name}")
-    # TODO for handling of bronsprak
-    # TODO this can be parsed with stix2 library
-    ATTACK_DATA = {"attack-pattern", "course-of-action", "x-mitre-tactic"}
-    values = collections.defaultdict(list)
-    with open(file_name, "r") as fd:
-        data = json.load(fd)
-
-    attack_id_to_technique_id_map = {}
-    for entry in data["objects"]:
-        id_ = entry.get("id", "")
-        name_ = entry.get("name", "")
-        type_ = entry.get("type", "")
-        if type_ in ATTACK_DATA:
-            if entry.get("x_mitre_deprecated", False) or entry.get("revoked", False):
-                logging.info(
-                    f"Mitigations Revoked or deprecated entry {entry.get('name')} {entry.get('id')}"
-                )
-                continue
-
-            if type_ == "attack-pattern" and entry.get("x_mitre_detection", "") != "":
-                domain_str = domain
-                # TODO hacky, but also data inconsistent
-                if domain == "mitre-mobile-attack":
-                    domain_str = "mitre-attack"
-
-                technique_id = _get_attack_id(entry, domain_str)
-                if technique_id == "":
-                    technique_id = _get_attack_id(entry, domain)
-
-                if technique_id == "":
-                    logging.warning(f"No id for {name_}")
-                    continue
-
-                category = "x_mitre_detection"
-                # TODO this makes no sense, there is no detection information here. Look at "indicators" instead
-                values["technique_detection"].append(
-                    {
-                        "name": name_,
-                        "original_id": technique_id,
-                        "detection": entry[category],
-                        "id": id_,
-                    }
-                )
-                values["technique_detection_technique_mapping"].append(
-                    {
-                        "technique_detection_id": technique_id,
-                        "technique_id": technique_id,
-                    }
-                )
-                attack_id_to_technique_id_map[id_] = technique_id
-
-            if type_ == "attack-pattern":
-                domain_str = domain
-                # TODO hacky, but also data inconsistent
-                if domain == "mitre-mobile-attack":
-                    domain_str = "mitre-attack"
-
-                technique_id = _get_attack_id(entry, domain_str)
-                if technique_id == "":
-                    technique_id = _get_attack_id(entry, domain)
-
-                if technique_id == "":
-                    logging.warning(f"No id for {name_}")
-                    continue
-
-                data_value = {
-                    "name": name_,
-                    "original_id": technique_id,
-                    "description": entry["description"],
-                    "id": id_,
-                }
-                values["technique"].append(data_value)
-
-                attack_id_to_technique_id_map[id_] = technique_id
-            elif type_ == "x-mitre-tactic":
-                domain_str = domain
-                # TODO hacky, but also data inconsistent
-                if domain == "mitre-mobile-attack":
-                    domain_str = "mitre-attack"
-
-                tactic_id = _get_attack_id(entry, domain_str)
-                assert tactic_id.startswith("TA"), f"ID {tactic_id}"
-                category = "tactic"
-                values["tactic"].append(
-                    {
-                        "name": name_,
-                        "original_id": tactic_id,
-                        "description": entry["description"],
-                        "id": id_,
-                        "shortname": entry["x_mitre_shortname"],
-                    }
-                )
-                attack_id_to_technique_id_map[id_] = tactic_id
-            elif type_ == "course-of-action":
-                domain_str = domain
-                # TODO hacky, but also data inconsistent
-                if domain == "mitre-mobile-attack":
-                    domain_str = "mitre-attack"
-
-                technique_mitigation_id = _get_attack_mitigation_id(entry, domain_str)
-                if not technique_mitigation_id:
-                    continue
-                values["technique_mitigation"].append(
-                    {
-                        "name": name_,
-                        "original_id": technique_mitigation_id,
-                        "description": entry["description"],
-                        "id": id_,
-                    }
-                )
-                attack_id_to_technique_id_map[id_] = technique_mitigation_id
-
-    logging.info(f"Relationships to check {len(attack_id_to_technique_id_map)}")
-    for entry in data["objects"]:
-        if entry.get("x_mitre_deprecated", False) or entry.get("revoked", False):
-            logging.info(
-                f"Mitigations Relationships Revoked or deprecated entry {entry.get('name')} {entry.get('id')}"
-            )
-            continue
-
-        if entry["type"] == "relationship":
-            if entry["relationship_type"] == "mitigates":
-
-                source = entry["source_ref"]
-                target = entry["target_ref"]
-                source_id = attack_id_to_technique_id_map.get(source, "")
-                target_id = attack_id_to_technique_id_map.get(target, "")
-                if (
-                    source in attack_id_to_technique_id_map.keys()
-                    and target in attack_id_to_technique_id_map.keys()
-                    and source_id.startswith("M")
-                    and target != source
-                    and target_id != source_id
-                    and target_id != ""
-                ):
-                    values["technique_mitigation_technique_mapping"].append(
-                        {
-                            "technique_mitigation_id": source_id,
-                            "technique_id": target_id,
-                        }
-                    )
-                else:
-                    logging.info(f"No edge {source} - {target} ({source_id} - {target_id})")
-
-    logging.info(f"Tactic to check {len(values['tactic'])}")
-    for key, value in values.items():
-        file_path = os.path.join(save_path, f"{key}.jsonl")
-        with open(file_path, "w") as fd:
-            print(f"Save {fd.name} {len(value)}")
-            for line in value:
-                json.dump(line, fd)
-                fd.write("\n")
-
-        assert os.path.exists(file_path)
-        logging.info(f"Parsed ATT&CK data {key} from {file_name} and saved to {file_path}")
 
 
 if __name__ == "__main__":

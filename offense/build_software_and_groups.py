@@ -18,7 +18,7 @@ from utils.mitigation_utils import (
     get_collection_names,
     clean_BRON_collections,
 )
-from graph_db.bron_arango import get_schema, get_schemas, validate_entry
+from graph_db.bron_arango import create_edge_document, get_schema, get_schemas, validate_entry
 
 
 SG_OUT_DATA_DIR = "data/attacks"
@@ -69,8 +69,7 @@ def _build_software(
     logging.info(
         f"Begin build software in BRON for {username} on {ip} with validation:{validation} with data from {save_path}"
     )
-    software_id_map = {}
-
+    
     file_path = os.path.join(save_path, f"software.jsonl")
     df = pd.read_json(file_path, lines=True)
     check_duplicates(df, ["name", "id"])
@@ -82,10 +81,10 @@ def _build_software(
     cnt = 0
     for row in tqdm(df.iterrows()):
         value = row[1]
-        _id = f"{datatype}_{cnt:05}"
+        _id = str(value["original_id"])
         entry = {
             "_key": _id,
-            "original_id": str(value["original_id"]),
+            "original_id": _id,
             "name": value["name"],
             "datatype": datatype,
             "metadata": {"description": value["description"], "type": value["type"]},
@@ -94,7 +93,6 @@ def _build_software(
             schema = schemas[datatype]
             validate_entry(entry, schema)
 
-        software_id_map[entry["original_id"]] = _id
         SOFTWARE_BRON_DATA[datatype].append(entry)
         cnt += 1
 
@@ -114,13 +112,10 @@ def _build_software(
         if result is None:
             continue
 
-        _from = f'{datatype}/{software_id_map[value["software_id"]]}'
+        _from = f'{datatype}/{value["software_id"]}'
         _to = result["_id"]
-        entry = {"_id": f"{edge_name}/{_from}-{_to}", "_from": _from, "_to": _to}
-        if validation:
-            validate_entry(entry, schema)
-
-        SOFTWARE_BRON_DATA[edge_name].append(entry)
+        document = create_edge_document(_from, _to, schema, validation)
+        SOFTWARE_BRON_DATA[edge_name].append(document)
 
     for key, value in SOFTWARE_BRON_DATA.items():
         file_path = os.path.join(SOFTWARE_SG_OUT_DATA_DIR, f"import_{key}.jsonl")
@@ -173,7 +168,6 @@ def _build_groups(
     db = client.db("BRON", username=username, password=password, auth_method="basic")
     collection_name = "technique"
     software_bron = db.collection("software")
-    group_id_map = {}
     file_path = os.path.join(save_path, f"group.jsonl")
     df = pd.read_json(file_path, lines=True)
     check_duplicates(df, ["name", "id"])
@@ -185,10 +179,10 @@ def _build_groups(
     cnt = 0
     for row in tqdm(df.iterrows()):
         value = row[1]
-        _id = f"{datatype}_{cnt:05}"
+        _id = str(value["original_id"])
         entry = {
             "_key": _id,
-            "original_id": str(value["original_id"]),
+            "original_id": _id,
             "name": value["name"],
             "datatype": datatype,
             "metadata": {
@@ -200,7 +194,6 @@ def _build_groups(
             schema = schemas[datatype]
             validate_entry(entry, schema)
 
-        group_id_map[entry["original_id"]] = _id
         GROUP_BRON_DATA[datatype].append(entry)
         cnt += 1
 
@@ -217,13 +210,10 @@ def _build_groups(
         if result is None:
             continue
 
-        _from = f'{datatype}/{group_id_map[value["group_id"]]}'
+        _from = f'{datatype}/{value["group_id"]}'
         _to = result["_id"]
-        entry = {"_id": f"{edge_name}/{_from}-{_to}", "_from": _from, "_to": _to}
-        if validation:
-            validate_entry(entry, schema)
-
-        GROUP_BRON_DATA[edge_name].append(entry)
+        document = create_edge_document(_from, _to, schema, validation)
+        GROUP_BRON_DATA[edge_name].append(document)
 
     file_path = os.path.join(save_path, f"group_software_mapping.jsonl")
     df = pd.read_json(file_path, lines=True)
@@ -238,13 +228,10 @@ def _build_groups(
         if result is None:
             continue
 
-        _from = f'{datatype}/{group_id_map[value["group_id"]]}'
+        _from = f'{datatype}/{value["group_id"]}'
         _to = result["_id"]
-        entry = {"_id": f"{edge_name}/{_from}-{_to}", "_from": _from, "_to": _to}
-        if validation:
-            validate_entry(entry, schema)
-
-        GROUP_BRON_DATA[edge_name].append(entry)
+        document = create_edge_document(_from, _to, schema, validation)
+        GROUP_BRON_DATA[edge_name].append(document)
 
     for key, value in GROUP_BRON_DATA.items():
         file_path = os.path.join(GROUP_SG_OUT_DATA_DIR, f"import_{key}.jsonl")

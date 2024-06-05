@@ -7,12 +7,12 @@
       "_from":{
          "description":"The group identifier in BRON.",
          "type":"string",
-         "pattern": "group/group_\\d{5}"
+         "pattern": "group/G\\d{4}"
       },
       "_to":{
          "description":"The software identifier in BRON.",
          "type":"string",
-         "pattern": "software/software_\\d{5}"
+         "pattern": "software/S\\d{4}"
       }
  },
     "required":[

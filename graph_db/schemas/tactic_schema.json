@@ -5,9 +5,9 @@
     "type":"object",
     "properties":{
        "_key":{
-          "description":"The unique identifier for BRON. E.g. 'tactic_00001'",
+          "description":"The unique identifier for BRON.Same as data source",
           "type":"string",
-          "pattern": "tactic_\\d{5}"
+          "pattern": "TA\\d{4}"
        },
        "original_id":{
         "description":"ID from MITRE ATT&CK. E.g. 'TA0001'",
@@ -21,7 +21,8 @@
        },
        "name":{
         "description":"The shortname of the tactic. TODO write pattern",
-        "type":"string"
+        "type":"string",
+        "minLength": 1
        },
        "metadata":{
         "description":"Metadata",
@@ -29,11 +30,13 @@
         "properties": {
             "description": {
                 "description": "The full description",
-                "type": "string"
+                "type": "string",
+                "minLength": 1
             },
             "short_description": {
                 "description": "The first line of the description. TODO write pattern",
-                "type": "string"
+                "type": "string",
+                "minLength": 1
             }
             },
             "required":[

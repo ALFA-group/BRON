@@ -7,12 +7,12 @@
       "_from":{
          "description":"The attack pattern identifier in BRON.",
          "type":"string",
-         "pattern": "capec/capec_\\d{5}"
+         "pattern": "capec/CA-\\d{1,3}"
       },
       "_to":{
          "description":"The attack pattern detection identifier in BRON.",
          "type":"string",
-         "pattern": "capec_detection/capec_detection_\\d{5}"
+         "pattern": "capec_detection/CA-\\d{1,3}"
       }
  },
     "required":[

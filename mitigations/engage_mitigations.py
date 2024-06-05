@@ -8,7 +8,7 @@ import json
 import requests
 import arango
 
-from graph_db.bron_arango import get_edge_collection_name, get_schemas, validate_entry
+from graph_db.bron_arango import create_edge_document, get_edge_collection_name, get_schemas, validate_entry, import_into_arango
 import utils.mitigation_utils as mitigation_utils
 
 ENGAGE_URL = "https://raw.githubusercontent.com/mitre/engage/main/Data/json/"
@@ -33,23 +33,16 @@ COLLECTION_NAMES = {
 
 
 def _make_bron_data(
-    data: Dict[str, Any], datatype: str, bron_id_map: Dict[str, str]
+    data: Dict[str, Any], datatype: str
 ) -> Dict[str, Any]:
     keys = list(data.keys())
     keys.sort()
     bron_data = {}
     for cnt, key in enumerate(keys):
         value = data[key]
-        _id = f"{datatype}_{cnt:05}"
-        entry = {"original_id": key, "name": value["name"], "datatype": datatype}
-        bron_data[_id] = entry
-        bron_id_map[key] = _id
+        entry = {"_key": key, "original_id": key, "name": value["name"], "datatype": datatype}
+        bron_data[key] = entry
 
-    return bron_data
-
-
-def _make_bron_data_map(data: List[Dict[str, Any]]) -> Dict[str, Any]:
-    bron_data = data
     return bron_data
 
 
@@ -88,7 +81,6 @@ def link_data():
     """
     logging.info("Begin linking Engage data")
     # TODO hacky with one bron id map structure...
-    bron_id_map = {}
     for datatype, file_name in BRON_ENGAGE_DATA.items():
         with open(os.path.join(ENGAGE_OUT_DATA_DIR, file_name), "r") as fd:
             data = json.load(fd)
@@ -100,7 +92,7 @@ def link_data():
                 "engage_approach_activity_mappings",
                 "engage_goal_approach_mappings",
             ):
-                bron_data = _make_bron_data_map(data)
+                bron_data = data
             elif datatype == "engage_attack_groups_mapped":
                 bron_data = _make_bron_attack_groups_data_map(data)
             elif datatype == "engage_attack_mapping":
@@ -114,21 +106,14 @@ def link_data():
 
                 data = dict_
 
-            bron_data = _make_bron_data(data, datatype, bron_id_map)
+            bron_data = _make_bron_data(data, datatype)
 
         with open(out_path, "w") as fd:
             json.dump(bron_data, fd, indent=1)
 
         assert os.path.exists(out_path)
         logging.info(f"Write Engage data {datatype} to {out_path}")
-
-    out_path = os.path.join(ENGAGE_OUT_DATA_DIR, f"{ENGAGE_BRON_ID_MAP_NAME}.json")
-    with open(out_path, "w") as fd:
-        json.dump(bron_id_map, fd)
-
-    assert os.path.exists(out_path)
-    logging.info(f"Write Engage BRON id map to {out_path}")
-
+    
 
 def download_data():
     _download_engage()
@@ -153,10 +138,6 @@ def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool
     logging.info(f"Begin update graph db at {ip} with engage")
     client = arango.ArangoClient(hosts=f"http://{ip}:8529")
     db = client.db("BRON", username=username, password=password, auth_method="basic")
-    file_path = os.path.join(ENGAGE_OUT_DATA_DIR, f"{ENGAGE_BRON_ID_MAP_NAME}.json")
-    with open(file_path, "r") as fd:
-        bron_id_map = json.load(fd)
-
     if validation:
         schemas = get_schemas()
 
@@ -204,32 +185,23 @@ def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool
                             vals[idx] = ("technique_id", result["_id"])
                             if idx == 0:
                                 _from = f"{vals[idx][1]}"
-                                _to = f"{collection_names[1]}/{bron_id_map[vals[1][1]]}"
+                                _to = f"{collection_names[1]}/{vals[1][1]}"
                             else:
                                 _to = f"{vals[idx][1]}"
-                                _from = f"{collection_names[0]}/{bron_id_map[vals[0][1]]}"
+                                _from = f"{collection_names[0]}/{vals[0][1]}"
 
                         else:
-                            _from = f"{collection_names[0]}/{bron_id_map[vals[0][1]]}"
-                            _to = f"{collection_names[1]}/{bron_id_map[vals[1][1]]}"
-
-                        entry = {
-                            "_id": f"{collection_name}/{collection_names[0]}/{_from}-{collection_names[1]}/{_to}",
-                            "_from": f"{_from}",
-                            "_to": f"{_to}",
-                        }
-                        if validation:
-                            schema = schemas[collection_name]
-                            validate_entry(entry, schema)
-
-                        json.dump(entry, fd)
+                            _from = f"{collection_names[0]}/{vals[0][1]}"
+                            _to = f"{collection_names[1]}/{vals[1][1]}"
+                        documuent = create_edge_document(_from, _to, schemas[collection_name], validation)
+                        json.dump(documuent, fd)
                         fd.write("\n")
 
         assert os.path.exists(out_file_path)
         logging.info("Stored engage data {key} in {out_file_path}")
         logging.warning(f"engage data {key} has {len(empty_results)} empty results")
         logging.warning(f"engage data {key} has {len(duplicates)} duplicate results")
-        mitigation_utils.import_into_arango(
+        import_into_arango(
             username, password, ip, fd.name, edge_collection, collection_name
         )
         if edge_collection:

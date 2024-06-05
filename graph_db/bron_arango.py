@@ -1,3 +1,5 @@
+from hashlib import md5
+import re
 import subprocess
 from typing import Dict, List, Optional, Tuple, Any
 import os
@@ -5,6 +7,7 @@ import json
 import sys
 import argparse
 import logging
+import uuid
 
 import arango
 from arango.http import DefaultHTTPClient
@@ -61,8 +64,7 @@ def create_graph(
     for vertex in node_keys:
         if not bron_graph.has_vertex_collection(vertex):
             _ = bron_graph.vertex_collection(vertex)
-
-        logging.info(f"Created vertex_collection: {vertex}")
+            logging.info(f"Created vertex_collection: {vertex}")
 
     for edge_key in edge_keys:
         edge_collection_key = get_edge_collection_name(*edge_key)
@@ -72,9 +74,31 @@ def create_graph(
                 from_vertex_collections=[edge_key[0]],
                 to_vertex_collections=[edge_key[1]],
             )
-        logging.info(f"Created edge_collection: {edge_collection_key}")
+            logging.info(f"Created edge_collection: {edge_collection_key}")
 
     client.close()
+
+
+def get_edge_key(edge: str) -> str:
+    # TODO compile regexp patterns
+    if re.match("CA-\\d{1,3}", edge):
+        return "capec"
+    elif edge.startswith("cpe:2"):
+        return "cpe"
+    elif edge.startswith("CVE"):
+        return "cve"
+    elif re.match("CWE-\\d{1,4}", edge):
+        return "cwe"
+    elif re.match("G\\d{4}", edge):
+        return "group"
+    elif re.match("S\\d{4}", edge):
+        return "software"
+    elif re.match("TA\\d{4}", edge):
+        return "tactic"
+    elif re.match("T\\d{4}(\\.\\d{3})?", edge):
+        return "technique"
+    else:
+        raise KeyError(edge)
 
 
 def main(
@@ -85,10 +109,12 @@ def main(
     create_graph(username, password, ip, NODE_KEYS, get_edge_keys())
 
     edge_keys = get_edge_keys()
+    edge_files = []
     edge_file_handles = {}
     for edge_key in edge_keys:
         edge_collection_key = get_edge_collection_name(*edge_key)
         edge_file_handles[edge_collection_key] = open(f"{edge_collection_key}.json", "w")
+        edge_files.append(f"{edge_collection_key}.json")
         logging.info(f"Done: {edge_collection_key}")
 
     node_file_handles = {}
@@ -110,9 +136,14 @@ def main(
         document = {"_key": node[0]}
         document.update(node[1])
         if validation:
-            validate_entry(document, schemas[node[1]["datatype"]])
-
-        node_key = get_node_key(node[0])
+            try:
+                validate_entry(document, schemas[node[1]["datatype"]])
+            except KeyError as e:
+                logging.error(e)
+                logging.error(f"{node}, {_}")
+                continue
+            
+        node_key = get_node_key(node[1]["datatype"])
         json.dump(document, node_file_handles[node_key])
         node_file_handles[node_key].write("\n")
 
@@ -122,35 +153,56 @@ def main(
     # Insert edges
     edges_nx = nx_bron_graph.edges()
     logging.info(f"Begin {len(edges_nx)} edges. Validation is {validation}")
-    for _, o_edge in enumerate(tqdm(edges_nx)):
-        edge = order_edge(o_edge)
-        from_node_key = get_node_key(edge[0])
-        from_ = f"{from_node_key}/{edge[0]}"
-        to_node_key = get_node_key(edge[1])
-        to_ = f"{to_node_key}/{edge[1]}"
-        edge_collection_key = get_edge_collection_name(from_node_key, to_node_key)
-        # TODO remove _id
-        document = {
-            "_id": f"{edge_collection_key}/{edge[0]}-{edge[1]}",
-            "_from": from_,
-            "_to": to_,
-        }
-        if validation:
-            validate_entry(document, schemas[edge_collection_key])
-        json.dump(document, edge_file_handles[edge_collection_key])
-        edge_file_handles[edge_collection_key].write("\n")
+    for _, o_edge in enumerate(tqdm(edges_nx)):        
+        try:
+            document, edge_collection_key = get_edge_document(o_edge, validation, schemas)
+        except KeyError as e:
+            # TODO hacky to handle with exception
+            edge = order_edge(o_edge)
+            document, edge_collection_key  = get_edge_document(edge, validation, schemas)
+            
+        json.dump(document, edge_file_handles[edge_collection_key])        
+        edge_file_handles[edge_collection_key].write("\n")        
 
     _ = [_.close() for _ in edge_file_handles.values()]
+    for file_name in edge_files:        
+        assert os.path.getsize(file_name) > 0
+        
     logging.info(f"Done: Edges to file")
 
 
+def get_edge_document(o_edge: Tuple[str, str], validation: bool, schemas: dict[str, Any]) -> Tuple[Dict[str, str], str]:
+    edge = order_edge(o_edge)
+    from_node_key = get_edge_key(edge[1])
+    from_ = f"{from_node_key}/{edge[1]}"
+    to_node_key = get_edge_key(edge[0])
+    to_ = f"{to_node_key}/{edge[0]}"
+    edge_collection_key = get_edge_collection_name(from_node_key, to_node_key)
+
+    document = create_edge_document(from_, to_, schemas[edge_collection_key], validation)
+    return document, edge_collection_key        
+    
+
+def create_edge_document(from_: str, to_: str, schema: str, validation: bool) -> Dict[str, str]:
+    name_str = f"{from_}-{to_}"
+    db_key = md5(name_str.encode("utf-8")).hexdigest()
+    document = {
+        "_key": db_key,
+        "_from": from_,
+        "_to": to_,
+    }
+    if validation:
+        validate_entry(document, schema)
+        
+    #logging.info(document)
+    return document
+    
 def order_edge(edge: Tuple[str, str]) -> Tuple[str, str]:
     if get_edge_type(edge) not in EDGE_KEYS:
         # Reverse
         edge = list(edge)
         edge.reverse()
         edge = tuple(edge)
-        assert get_edge_type(edge) in EDGE_KEYS
 
     return edge
 
@@ -164,7 +216,8 @@ def get_node_key(name: str) -> str:
 
 
 def get_edge_collection_name(from_collection: str, to_collection: str) -> str:
-    return f"{from_collection.capitalize()}{to_collection.capitalize()}"
+    name = f"{from_collection.capitalize()}{to_collection.capitalize()}"
+    return name
 
 
 def create_db(username: str, password: str, ip: str) -> None:
@@ -191,48 +244,33 @@ def create_guest_user(username: str, password: str, ip: str) -> None:
     client.close()
 
 
-def arango_import(username: str, password: str, ip: str) -> None:
-    create_db(username, password, ip)
-    create_graph(username, password, ip, NODE_KEYS, get_edge_keys())
-    files = os.listdir()
-    edge_keys = [get_edge_collection_name(*_) for _ in get_edge_keys()]
-    allowed_names = list(NODE_KEYS) + edge_keys
-    for file_ in files:
-        name, ext = os.path.splitext(file_)
-        if ext == ".json" and name in allowed_names:
-            cmd = [
-                "arangoimport",
-                "--collection",
-                name,
-                "--create-collection",
-                "true",
-                "--file",
-                file_,
-                "--type",
-                "jsonl",
-                "--server.password",
-                password,
-                "--server.database",
-                DB,
-                "--server.endpoint",
-                f"http+tcp://{ip}:8529",
-                "--server.authentication",
-                "false",
-                "--on-duplicate",
-                "ignore",
-            ]
-            if name in edge_keys:
-                cmd += ["--create-collection-type", "edge"]
+def log_arangoimport_output(stdout: str, stderr: str, file_name: str, collection_name: str):
+    lines = stdout.split('\n')
+    keys = ('created', 'updated', 'ignored')        
+    for line in lines:        
+        values = [_.strip() for _ in line.split(':')]
+        key = values[0]
+        if len(values) == 2:
+            value = values[1]
+            if key == 'warnings':
+                logging.warning(f"{value} {key} for {collection_name} from {file_name}")
+            elif key == 'errors':
+                logging.error(f"{value} {key} for {collection_name} from {file_name}")
+            elif key in keys:
+                logging.info(f"{value} {key} for {collection_name} from {file_name}")
 
-            cmd_str = " ".join(cmd)
-            os.system(cmd_str)
-            logging.info(f"Imported {name} from {file_} to {DB} on {ip}")
-
-
-def arango_import_collection(
-    username: str, password: str, ip: str, name: str, file_: str, edge: bool
+    if stderr:
+        logging.error(f"{file_name} {stderr}")
+        
+        
+def import_into_arango(
+    username: str,
+    password: str,
+    ip: str,
+    file_: str,
+    edge_keys: bool,
+    name: str,
 ) -> None:
-    logging.info(f"BEGIN Import {name} from {file_} to {DB} on {ip} edge {edge}")
     cmd = [
         "arangoimport",
         "--collection",
@@ -254,13 +292,34 @@ def arango_import_collection(
         "--on-duplicate",
         "ignore",
     ]
-    if edge:
+    if edge_keys:
         cmd += ["--create-collection-type", "edge"]
 
-    cmd_str = " ".join(cmd)
-    os.system(cmd_str)
-    logging.info(f"Imported {name} from {file_} to {DB} on {ip}")
+    client = get_bron_db(username, password, ip)
+    db = client.db(DB, username, password, auth_method="basic")
+    if name in db.collections():
+        logging.info(f"Existing {DB} on {ip} collection {name} count {collection.count()}")
+            
+    process = subprocess.run(cmd, capture_output=True, check=True, text=True)
+    log_arangoimport_output(str(process.stdout), str(process.stderr), file_, name)
+    
+    collection = db.collection(name)
+    client.close()
+    assert collection.count() > 0
+    logging.info(f"Imported {name} from {file_} to {DB} on {ip} collection {name} count {collection.count()}")
 
+
+def arango_import(username: str, password: str, ip: str) -> None:
+    create_db(username, password, ip)
+    create_graph(username, password, ip, NODE_KEYS, get_edge_keys())
+    files = os.listdir()
+    edge_keys = [get_edge_collection_name(*_) for _ in get_edge_keys()]
+    allowed_names = list(NODE_KEYS) + edge_keys
+    for file_ in files:
+        name, ext = os.path.splitext(file_)
+        if ext == ".json" and name in allowed_names:
+            import_into_arango(username, password, ip, file_, edge_keys, name)
+            
 
 def network_import(network_import_file: str, username: str, password: str, ip: str) -> None:
     # TODO what is a good network file format... Now it is home made...
