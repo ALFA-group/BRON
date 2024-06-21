@@ -298,15 +298,16 @@ def import_into_arango(
     client = get_bron_db(username, password, ip)
     db = client.db(DB, username, password, auth_method="basic")
     if name in db.collections():
+        collection = db.collection(name)
         logging.info(f"Existing {DB} on {ip} collection {name} count {collection.count()}")
             
     process = subprocess.run(cmd, capture_output=True, check=True, text=True)
     log_arangoimport_output(str(process.stdout), str(process.stderr), file_, name)
     
     collection = db.collection(name)
-    client.close()
     assert collection.count() > 0
     logging.info(f"Imported {name} from {file_} to {DB} on {ip} collection {name} count {collection.count()}")
+    client.close()
 
 
 def arango_import(username: str, password: str, ip: str) -> None:
