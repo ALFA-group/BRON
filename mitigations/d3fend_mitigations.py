@@ -9,25 +9,29 @@ import requests
 import rdflib
 import arango
 
-from utils.mitigation_utils import import_into_arango, update_graph_in_graph_db
+from utils.mitigation_utils import update_graph_in_graph_db
 from mitigations.query_d3fend import (
     find_mitigation_label,
     find_techniques_from_mitigations,
     find_mitigations,
     find_mitigation_comment,
+    find_techniques_from_mitigations_map,
 )
 from graph_db.bron_arango import (
     DB,
+    create_edge_document,
     create_graph,
     get_edge_collection_name,
     get_schema,
     validate_entry,
+    import_into_arango, 
 )
 from graph_db.query_graph_db import get_technique_id_from_id
 
 
 D3FEND_URL = "https://d3fend.mitre.org/resources/"
 D3FEND_TECHNIQUE_TREE = "https://d3fend.mitre.org/ontologies/d3fend.csv"
+D3FEND_MAPPINGS = "https://d3fend.mitre.org/api/ontology/inference/d3fend-full-mappings.json"
 D3FEND_ONTOLOGY_JSON = "https://d3fend.mitre.org/ontologies/d3fend.json"
 D3FEND_ONTOLOGY_OWL = "https://d3fend.mitre.org/ontologies/d3fend.owl"
 D3FEND_ONTOLOGY_TTL = "https://d3fend.mitre.org/ontologies/d3fend.ttl"
@@ -46,6 +50,7 @@ D3FEND_MITIGATIONS_TECHNIQUE_FILE_PATH = os.path.join(
 def download_data():
     _download_technique_tree()
     _download_ontologies()
+    _download_full_mapping()
 
 
 def _download_technique_tree():
@@ -81,15 +86,30 @@ def _download_ontologies():
         logging.info(f"Store {ontology} to {file_path}")
 
 
+def _download_full_mapping():
+    logging.info(f"Begin download of {D3FEND_MAPPINGS}")
+    response = requests.get(D3FEND_MAPPINGS)
+    file_path = os.path.join(OUT_DIR, os.path.basename(D3FEND_MAPPINGS))
+    with open(file_path, "w") as fd:
+        json.dump(response.json(), fd, indent=4)
+
+    assert os.path.exists(file_path)
+
+
 def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool = False) -> None:
     logging.info(f"Begin update of {ip} with D3FEND")
     g = rdflib.Graph()
     _ = g.parse(D3FEND_ONTOLOGY_TTL, format="turtle")
+    # TODO write SPARQL instead of using JSON...
+    file_path = os.path.join(OUT_DIR, os.path.basename(D3FEND_ONTOLOGY_JSON))
+    with open(file_path, 'r') as fd:
+        json_data = json.load(fd)
+        
+    entries = json_data["@graph"]
     # d3_id -> name
     mitigations = find_mitigations(g)
     # name -> d3_id
     mitigation_name_id_map = dict([(v, k) for k, v in mitigations.items()])
-    mitigation_id_graph_db_id_map = {}
     bron_mitigations = []
     # TODO is this really a good key. Should use the d3fend-id as key instead of internal BRON counter
     mitigation_ids = sorted(list(mitigations.keys()))
@@ -99,12 +119,10 @@ def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool
     for cnt, mitigation_id in enumerate(mitigation_ids):
         mitigation = mitigations[mitigation_id]
         label = find_mitigation_label(mitigation, g)
-        comment = find_mitigation_comment(mitigation, g)
-        graph_db_id = f"{D3FEND_MITIGATION_COLLECTION}_{cnt:05}"
+        comment = find_mitigation_comment(entries, mitigation_id)
         entry = {
-            "_key": graph_db_id,
+            "_key": str(mitigation_id),
             "name": str(label),
-            # TODO add description
             "metadata": {"description": comment},
             "original_id": str(mitigation_id),
             "datatype": D3FEND_MITIGATION_COLLECTION,
@@ -113,7 +131,6 @@ def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool
             validate_entry(entry, schema)
 
         bron_mitigations.append(entry)
-        mitigation_id_graph_db_id_map[str(mitigation)] = graph_db_id
 
     with open(D3FEND_MITIGATIONS_FILE_PATH, "w") as fd:
         for bron_mitigation in bron_mitigations[:]:
@@ -123,10 +140,11 @@ def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool
     assert os.path.exists(D3FEND_MITIGATIONS_FILE_PATH)
     logging.info(f"Created {D3FEND_MITIGATION_COLLECTION}")
 
-    mitigation_capecs = []
-    mitigation_technique_map, _ = find_techniques_from_mitigations()
-    client = arango.ArangoClient(hosts=f"http://{ip}:8529")
-    db = client.db(DB, username=username, password=password, auth_method="basic")
+    mitigation_technique_documents = []
+    maps = find_techniques_from_mitigations_map(
+        d3fend_mapping_file_name=os.path.join(OUT_DIR, os.path.basename(D3FEND_MAPPINGS)),
+        d3fend_label_id_map=mitigation_name_id_map)
+    mitigation_technique_maps = maps["d3fend_technique"]
     create_graph(
         username,
         password,
@@ -137,30 +155,21 @@ def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool
     if validation:
         schema = get_schema("D3fend_mitigationTechnique")
 
-    for mitigation, techniques in mitigation_technique_map.items():
-        mitigation_id = mitigation_name_id_map[mitigation]
-        mitigation_graph_db_id = mitigation_id_graph_db_id_map[mitigation]
-        for technique in techniques:
-            technique_id = get_technique_id_from_id(technique, db)
-            if technique_id is None:
-                logging.error(f"No entry corresponding to {technique}")
-                continue
-
-            entry = {
-                "_from": f"{technique_id}",
-                "_to": f"{D3FEND_MITIGATION_COLLECTION}/{mitigation_graph_db_id}",
-            }
-            if validation:
-                validate_entry(entry, schema)
-
-            mitigation_capecs.append(entry)
+    logging.info(f"Found {len(mitigation_technique_maps)} techniques")
+    for mitigation_id, technique_id in mitigation_technique_maps:
+        _to = f"{D3FEND_MITIGATION_COLLECTION}/{mitigation_id}"
+        _from = f"technique/{technique_id}"
+        document = create_edge_document(_from, _to, schema, validation)
+        logging.debug(f"Add {document}")
+        mitigation_technique_documents.append(document)
 
     with open(D3FEND_MITIGATIONS_TECHNIQUE_FILE_PATH, "w") as fd:
-        for mitigation_capec in mitigation_capecs[:]:
+        for mitigation_capec in mitigation_technique_documents:
             json.dump(mitigation_capec, fd)
             fd.write("\n")
 
     assert os.path.exists(D3FEND_MITIGATIONS_TECHNIQUE_FILE_PATH)
+    assert len(mitigation_technique_documents) > 0
     logging.info(f"Created {D3FEND_MITIGATION_COLLECTION} edges")
     import_into_arango(
         username,

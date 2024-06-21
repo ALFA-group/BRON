@@ -24,7 +24,7 @@ CWE_XML_URL = "http://cwe.mitre.org/data/xml/cwec_latest.xml.zip"
 CVE_BASE_URL = "https://nvd.nist.gov/feeds/json/cve/1.1"
 LAST_YEAR = datetime.datetime.now().year + 1
 FIRST_YEAR = 2002
-RECENT_OFFSET = 5
+RECENT_OFFSET = 1
 CVE_ALL_YEARS = list(map(str, range(FIRST_YEAR, LAST_YEAR)))
 CVE_RECENT_YEARS = list(map(str, range(LAST_YEAR - RECENT_OFFSET, LAST_YEAR)))
 

@@ -29,7 +29,7 @@ def parse_capec_xml_to_csv(capec_xml_file: str, save_path: str) -> None:
     els = root.findall("./capec-3:Attack_Patterns/capec-3:Attack_Pattern", ns)
     for el in els:
         if el.attrib["Status"] == "Deprecated":
-            logging.info(f"Deprecated CAPEC entry {el.attrib['ID']} {el.attrib['Name']}")
+            logging.debug(f"Deprecated CAPEC entry {el.attrib['ID']} {el.attrib['Name']}")
             continue
 
         # TODO read from schema
@@ -169,7 +169,7 @@ def parse_cwe_xml_to_csv(cwe_file: str, save_path: str, download_path: str) -> N
     els = root.findall(f"./{CWE_VERSION_TAG}:Weaknesses/{CWE_VERSION_TAG}:Weakness", ns)
     for el in els:
         if el.attrib["Status"] == "Deprecated":
-            logging.info(f"Deprecated CWE entry {el.attrib['ID']} {el.attrib['Name']}")
+            logging.debug(f"Deprecated CWE entry {el.attrib['ID']} {el.attrib['Name']}")
             continue
 
         values = {
@@ -311,8 +311,8 @@ def parse_capec_cwe_files(save_path):
         capec_name = capec_entry["Name"]
         data["capec_names"][capec_id] = capec_name
         data["capec_descriptions"][capec_id] = {
-            "short_description": capec_entry["Description"],
-            "description": capec_entry["Extended_Description"],
+            "description": capec_entry["Description"],
+            "extended_description": capec_entry["Extended_Description"],
             "likelihood_of_attack": capec_entry["Likelihood of Attack"],
             "typical_severity": capec_entry["Typical Severity"],
             "skills_required": capec_entry["Skills Required"],

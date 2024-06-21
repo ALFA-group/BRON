@@ -5,9 +5,9 @@
     "type":"object",
     "properties":{
        "_key":{
-          "description":"The unique identifier for BRON. E.g. 'software_00000'",
+          "description":"The unique identifier for BRON. Same as data source",
           "type":"string",
-          "pattern": "software_\\d{5}"
+          "pattern": "S\\d{4}"
        },
        "original_id":{
         "description":"ID from MITRE ATT&CK. E.g. 'S1013'",
@@ -21,7 +21,8 @@
        },
        "name":{
         "description":"The name of the software. TODO write pattern",
-        "type":"string"
+        "type":"string",
+        "minLength": 1
        },
        "metadata":{
         "description":"Metadata",
@@ -29,7 +30,8 @@
         "properties": {
             "description": {
                 "description": "The full description",
-                "type": "string"
+                "type": "string",
+                "minLength": 1
             },
             "type": {
                 "description": "The type. TODO write pattern",

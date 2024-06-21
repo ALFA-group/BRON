@@ -14,6 +14,7 @@ from graph_db.bron_arango import (
     HOST,
     get_edge_collection_name,
     get_schema,
+    import_into_arango,
     validate_entry,
 )
 
@@ -103,43 +104,6 @@ def update_graph_in_graph_db(
     client.close()
 
 
-def import_into_arango(
-    username: str,
-    password: str,
-    ip: str,
-    file_: str,
-    edge_keys: bool,
-    name: str,
-) -> None:
-    cmd = [
-        "arangoimport",
-        "--collection",
-        name,
-        "--create-collection",
-        "true",
-        "--file",
-        file_,
-        "--type",
-        "jsonl",
-        "--server.password",
-        password,
-        "--server.database",
-        DB,
-        "--server.endpoint",
-        f"http+tcp://{ip}:8529",
-        "--server.authentication",
-        "false",
-        "--on-duplicate",
-        "ignore",
-    ]
-    if edge_keys:
-        cmd += ["--create-collection-type", "edge"]
-
-    cmd_str = " ".join(cmd)
-    os.system(cmd_str)
-    logging.info(f"Imported {name} from {file_} to {DB} on {ip} (Edge collection = {edge_keys})")
-
-
 def clean_BRON_mitigation(
     username: str, password: str, ip: str, mitigation_data: Dict[str, Any]
 ) -> None:
@@ -210,50 +174,3 @@ def read_jsonl(file_path: str) -> List[Any]:
 
     logging.info(f"Read {len(data)} from file {file_path}")
     return data
-
-
-def link_data(
-    db,
-    file_path: str,
-    edge_name: str,
-    dst: str,
-    validation: bool,
-    id_map: Dict[str, str],
-    collection_name,
-    basename: str,
-    data: Dict[str, List[Dict[str, str]]],
-    id_key: str,
-):
-    logging.info(f"Linking {file_path} data for {edge_name} with {dst}.")
-    df = pd.read_json(file_path, lines=True)
-    if validation:
-        schema = get_schema(edge_name)
-
-    collection_ = db.collection(collection_name)
-    errors = collections.defaultdict(int)
-    query_miss = collections.defaultdict(int)
-    for i in tqdm(range(len(df))):
-        value = df.loc[i]
-        result = query_bron(collection_, {"original_id": str(value[dst])})
-
-        if result is None:
-            query_miss[str(value[dst])]
-            continue
-
-        _id = value[id_key]
-        try:
-            _from = f"{basename}/{id_map[_id]}"
-        except KeyError as e:
-            errors[str(e)] += 1
-            continue
-
-        _to = result["_id"]
-        entry = {"_id": f"{edge_name}/{_from}-{_to}", "_from": _from, "_to": _to}
-        if validation:
-            validate_entry(entry, schema)
-
-        data[edge_name].append(entry)
-
-    logging.info(f"Errors for {len(errors)} ids {sum(errors.values())} times")
-    logging.info(f"Query misses for {len(query_miss)} ids {sum(query_miss.values())} times")
-    logging.info(f"Done Linking for {collection_.name}")

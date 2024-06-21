@@ -5,9 +5,9 @@
     "type":"object",
     "properties":{
        "_key":{
-          "description":"The unique identifier for BRON. E.g. 'cpe_02052'",
+          "description":"The unique identifier for BRON. Same as data source",
           "type":"string",
-          "pattern": "cpe_\\d{5}"
+          "pattern": "cpe:2\\.3:[aho\\*\\-](:(((\\?*|\\*?)([a-zA-Z0-9\\-\\._]|(\\\\[\\\\\\*\\?!\"#$$%&'\\(\\)\\+,/:;<=>@\\[\\]\\^`\\{\\|}~]))+(\\?*|\\*?))|[\\*\\-])){5}(:(([a-zA-Z]{2,3}(-([a-zA-Z]{2}|[0-9]{3}))?)|[\\*\\-]))(:(((\\?*|\\*?)([a-zA-Z0-9\\-\\._]|(\\\\[\\\\\\*\\?!\"#$$%&'\\(\\)\\+,/:;<=>@\\[\\]\\^`\\{\\|}~]))+(\\?*|\\*?))|[\\*\\-])){4}"
        },
        "original_id":{
         "description":"ID in CPE form . E.g. 'cpe:2.3:o:freebsd:freebsd:2.1.6:*:*:*:*:*:*:*'. Pattern to work as described in https://csrc.nist.gov/schema/cpe/2.3/cpe-naming_2.3.xsd",

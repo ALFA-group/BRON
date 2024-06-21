@@ -5,9 +5,9 @@
     "type":"object",
     "properties":{
        "_key":{
-          "description":"The unique identifier for BRON. E.g. 'technique_00001'",
+          "description":"The unique identifier for BRON. Same as data source",
           "type":"string",
-          "pattern": "technique_\\d{5}"
+          "pattern": "(T\\d{4}(\\.\\d{3})?)"
        },
        "original_id":{
         "description":"ID from MITRE ATT&CK. E.g. 'T1001'",
@@ -29,7 +29,8 @@
         "properties": {
             "description": {
                 "description": "The full description",
-                "type": "string"
+                "type": "string",
+                "minLength": 1
             },
             "short_description": {
                 "description": "The first paragraph of the description. TODO write pattern",

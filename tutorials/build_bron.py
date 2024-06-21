@@ -12,6 +12,7 @@ import arango
 import download_threat_information.download_threat_data as download_threat_data
 from download_threat_information.download_threat_data import (
     CVE_ALL_YEARS,
+    CVE_RECENT_YEARS,
     OUTPUT_FOLDER as DOWNLOAD_PATH,
 )
 from download_threat_information.parsing_scripts.parse_cve import parse_cve_file
@@ -44,6 +45,7 @@ def parse_args(args: List[str]) -> Any:
     parser.add_argument("--no_download", action="store_true", help="Do not download data")
     parser.add_argument("--no_parsing", action="store_true", help="Do not parse data")
     parser.add_argument("--no_building", action="store_true", help="Do not build BRON")
+    parser.add_argument("--only_recent", action="store_true", help="Only recent CVEs")
     parser.add_argument(
         "--no_arangodb",
         action="store_true",
@@ -63,10 +65,15 @@ def parse_args(args: List[str]) -> Any:
     return args
 
 
-def _download():
+def _download(only_recent: bool=False):
     # Download
-    logging.info("BEGIN Download")
-    download_threat_data.main(CVE_ALL_YEARS)
+    if only_recent:
+        cve_years = CVE_RECENT_YEARS
+    else:
+        cve_years = CVE_ALL_YEARS
+    logging.info(f"BEGIN Download {cve_years}")
+    
+    download_threat_data.main(cve_years)
     logging.info("Downloaded threat data")
 
 
@@ -133,6 +140,7 @@ def _arangodb(username: str, password: str, ip: str, no_validation):
     update_edges_between_same_datasources(username, password, ip, not no_validation)
     logging.info("Import same datasource links into Arangodb")
     build_software_and_groups(SG_OUT_DATA_DIR, username, password, ip, not no_validation)
+    
 
 
 def clean(username: str, password: str, ip: str, clean_local_files: bool = True):
@@ -180,7 +188,7 @@ def _mitigations(username: str, password: str, ip: str, validation: bool):
     logging.info("Created engage for BRON")
     engage.update_BRON_graph_db(username, password, ip, validation)
     logging.info("Updated engage in Arango")
-
+   
     # ATT&CK
     attack_mitigations.main(BRON_SAVE_PATH, username, password, ip, validation)
     logging.info("Created ATTA&CK for BRON")
@@ -224,11 +232,12 @@ def main(
     no_arangodb: bool = False,
     no_mitigations: bool = False,
     no_validation: bool = False,
+    only_recent: bool=False
 ):
     # TODO change import to not create duplicates
     logging.info("BEGIN building BRON")
     if not no_download:
-        _download()
+        _download(only_recent)
 
     # Parse
     if not no_parsing:
@@ -275,4 +284,5 @@ if __name__ == "__main__":
         args_.no_arangodb,
         args_.no_mitigations,
         args_.no_validation,
+        args_.only_recent
     )

@@ -8,9 +8,8 @@ import json
 import arango
 import pandas as pd
 
-from graph_db.bron_arango import get_schema, get_schemas, validate_entry
+from graph_db.bron_arango import create_edge_document, get_schema, get_schemas, validate_entry
 from mitigations.capec_mitigations import clean_BRON_mitigation
-from mitigations.cwe_mitigations import query_bron
 import utils.mitigation_utils as mitigation_utils
 
 
@@ -33,8 +32,6 @@ def _make_bron_data(save_path: str, username: str, password: str, ip: str, valid
     logging.info(f"Begin technique mitgations for BRON for {ip}")
     client = arango.ArangoClient(hosts=f"http://{ip}:8529")
     db = client.db("BRON", username=username, password=password, auth_method="basic")
-    technique_bron = db.collection("technique")
-    technique_mitigation_id_map = {}
 
     file_path = os.path.join(save_path, f"technique_mitigation.jsonl")
     df = pd.read_json(file_path, lines=True)
@@ -47,18 +44,18 @@ def _make_bron_data(save_path: str, username: str, password: str, ip: str, valid
     cnt = 0
     for row in df.iterrows():
         value = row[1]
-        _id = f"{datatype}_{cnt:05}"
+        description = value["description"]
         entry = {
-            "_key": _id,
+            "_key": str(value["original_id"]),
             "original_id": str(value["original_id"]),
             "name": value["name"],
             "datatype": datatype,
+            "metadata": {"description": description}
         }
         if validation:
             schema = schemas[datatype]
             validate_entry(entry, schema)
 
-        technique_mitigation_id_map[entry["original_id"]] = _id
         TECHNIQUE_MITIGATION_BRON_DATA[datatype].append(entry)
         cnt += 1
 
@@ -70,32 +67,34 @@ def _make_bron_data(save_path: str, username: str, password: str, ip: str, valid
 
     for row in df.iterrows():
         value = row[1]
-        result = query_bron(technique_bron, {"original_id": str(value["technique_id"])})
-        if result is None:
+        result = value["technique_id"]
+        # TODO hack for techniques
+        if not result.startswith("T"):
             continue
 
-        _to = f'{datatype}/{technique_mitigation_id_map[value["technique_mitigation_id"]]}'
-        _from = result["_id"]
-        entry = {"_id": f"{edge_name}/{_from}-{_to}", "_from": _from, "_to": _to}
-        if validation:
-            validate_entry(entry, schema)
-
-        TECHNIQUE_MITIGATION_BRON_DATA[edge_name].append(entry)
+        _to = f'{datatype}/{value["technique_mitigation_id"]}'
+        _from = f"technique/{result}"
+        document = create_edge_document(_from, _to, schema, validation)
+        TECHNIQUE_MITIGATION_BRON_DATA[edge_name].append(document)
 
     file_path = os.path.join(save_path, f"technique_detection.jsonl")
     df = pd.read_json(file_path, lines=True)
     mitigation_utils.check_duplicates(df, ["name", "id"])
     df = df.sort_values(by=["original_id"])
+    file_path = os.path.join(save_path, f"technique_technique_detection_component_mapping.jsonl")
+    df_map = pd.read_json(file_path, lines=True)
     cnt = 0
     for row in df.iterrows():
         value = row[1]
-        datatype = "technique_detection"
-        _id = f"{datatype}_{cnt:05}"
+        datatype = "technique_detection"   
+        _id = str(value["original_id"])
+        description = value["description"]
         entry = {
             "_key": _id,
-            "original_id": str(value["original_id"]),
+            "original_id": _id,
             "name": value["name"],
             "datatype": datatype,
+            "metadata": {"description": description}
         }
         if validation:
             schema = schemas[datatype]
@@ -105,19 +104,15 @@ def _make_bron_data(save_path: str, username: str, password: str, ip: str, valid
         cnt += 1
 
         edge_name = "TechniqueTechnique_detection"
-        result = query_bron(technique_bron, {"original_id": str(value["original_id"])})
-        if result is None:
-            continue
+        results = df_map[df_map["technique_data_source_id"] == _id]["technique_id"]
+        schema = schemas[edge_name]
+        for result in results:
+            _to = f"{datatype}/{_id}"
+            _from = f"technique/{result}"
+            document = create_edge_document(_from, _to, schema, validation)
+            TECHNIQUE_MITIGATION_BRON_DATA[edge_name].append(document)
 
-        _to = f"{datatype}/{_id}"
-        _from = result["_id"]
-        entry = {"_id": f"{edge_name}/{_from}-{_to}", "_from": _from, "_to": _to}
-        if validation:
-            schema = schemas[edge_name]
-            validate_entry(entry, schema)
-
-        TECHNIQUE_MITIGATION_BRON_DATA[edge_name].append(entry)
-
+    assert len(TECHNIQUE_MITIGATION_BRON_DATA[edge_name]) > 0
     client.close()
     for key, value in TECHNIQUE_MITIGATION_BRON_DATA.items():
         file_path = os.path.join(TECHNIQUE_MITIGATION_OUT_DATA_DIR, f"import_{key}.jsonl")

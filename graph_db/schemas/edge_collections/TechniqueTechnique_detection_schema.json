@@ -7,12 +7,12 @@
       "_to":{
          "description":"The detection identifier in BRON.",
          "type":"string",
-         "pattern": "technique_detection/technique_detection_\\d{5}"
+         "pattern": "technique_detection/DS\\d{4}"
       },
       "_from":{
          "description":"The technique identifier in BRON.",
          "type":"string",
-         "pattern": "technique/technique_\\d{5}"
+         "pattern": "technique/(T\\d{4}(\\.\\d{3})?)"
       }
  },
     "required":[

@@ -7,7 +7,7 @@ import json
 
 import arango
 import pandas as pd
-from graph_db.bron_arango import get_schemas, validate_entry
+from graph_db.bron_arango import create_edge_document, get_schemas, validate_entry
 
 from utils.mitigation_utils import (
     check_duplicates,
@@ -53,7 +53,7 @@ def _make_bron_data(
         value = row[1]
         for mitigation in value["Mitigations"]:
             datatype = "capec_mitigation"
-            _id = f"{datatype}_{cnt:05}"
+            _id = f'CA-{str(value["ID"])}'
             entry = {
                 "_key": _id,
                 "original_id": str(value["ID"]),
@@ -75,16 +75,12 @@ def _make_bron_data(
 
             _to = f"{datatype}/{_id}"
             _from = result["_id"]
-            entry = {"_id": f"{edge_name}/{_from}-{_to}", "_from": _from, "_to": _to}
-            if validation:
-                schema = schemas[edge_name]
-                validate_entry(entry, schema)
-
-            CAPEC_MITIGATION_BRON_DATA[edge_name].append(entry)
+            document = create_edge_document(_from, _to, schemas[edge_name], validation)
+            CAPEC_MITIGATION_BRON_DATA[edge_name].append(document)
 
         for mitigation in value["Indicators"]:
             datatype = "capec_detection"
-            _id = f"{datatype}_{cnt:05}"
+            _id = f'CA-{str(value["ID"])}'            
             entry = {
                 "_key": _id,
                 "original_id": str(value["ID"]),
@@ -92,8 +88,8 @@ def _make_bron_data(
                 "metadata": mitigation,
                 "datatype": datatype,
             }
+            schema = schemas[datatype]                
             if validation:
-                schema = schemas[datatype]
                 validate_entry(entry, schema)
 
             CAPEC_MITIGATION_BRON_DATA[datatype].append(entry)
@@ -103,15 +99,11 @@ def _make_bron_data(
             result = query_bron(capec_bron, {"original_id": str(value["ID"])})
             if result is None:
                 continue
-
-            _to = f"{datatype}/{_id}"
+            
             _from = result["_id"]
-            entry = {"_id": f"{edge_name}/{_from}-{_to}", "_from": _from, "_to": _to}
-            if validation:
-                schema = schemas[edge_name]
-                validate_entry(entry, schema)
-
-            CAPEC_MITIGATION_BRON_DATA[edge_name].append(entry)
+            _to = f"capec_detection/{_id}"
+            document = create_edge_document(_from, _to, schemas[edge_name], validation)
+            CAPEC_MITIGATION_BRON_DATA[edge_name].append(document)
 
     client.close()
     for key, value in CAPEC_MITIGATION_BRON_DATA.items():

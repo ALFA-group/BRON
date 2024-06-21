@@ -7,12 +7,12 @@
       "_to":{
          "description":"The activity identifier in BRON.",
          "type":"string",
-         "pattern": "engage_activity/engage_activity_\\d{5}"
+         "pattern": "engage_activity/[ES]AC\\d{4}"
       },
       "_from":{
          "description":"The technique identifier in BRON.",
          "type":"string",
-         "pattern": "technique/technique_\\d{5}"
+         "pattern": "technique/(T\\d{4}(\\.\\d{3})?)"
       }
  },
     "required":[

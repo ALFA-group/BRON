@@ -5,9 +5,9 @@
     "type":"object",
     "properties":{
        "_key":{
-          "description":"The unique identifier for BRON. E.g. 'engage_approach_00000'",
+          "description":"The unique identifier for BRON. Same as data source",
           "type":"string",
-          "pattern": "engage_approach_\\d{5}"
+          "pattern": "[ES]AP\\d{4}"
        },
        "original_id":{
         "description":"ID from MITRE ENGAGE. E.g. 'EAP0001'",
@@ -21,7 +21,8 @@
        },
        "name":{
         "description":"The name of the approach. TODO write pattern",
-        "type":"string"
+        "type":"string",
+        "minLength": 1
        }
     },
     "required":[

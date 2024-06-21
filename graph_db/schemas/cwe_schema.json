@@ -5,9 +5,9 @@
     "type":"object",
     "properties":{
        "_key":{
-          "description":"The unique identifier for BRON. E.g. 'cwe_01127'",
+          "description":"The unique identifier for BRON.",
           "type":"string",
-          "pattern": "cwe_\\d{5}"
+          "pattern": "CWE-\\d{1,4}"
        },
        "original_id":{
         "description":"ID from MITRE CWE. E.g. '1004'",
@@ -21,19 +21,20 @@
        },
        "name":{
         "description":"The name of the weakness. TODO write pattern",
-        "type":"string"
+        "type":"string",
+        "minLength": 1
        },
        "metadata":{
         "description":"Metadata",
         "type":"object",
         "properties": {
-            "description": {
+            "extended_description": {
                 "description": "The extended description",
-                "type": ["string", "null"]
-            },
-            "short_description": {
-                "description": "The description",
                 "type": "string"
+            },
+            "description": {
+                "description": "The description",
+                "type": ["string", "null"]
             },
             "likelihood_of_exploit": {
                 "description": "The likelihood of exploit. TODO get the patterns",
@@ -73,8 +74,7 @@
             }            
             },
             "required":[
-                "description",
-                "short_description"
+                "description"
              ]
        }
     },
