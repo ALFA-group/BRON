@@ -171,7 +171,7 @@ def main(
     logging.info(f"Done: Edges to file")
 
 
-def get_edge_document(o_edge: Tuple[str, str], validation: bool, schemas: dict[str, Any]) -> Tuple[Dict[str, str], str]:
+def get_edge_document(o_edge: Tuple[str, str], validation: bool, schemas: Dict[str, Any]) -> Tuple[Dict[str, str], str]:
     edge = order_edge(o_edge)
     from_node_key = get_edge_key(edge[1])
     from_ = f"{from_node_key}/{edge[1]}"
