@@ -1,0 +1,49 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"technique_analytic",
+    "description":"An analytic for detecting an ATT&CK technique.",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. Same as external_id from MITRE ATT&CK",
+          "type":"string",
+          "pattern": "AN\\d{4}"
+       },
+       "original_id":{
+        "description":"ID from MITRE ATT&CK. E.g. 'AN0110'",
+        "type":"string",
+        "pattern": "AN\\d{4}"
+       },
+       "datatype":{
+        "description":"Name of datatype",
+        "type":"string", 
+        "pattern": "technique_analytic"
+       },
+       "name":{
+        "description":"The name of the analytic. TODO write pattern",
+        "type":"string",
+        "minLength": 1
+       },
+       "metadata":{
+         "description":"Metadata",
+         "type":"object",
+         "properties": {
+             "description": {
+                 "description": "The full description",
+                 "type": "string",
+                 "minLength": 1
+             }
+            },
+             "required":[
+                 "description"
+              ]         
+        }
+    },
+    "required":[
+        "_key",
+        "name",
+        "datatype",
+        "original_id",
+        "metadata"
+     ]
+  }

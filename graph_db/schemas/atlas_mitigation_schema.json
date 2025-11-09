@@ -1,0 +1,51 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"atlas_mitigation",
+    "description":"A mitigation from MITRE ATLAS",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. Same as data source",
+          "type":"string",
+          "pattern": "AML.M\\d{4}"
+       },
+       "original_id":{
+        "description":"ID from MITRE ATLAS. E.g. 'AML.M0001'",
+        "type":"string",
+        "pattern": "AML.M\\d{4}"
+       },
+       "datatype":{
+        "description":"Name of datasource",
+        "type":"string", 
+        "pattern": "atlas_mitigation"
+       },
+       "name":{
+        "description":"The shortname of the mitigation. TODO write pattern",
+        "type":"string"
+       },
+       "metadata":{
+        "description":"Metadata",
+        "type":"object",
+        "properties": {
+         "description": {
+            "description": "The full description",
+            "type": "string"
+        },
+        "tags": {
+         "description": "Tags",
+         "type": "string"
+     }
+ },
+            "required":[
+                "description"
+             ]         
+       }
+    },
+    "required":[
+        "_key",
+        "name",
+        "metadata",
+        "datatype",
+        "original_id"
+     ]
+  }

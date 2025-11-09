@@ -16,7 +16,12 @@ from download_threat_information.parsing_scripts.parse_capec_cwe import load_cap
 # TODO refactor separation of mitigation and attacks. I.e. BRON is attacks, then extension is mitigations which should be separable
 
 TECHNIQUE_MITIGATION_VALUES = (
-    "technique_detection",
+    "technique_detection_strategy",
+    "technique_detection_strategy_technique_mapping",
+    "technique_data_component",
+    "technique_data_component_technique_analytic_mapping",
+    "technique_analytic",
+    "technique_analytic_technique_detection_strategy_mapping",
     "technique_mitigation",
     "technique_mitigation_technique_mapping",
 )
@@ -148,24 +153,30 @@ def parse_enterprise_attack(file_name: str, save_path: str):
         "intrusion-set",
         "tool",
         "malware",
-        "x-mitre-data-source",
-        "x-mitre-data-component"
+        "x-mitre-data-component",
+        "x-mitre-analytic",
+        "x-mitre-detection-strategy",
+        "campaign"
     }
-    ATTACK_RELATIONSHIP_DATA = {"mitigates", "uses", "detects"}
+    ATTACK_RELATIONSHIP_DATA = {"mitigates", "uses", "detects", "attributed-to"}
     REF_BRON_MAP = {
         "malware": "software",
         "tool": "software",
         "intrusion-set": "group",
         "attack-pattern": "technique",
-        "x-mitre-data-source": "detection",
-        "x-mitre-data-component": "detection"
+        "x-mitre-data-component": "technique_detection",
+        "x-mitre-analytic": "technique_analytic",
+        "x-mitre-detection-strategy": "technique_detection_strategy",
+        "campaign": "campaign"
     }
     values = collections.defaultdict(list)
+    # TODO here . Map the raw values to ids and store in the values dict
+    raw_values = collections.defaultdict(list)
     with open(file_name, "r") as fd:
         data = json.load(fd)
 
     attack_id_to_technique_id_map = {}
-    detection_source_to_component_map = {}
+    
     for entry in data["objects"]:
         id_ = entry.get("id", "")
         name_ = entry.get("name", "")
@@ -175,9 +186,9 @@ def parse_enterprise_attack(file_name: str, save_path: str):
                 logging.debug(f"Revoked or deprecated entry {entry.get('name')} {entry.get('id')}")
                 continue
 
-            if type_ == "x-mitre-data-source":
+            if type_ == "x-mitre-data-component":
                 detection_id = _get_attack_id(entry)
-                values["technique_detection"].append(
+                values["technique_data_component"].append(
                     {
                         "name": name_,
                         "original_id": detection_id,
@@ -186,17 +197,44 @@ def parse_enterprise_attack(file_name: str, save_path: str):
                     }
                 )
                 attack_id_to_technique_id_map[id_] = detection_id
-            elif type_ == "x-mitre-data-component":
-                detection_id = id_
-                values["technique_detection_component"].append(
+            elif type_ == "x-mitre-detection-strategy":
+                detection_id = _get_attack_id(entry)
+                values["technique_detection_strategy"].append(
                     {
                         "name": name_,
                         "original_id": detection_id,
                         "id": id_,
-                        "description": entry["description"]
+                        "description": entry.get("description", "")
                     }
                 )
-                detection_source_to_component_map[id_] = entry.get("x_mitre_data_source_ref")
+                attack_id_to_technique_id_map[id_] = detection_id
+                for analytic_ref in entry.get("x_mitre_analytic_refs", []):
+                    # Store UUID reference - will resolve to ID after all objects processed
+                    key = ("technique_analytic", "technique_detection_strategy")
+                    raw_values[key].append({
+                        "technique_analytic_ref": analytic_ref,  # Store UUID
+                        "technique_detection_strategy_id": detection_id,
+                    })
+            elif type_ == "x-mitre-analytic":
+                detection_id = _get_attack_id(entry)
+                values["technique_analytic"].append(
+                    {
+                        "name": name_,
+                        "original_id": detection_id,
+                        "id": id_,
+                        "description": entry.get("description", "")
+                    }
+                )
+                attack_id_to_technique_id_map[id_] = detection_id
+                for data_component_ref in entry.get("x_mitre_log_source_references", []):
+                    # Store UUID reference - will resolve to ID after all objects processed
+                    data_component_uuid = data_component_ref.get('x_mitre_data_component_ref', "")
+                    if data_component_uuid:
+                        key = ("technique_data_component", "technique_analytic")
+                        raw_values[key].append({
+                            "technique_data_component_ref": data_component_uuid,  # Store UUID
+                            "technique_analytic_id": detection_id,
+                        })
             elif type_ == "intrusion-set":
                 group_id = _get_attack_id(entry)
                 assert group_id.startswith("G")
@@ -241,7 +279,7 @@ def parse_enterprise_attack(file_name: str, save_path: str):
                 attack_id_to_technique_id_map[id_] = software_id
 
             elif type_ == "course-of-action":
-                technique_mitigation_id = _get_attack_id(entry)
+                technique_mitigation_id = _get_attack_mitigation_id(entry)
                 if not technique_mitigation_id:
                     continue
                 values["technique_mitigation"].append(
@@ -253,6 +291,22 @@ def parse_enterprise_attack(file_name: str, save_path: str):
                     }
                 )
                 attack_id_to_technique_id_map[id_] = technique_mitigation_id
+                        
+            elif type_ == "campaign":
+                campaign_id = _get_attack_id(entry)
+                assert campaign_id.startswith("C")
+                if not campaign_id:
+                    continue
+                values["campaign"].append(
+                    {
+                        "name": name_,
+                        "original_id": campaign_id,
+                        "description": entry["description"],
+                        "id": id_,
+                        "type": type_,
+                    }
+                )
+                attack_id_to_technique_id_map[id_] = campaign_id
 
     for entry in data["objects"]:
         if entry["type"] == "relationship":
@@ -286,28 +340,39 @@ def parse_enterprise_attack(file_name: str, save_path: str):
 
             elif entry["relationship_type"] == "detects":
                 if (
-                    source in detection_source_to_component_map.keys()
+                    source in attack_id_to_technique_id_map.keys()
                     and target in attack_id_to_technique_id_map.keys()
                     and target != source
                     and target_id != source_id
                 ):
-                    data_source_uuid = detection_source_to_component_map[source]
-                    data_source_id = attack_id_to_technique_id_map[data_source_uuid]
-                    values["technique_technique_detection_component_mapping"].append(
-                        {
-                            # TODO handle detection component ids
-                            #"technique_detection_component_id": source_id,
-                            "technique_data_source_id": data_source_id,
-                            "technique_id": target_id,
-                        }
-                    )
-
+                    # Check the actual source and target types to determine the correct mapping
+                    source_prefix = source.split("--")[0]
+                    target_prefix = target.split("--")[0]
+                    
+                    # Handle detection-strategy -> technique mapping
+                    if source_prefix == "x-mitre-detection-strategy" and target_prefix == "attack-pattern":
+                        values["technique_detection_strategy_technique_mapping"].append(
+                            {
+                                "technique_detection_strategy_id": source_id,
+                                "technique_id": target_id,
+                            }
+                        )
+                    # Handle data-component -> detection-strategy mapping
+                    elif source_prefix == "x-mitre-data-component" and target_prefix == "x-mitre-detection-strategy":
+                        values["technique_data_component_technique_detection_strategy_mapping"].append(
+                            {
+                                "technique_data_component_id": source_id,
+                                "technique_detection_strategy_id": target_id,
+                            }
+                        )
+                    else:
+                        # Fallback to generic handler for other cases
+                        _handle_detection_mapping(source, target, source_id, target_id, values, attack_id_to_technique_id_map, REF_BRON_MAP)
+                else:
+                    _handle_detection_mapping(source, target, source_id, target_id, values, attack_id_to_technique_id_map, REF_BRON_MAP)            
             elif entry["relationship_type"] == "uses":
                 source_prefix = source.split("--")[0]
                 target_prefix = target.split("--")[0]
-                if source_prefix == 'campaign' or target_prefix == 'campaign':
-                    logging.debug(f"Skipping campaign {source_prefix} {target_prefix}")
-                    continue
                 
                 try:
                     src_bron_type = REF_BRON_MAP[source_prefix]
@@ -323,6 +388,38 @@ def parse_enterprise_attack(file_name: str, save_path: str):
                     and target != source
                     and target_id != source_id
                 ):
+                    if src_bron_type == "campaign":
+                        assert source_id.startswith("C"), f"{source_id} {source_prefix} {REF_BRON_MAP} {source}"
+                        
+                    values[key].append(
+                        {
+                            f"{src_bron_type}_id": source_id,
+                            f"{tgt_bron_type}_id": target_id,
+                        }
+                    )
+            elif entry["relationship_type"] == "attributed-to":
+                source_prefix = source.split("--")[0]
+                target_prefix = target.split("--")[0]
+                
+                try:
+                    src_bron_type = REF_BRON_MAP[source_prefix]
+                    tgt_bron_type = REF_BRON_MAP[target_prefix]
+                except KeyError as e:
+                    logging.warning(f"{e} for {entry}")
+                    continue
+
+                if src_bron_type != "campaign":
+                        continue    
+                    
+                key = f"{src_bron_type}_{tgt_bron_type}_mapping"
+                if (
+                    source in attack_id_to_technique_id_map.keys()
+                    and target in attack_id_to_technique_id_map.keys()
+                    and target != source
+                    and target_id != source_id
+                ):
+                    assert source_id.startswith("C"), f"{source_id} {source_prefix} {REF_BRON_MAP} {source}"
+                        
                     values[key].append(
                         {
                             f"{src_bron_type}_id": source_id,
@@ -330,6 +427,35 @@ def parse_enterprise_attack(file_name: str, save_path: str):
                         }
                     )
 
+    logging.info(f"Raw values: {len(raw_values)} elements {sum([len(v) for v in raw_values.values()])} entries")
+    logging.info(f"Values: {len(values)} elements {sum([len(v) for v in values.values()])} entries")
+    for key, value in raw_values.items():
+        src_bron_type, tgt_bron_type = key
+        key = f"{src_bron_type}_{tgt_bron_type}_mapping"
+        for entry in value:
+            # Resolve UUID references to IDs
+            if f"{src_bron_type}_ref" in entry:
+                src_id = attack_id_to_technique_id_map.get(entry[f"{src_bron_type}_ref"], "")
+                if not src_id:
+                    continue  # Skip if UUID not found in map
+            else:
+                src_id = entry[f"{src_bron_type}_id"]
+            
+            if f"{tgt_bron_type}_ref" in entry:
+                tgt_id = attack_id_to_technique_id_map.get(entry[f"{tgt_bron_type}_ref"], "")
+                if not tgt_id:
+                    continue  # Skip if UUID not found in map
+            else:
+                tgt_id = entry[f"{tgt_bron_type}_id"]
+            
+            values[key].append(
+                {
+                    f"{src_bron_type}_id": src_id,
+                    f"{tgt_bron_type}_id": tgt_id,
+                }
+            )   
+    logging.info(f"Values: {len(values)} elements {sum([len(v) for v in values.values()])} entries")
+            
     assert 'software_technique_mapping' in values.keys()
     for key, value in values.items():
         file_path = os.path.join(save_path, f"{key}.jsonl")
@@ -339,9 +465,35 @@ def parse_enterprise_attack(file_name: str, save_path: str):
                 fd.write("\n")
 
         assert os.path.exists(file_path)
-        logging.info(f"Parsed ATT&CK data {key} from {file_name} and saved to {file_path}")
+        logging.info(f"Parsed {len(value)} from ATT&CK data {key} from {file_name} and saved to {file_path}")
 
 
+def _handle_detection_mapping(source: str, target: str, source_id: str, target_id: str, values: dict, attack_id_to_technique_id_map: dict, REF_BRON_MAP: dict):
+    source_prefix = source.split("--")[0]
+    target_prefix = target.split("--")[0]
+    
+    try:
+        src_bron_type = REF_BRON_MAP[source_prefix]
+        tgt_bron_type = REF_BRON_MAP[target_prefix]
+    except KeyError as e:
+        logging.warning(f"{e} for source={source}, target={target}")
+        return
+
+    key = f"{src_bron_type}_{tgt_bron_type}_mapping"
+    if (
+        source in attack_id_to_technique_id_map.keys()
+        and target in attack_id_to_technique_id_map.keys()
+        and target != source
+        and target_id != source_id
+    ):
+        values[key].append(
+            {
+                f"{src_bron_type}_id": source_id,
+                f"{tgt_bron_type}_id": target_id,
+            }
+        )
+        
+        
 def link_technique_technique(file_path: str, save_path: str):
     logging.info(f"Begin linking technique to technique from {file_path}")
     with open(file_path, "r") as fd:

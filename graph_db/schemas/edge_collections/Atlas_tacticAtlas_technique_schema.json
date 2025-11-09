@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"Atlas_tacticAtlas_technique",
+    "description":"A link between an ATLAS tactic and an ATLAS Technique",
+    "type":"object",
+    "properties":{
+      "_from":{
+         "description":"The atlas tactic identifier in BRON.",
+         "type":"string",
+         "pattern": "atlas_tactic/AML.TA\\d{4}"
+      },
+      "_to":{
+         "description":"The ATLAS technique identifier in BRON.",
+         "type":"string",
+         "pattern": "atlas_technique/AML.T\\d{4}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

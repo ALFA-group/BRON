@@ -219,7 +219,10 @@ def find_techniques_from_mitigations_map(d3fend_mapping_file_name: str, d3fend_l
     # TODO d3fend tactics map
     for binding in bindings:
         d3fend_label = binding["def_tech_label"]["value"].replace(" ", "")
-        d3fend_id = d3fend_label_id_map[d3fend_label]
+        try:
+            d3fend_id = d3fend_label_id_map[d3fend_label]
+        except KeyError as e:
+            logging.error(f"{e} for {binding}")
         technique_id = binding["off_tech"]["value"].split("#")[-1]
         d3fend_technique_maps.add((d3fend_id, technique_id))
 
@@ -230,6 +233,7 @@ def find_techniques_from_mitigations_map(d3fend_mapping_file_name: str, d3fend_l
     return {"d3fend_technique": list(d3fend_technique_maps), 
             "d3fend_d3fend": list(d3fend_d3fend_maps),
             }
+
 
 def parse_args(args: List[str]) -> Dict[str, Any]:
     parser = argparse.ArgumentParser(description="Query D3FEND and BRON")

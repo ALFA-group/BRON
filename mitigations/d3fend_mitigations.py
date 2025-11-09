@@ -1,5 +1,5 @@
 import logging
-from typing import List, Any
+from typing import Dict, List, Any, Tuple
 import argparse
 import os
 import sys
@@ -9,10 +9,9 @@ import requests
 import rdflib
 import arango
 
-from utils.mitigation_utils import update_graph_in_graph_db
+from utils.mitigation_utils import query_bron, update_graph_in_graph_db
 from mitigations.query_d3fend import (
     find_mitigation_label,
-    find_techniques_from_mitigations,
     find_mitigations,
     find_mitigation_comment,
     find_techniques_from_mitigations_map,
@@ -21,12 +20,12 @@ from graph_db.bron_arango import (
     DB,
     create_edge_document,
     create_graph,
+    get_bron_db,
     get_edge_collection_name,
     get_schema,
     validate_entry,
     import_into_arango, 
 )
-from graph_db.query_graph_db import get_technique_id_from_id
 
 
 D3FEND_URL = "https://d3fend.mitre.org/resources/"
@@ -95,7 +94,6 @@ def _download_full_mapping():
 
     assert os.path.exists(file_path)
 
-
 def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool = False) -> None:
     logging.info(f"Begin update of {ip} with D3FEND")
     g = rdflib.Graph()
@@ -104,7 +102,7 @@ def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool
     file_path = os.path.join(OUT_DIR, os.path.basename(D3FEND_ONTOLOGY_JSON))
     with open(file_path, 'r') as fd:
         json_data = json.load(fd)
-        
+
     entries = json_data["@graph"]
     # d3_id -> name
     mitigations = find_mitigations(g)
@@ -155,8 +153,18 @@ def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool
     if validation:
         schema = get_schema("D3fend_mitigationTechnique")
 
+    client = get_bron_db(username, password, ip)
+    db = client.db(DB, username, password, auth_method="basic")
+    technique_collection = db.collection('technique')
+    
     logging.info(f"Found {len(mitigation_technique_maps)} techniques")
     for mitigation_id, technique_id in mitigation_technique_maps:
+        # Check technique exists
+        result = query_bron(technique_collection, {"original_id": technique_id})
+        if result is None:
+            logging.error(f"{technique_id} for {mitigation_id} does not exist")
+            continue
+        
         _to = f"{D3FEND_MITIGATION_COLLECTION}/{mitigation_id}"
         _from = f"technique/{technique_id}"
         document = create_edge_document(_from, _to, schema, validation)
@@ -191,7 +199,6 @@ def update_BRON_graph_db(username: str, password: str, ip: str, validation: bool
     update_graph_in_graph_db(
         username, password, ip, edge_key=D3FEND_MITIGATIONS_TECHNIQUE_COLLECTION_KEYS
     )
-    logging.info(f"Done with adding D3FEND mitigations to {ip}")
 
 
 def main():

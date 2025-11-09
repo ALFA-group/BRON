@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"Technique_analyticTechnique_detection_strategy",
+    "description":"A link between a technique analytic and a technique detection strategy",
+    "type":"object",
+    "properties":{
+      "_from":{
+         "description":"The analytic identifier in BRON.",
+         "type":"string",
+         "pattern": "technique_analytic/AN\\d{4}"
+      },
+      "_to":{
+         "description":"The detection strategy identifier in BRON.",
+         "type":"string",
+         "pattern": "technique_detection_strategy/DET\\d{4}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

@@ -1,0 +1,47 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"technique_detection_strategy",
+    "description":"A detection strategy of an ATT&CK technique.",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. Same as external_id from MITRE ATT&CK",
+          "type":"string",
+          "pattern": "DET\\d{4}"
+       },
+       "original_id":{
+        "description":"ID from MITRE ATT&CK. E.g. 'DET0237'",
+        "type":"string",
+        "pattern": "DET\\d{4}"
+       },
+       "datatype":{
+        "description":"Name of datatype",
+        "type":"string", 
+        "pattern": "technique_detection_strategy"
+       },
+       "name":{
+        "description":"The name of the detection. TODO write pattern",
+        "type":"string"
+       },
+       "metadata":{
+         "description":"Metadata",
+         "type":"object",
+         "properties": {
+             "description": {
+                 "description": "The full description",
+                 "type": "string"
+             }
+            },
+             "required":[
+                 "description"
+              ]         
+        }
+    },
+    "required":[
+        "_key",
+        "name",
+        "datatype",
+        "original_id",
+        "metadata"
+     ]
+  }

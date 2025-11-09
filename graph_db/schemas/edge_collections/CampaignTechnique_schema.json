@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"CampaignTechnique",
+    "description":"A link between a campaign and a technique",
+    "type":"object",
+    "properties":{
+      "_from":{
+         "description":"The campaign identifier in BRON.",
+         "type":"string",
+         "pattern": "campaign/C\\d{4}"
+      },
+      "_to":{
+         "description":"The technique identifier in BRON.",
+         "type":"string",
+         "pattern": "technique/(T\\d{4}(\\.\\d{3})?)"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

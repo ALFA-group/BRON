@@ -16,8 +16,8 @@ numpy
 python-arango
 pyyaml
 scikit-learn
-
-
+openai
+neo4j
 
 
 

@@ -287,16 +287,27 @@ def add_cve_cpe_cwe(
                 metadata={
                     "weight": cve_map[cve_id]["score"],
                     "description": cve_map[cve_id]["description"],
+                    "cpes": cve_map[cve_id]["cpes"],
+                    "impact": cve_map[cve_id]["impact"],
+                    "exploits": cve_map[cve_id]["exploits"]
                 },
             )
 
-        for cpe_id in cve_map[cve_id]["cpes"]:
-            _add_cpe_node(cpe_id, graph, cve_node_name)
+        for cpe_ids in cve_map[cve_id]["cpes"]: 
+            for _cpe_ids in cpe_ids:
+                try:
+                    _add_cpe_node(_cpe_ids, graph, cve_node_name)
+                except AssertionError as e:
+                    logging.error(f"{e} for {cpe_ids}")                
+                    raise IndexError()
 
         for cwe_id in cve_map[cve_id]["cwes"]:
             if not cwe_id.isalpha():
                 cwe_node_name = f"CWE-{cwe_id}"
-
+                if not graph.has_node(cwe_node_name):
+                    logging.error(f"{cwe_node_name} does not exist for {cve_node_name}")
+                    continue
+                
                 if not graph.has_edge(cwe_node_name, cve_node_name):
                     graph.add_edge(cwe_node_name, cve_node_name)
                 if not graph.has_edge(cve_node_name, cwe_node_name):
@@ -307,35 +318,60 @@ def add_cve_cpe_cwe(
     return graph
 
 
-def parse_cpe(cpe_string: str) -> Dict[str, str]:
+def parse_cpe(cpe_map: Dict[str, str]) -> Dict[str, str]:
+    cpe_string = cpe_map['uri']
     # splits cpe id into product, version, vendor
     dictionary = {"product": "", "vendor": "", "version": ""}
     cpe_values = cpe_string.split("cpe:2.3:")
     dictionary["vendor"] = cpe_values[1].split(":")[1]
     dictionary["product"] = cpe_values[1].split(":")[2]
     dictionary["version"] = cpe_values[1].split(":")[3]
+    for key, value in cpe_map.items():
+        if key != 'uri':
+            continue
+        dictionary[key] = value
+        
     return dictionary
 
 
+def get_cpe_uris(e: List[Any], cpes: List[str]):
+    if 'criteria' in e:
+        cpes.append(e['criteria'])    
+    elif 'children' in e and len(e['children']) > 0:        
+        for c in e['children']:
+            get_cpe_uris(c, cpes)
+    elif 'cpeMatch' in e and len(e['cpeMatch']) > 0:        
+        for c in e['cpeMatch']:
+            get_cpe_uris(c, cpes)
+
+
 def _add_cpe_node(
-    cpe_original_id: str,
+    cpe_list: List[Dict[str, Any]],
     graph: "nx.Graph",
     end_point: str,
 ):
-    cpe_node_name = cpe_original_id
-    cpe_meta_dict = parse_cpe(cpe_original_id)
-    graph.add_node(
-        cpe_node_name,
-        datatype="cpe",
-        name="",
-        original_id=cpe_original_id,
-        metadata=cpe_meta_dict,
-    )
+    cpes = []
+    get_cpe_uris(cpe_list, cpes)
+    if len(cpes) == 0:
+        logging.error(f"{len(cpes)} == 0 for {cpe_list}")
+        return
+    
+    assert len(cpes) > 0, cpe_list
+    for cpe in cpes:
+        cpe_node_name = cpe
+        cpe_meta_dict = parse_cpe({'uri': cpe})
+        graph.add_node(
+            cpe_node_name,
+            datatype="cpe",
+            name="",
+            original_id=cpe,
+            metadata=cpe_meta_dict,
+        )
 
-    if not graph.has_edge(end_point, cpe_node_name):
-        graph.add_edge(end_point, cpe_node_name)
-    if not graph.has_edge(cpe_node_name, end_point):
-        graph.add_edge(cpe_node_name, end_point)
+        if not graph.has_edge(end_point, cpe_node_name):
+            graph.add_edge(end_point, cpe_node_name)
+        if not graph.has_edge(cpe_node_name, end_point):
+            graph.add_edge(cpe_node_name, end_point)
 
 
 def parse_args(args: List[str]) -> Dict[str, Any]:

@@ -2,6 +2,8 @@ import gzip
 import csv
 import json
 import networkx as nx
+import os
+import openai
 
 
 UNIQUE_ID = 0
@@ -90,3 +92,44 @@ def get_csv_data(data_file):
                         data_dict[num] += 1
 
     return data_dict
+
+
+def result_to_dict(result: dict[str, any]) -> dict[str, str]:
+    data = {}
+    assert isinstance(result, dict), f"Result is not a dict: {result}"
+    suffix_keys = result['collections']
+    for key, values in result.items():
+        for value, suffix_key in zip(values, suffix_keys):
+            data_key = f"{key}_{suffix_key}"
+            assert data_key not in data
+            data[data_key] = value
+
+    return data
+
+
+class OpenAIInterface:
+    def __init__(self):
+        self.client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        self.model = "gpt-4o-mini"
+
+    def get_response(self, prompt: str) -> str:
+        # TODO exponential backoff
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "system", "content": prompt}],
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            print(f"Error getting response: {e}")
+            return ""
+
+    def format_response_json(self, response: str) -> list[any] | None | dict[str, any]:
+        response = response.strip()
+        response = response.replace("```json", "").replace("```", "")
+        try:
+            return json.loads(response)
+        except json.JSONDecodeError as e:
+            raise ValueError(f"{e} Invalid JSON response\n{response}")
+        except AttributeError as e:
+            raise ValueError(f"{e} Invalid JSON response\n{response}")
