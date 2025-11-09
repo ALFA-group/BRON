@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"Atlas_techniqueTechnique",
+    "description":"A link between an ATLAS technique and an ATT&CK Technique",
+    "type":"object",
+    "properties":{
+      "_from":{
+         "description":"The atlas technique identifier in BRON.",
+         "type":"string",
+         "pattern": "atlas_technique/AML.T\\d{4}"
+      },
+      "_to":{
+         "description":"The ATT&CK technique identifier in BRON.",
+         "type":"string",
+         "pattern": "technique/(T\\d{4}(\\.\\d{3})?)"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

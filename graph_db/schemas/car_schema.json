@@ -1,0 +1,48 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"car",
+    "description":"An in MITRE CAR.",
+    "type":"object",
+    "properties":{
+       "_key":{
+          "description":"The unique identifier for BRON. Same as data source",
+          "type":"string",
+          "pattern": "CAR-\\d{4}-\\d{2}-\\d{3}"
+       },
+       "original_id":{
+        "description":"ID from MITRE CAR. E.g. 'CAR-2013-01-002'",
+        "type":"string",
+           "pattern": "CAR-\\d{4}-\\d{2}-\\d{3}"
+       },
+       "datatype":{
+        "description":"Name of datasource",
+        "type":"string", 
+        "pattern": "car"
+       },
+       "name":{
+        "description":"The name of the analytic. TODO write pattern",
+        "type":"string"
+       },
+       "metadata":{
+        "description":"Metadata",
+        "type":"object",
+        "properties": {
+            "description": {
+                "description": "The full description",
+                "type": "string"
+            }
+            },
+            "required":[
+                "description"
+             ]         
+       }
+	
+    },
+    "required":[
+        "_key",
+        "name",
+	"metadata",
+        "datatype",
+        "original_id"
+     ]
+  }

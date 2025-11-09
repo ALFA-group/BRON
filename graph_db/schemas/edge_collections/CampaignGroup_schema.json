@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"CampaignSoftware",
+    "description":"A link between a campaign and a group",
+    "type":"object",
+    "properties":{
+      "_from":{
+         "description":"The campaign identifier in BRON.",
+         "type":"string",
+         "pattern": "campaign/C\\d{4}"
+      },
+      "_to":{
+         "description":"The group identifier in BRON.",
+         "type":"string",
+         "pattern": "group/G\\d{4}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

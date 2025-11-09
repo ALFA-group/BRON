@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"Technique_data_componentTechnique_analytic",
+    "description":"A link between a technique data component and a technique analytic",
+    "type":"object",
+    "properties":{
+      "_from":{
+         "description":"The data component identifier in BRON.",
+         "type":"string",
+         "pattern": "technique_data_component/DC\\d{4}"
+      },
+      "_to":{
+         "description":"The analytic identifier in BRON.",
+         "type":"string",
+         "pattern": "technique_analytic/AN\\d{4}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

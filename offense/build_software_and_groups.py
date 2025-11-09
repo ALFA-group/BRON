@@ -33,6 +33,13 @@ GROUP_EDGE_COLLECTION_NAMES = {
 }
 GROUP_SG_OUT_DATA_DIR = os.path.join(SG_OUT_DATA_DIR, GROUP_BASENAME)
 GROUP_BRON_DATA = defaultdict(list)
+CAMPAIGN_BASENAME = "campaign"
+CAMPAIGN_EDGE_COLLECTION_NAMES = {
+    "CampaignTechnique": ("campaign", "technique"),
+    "CampaignSoftware": ("campaign", "software"),
+}
+CAMPAIGN_SG_OUT_DATA_DIR = os.path.join(SG_OUT_DATA_DIR, CAMPAIGN_BASENAME)
+CAMPAIGN_BRON_DATA = defaultdict(list)
 
 
 def build_software(
@@ -259,8 +266,121 @@ def build_software_and_groups(
     logging.info(f"End build software and groups")
 
 
+def build_campaigns(
+    save_path: str,
+    username: str,
+    password: str,
+    ip: str,
+    validation: bool = True,
+    update_bron_graphdb: bool = True,
+):
+    logging.info(f"Begin build campaign in BRON for {username} on {ip} with validation:{validation}")
+    client = arango.ArangoClient(hosts=f"http://{ip}:8529")
+    assert client is not None
+    _build_campaigns(save_path, username, password, ip, client, validation)
+    client.close()
+    if update_bron_graphdb:
+        update_BRON_graph_db(
+            username,
+            password,
+            ip,
+            CAMPAIGN_BRON_DATA,
+            CAMPAIGN_EDGE_COLLECTION_NAMES,
+            CAMPAIGN_SG_OUT_DATA_DIR,
+        )
+    logging.info(f"End build campaigns")
+
+
+def _build_campaigns(
+    save_path: str,
+    username: str,
+    password: str,
+    ip: str,
+    client,
+    validation: bool = True,
+):
+    logging.info(f"Begin build campaigns in BRON for {username} on {ip} with validation:{validation}")
+    client = arango.ArangoClient(hosts=f"http://{ip}:8529")
+    db = client.db("BRON", username=username, password=password, auth_method="basic")
+    file_path = os.path.join(save_path, f"campaign.jsonl")
+    df = pd.read_json(file_path, lines=True)
+    check_duplicates(df, ["name", "id"])
+
+    df = df.sort_values(by=["original_id"])
+    datatype = "campaign"
+    if validation:
+        schemas = get_schemas()
+    cnt = 0
+    for row in tqdm(df.iterrows()):
+        value = row[1]
+        _id = str(value["original_id"])
+        entry = {
+            "_key": _id,
+            "original_id": _id,
+            "name": value["name"],
+            "datatype": datatype,
+            "metadata": {
+                "description": value["description"],
+            },
+        }
+        if validation:
+            schema = schemas[datatype]
+            validate_entry(entry, schema)
+
+        CAMPAIGN_BRON_DATA[datatype].append(entry)
+        cnt += 1
+
+    file_path = os.path.join(save_path, f"campaign_technique_mapping.jsonl")
+    df = pd.read_json(file_path, lines=True)
+    edge_name = "CampaignTechnique"
+    technique_collection = db.collection("technique")
+    if validation:
+        schema = get_schema(edge_name)
+
+    for row in tqdm(df.iterrows()):
+        value = row[1]
+        result = query_bron(technique_collection, {"original_id": str(value["technique_id"])})
+        if result is None:
+            continue
+
+        _from = f'{datatype}/{value["campaign_id"]}'
+        _to = result["_id"]
+        documuent = create_edge_document(_from, _to, schema, validation)
+        CAMPAIGN_BRON_DATA[edge_name].append(documuent)
+
+    file_path = os.path.join(save_path, f"campaign_software_mapping.jsonl")
+    df = pd.read_json(file_path, lines=True)
+    edge_name = "CampaignSoftware"
+    software_collection = db.collection("software")
+    if validation:
+        schema = get_schema(edge_name)
+
+    for row in tqdm(df.iterrows()):
+        value = row[1]
+        result = query_bron(software_collection, {"original_id": str(value["software_id"])})
+        if result is None:
+            continue
+
+        _from = f'{datatype}/{value["campaign_id"]}'
+        _to = result["_id"]
+        documuent = create_edge_document(_from, _to, schema, validation)
+        CAMPAIGN_BRON_DATA[edge_name].append(documuent)
+
+    for key, value in CAMPAIGN_BRON_DATA.items():
+        file_path = os.path.join(CAMPAIGN_SG_OUT_DATA_DIR, f"import_{key}.jsonl")
+        with open(file_path, "w") as fd:
+            for line in value:
+                json.dump(line, fd)
+                fd.write("\n")
+
+        assert os.path.exists(file_path)
+        logging.info(f"Wrote {key} to {file_path}")
+
+    logging.info(f"End build campaigns")
+    
+    
 def parse_args(args: List[str]) -> Any:
-    parser = argparse.ArgumentParser(description="Link ENGAGE mitigations to BRON")
+    parser = argparse.ArgumentParser(description="Link software, groups and campaigns in BRON")
     parser.add_argument("--username", type=str, required=True, help="DB username")
     parser.add_argument("--password", type=str, required=True, help="DB password")
     parser.add_argument("--ip", type=str, required=True, help="DB IP address")

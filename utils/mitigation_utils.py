@@ -12,6 +12,7 @@ from graph_db.bron_arango import (
     DB,
     GRAPH,
     HOST,
+    create_edge_document,
     get_edge_collection_name,
     get_schema,
     import_into_arango,
@@ -127,10 +128,12 @@ def clean_BRON_collections(username: str, password: str, ip: str, collections: S
     client.close()
 
 
-def query_bron(collection, filter_q):
+def query_bron(collection, filter_q, warning=True):
     result = collection.find(filter_q)
     if result.empty():
-        logging.warning(f"Empty result for: {filter_q}")
+        if warning:
+            logging.warning(f"Empty result for: {filter_q}")
+            
         return None
     if result.count() > 1:
         result = list(result)
@@ -174,3 +177,50 @@ def read_jsonl(file_path: str) -> List[Any]:
 
     logging.info(f"Read {len(data)} from file {file_path}")
     return data
+
+
+# TODO refactor to use this more?
+def link_data(
+    db,
+    file_path: str,
+    edge_name: str,
+    dst: str,
+    validation: bool,
+    id_map: Dict[str, str],
+    collection_name,
+    basename: str,
+    data: Dict[str, List[Dict[str, str]]],
+    id_key: str,
+):
+    logging.info(f"Linking {file_path} data for {edge_name} with {dst}.")
+    df = pd.read_json(file_path, lines=True)
+    if validation:
+        schema = get_schema(edge_name)
+
+    collection_ = db.collection(collection_name)
+    errors = collections.defaultdict(int)
+    query_miss = collections.defaultdict(int)
+    for i in tqdm(range(len(df))):
+        value = df.loc[i]
+        result = query_bron(collection_, {"original_id": str(value[dst])})
+
+        if result is None:
+            query_miss[str(value[dst])]
+            continue
+
+        _id = value[id_key]
+        try:
+            _from = f"{basename}/{id_map[_id]}"
+        except KeyError as e:
+            errors[str(e)] += 1
+            continue
+
+        _to = result["_id"]
+        document = create_edge_document(_from, _to, schema, validation)        
+        data[edge_name].append(document)
+
+    logging.info(f"Errors for {len(errors)} ids {sum(errors.values())} times")
+    logging.info(
+        f"Query misses for {len(query_miss)} ids {sum(query_miss.values())} times"
+    )
+    logging.info(f"Done Linking for {collection_.name}")

@@ -40,6 +40,22 @@
                 "type": "string"
             }
             },
+            "versionEndExcluding": {
+                "description": "The version end (excluding)",
+                "type": "string"
+            },
+            "versionEndIncluding": {
+                "description": "The version end (including)",
+                "type": "string"
+            },
+            "versionStartExcluding": {
+                "description": "The version start (excluding)",
+                "type": "string"
+            },
+            "versionStartIncluding": {
+                "description": "The version start (including)",
+                "type": "string"
+            },
             "required":[
                 "product",
                 "vendor",

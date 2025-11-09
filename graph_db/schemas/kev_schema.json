@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "kev",
+  "description": "Known Exploited Vulnerabilities from CISA catalog.",
+  "type": "object",
+  "properties": {
+    "_key": {
+      "description": "The kev key as a CVE ID of the vulnerability in the format KEV-CVE-YYYY-NNNN, note that the number portion can have more than 4 digits",
+      "type": "string",
+      "pattern": "^KEV-CVE-[0-9]{4}-[0-9]{4,19}$"
+    },
+    "original_id": {
+      "description": "The CVE ID of the vulnerability in the format CVE-YYYY-NNNN, note that the number portion can have more than 4 digits",
+      "type": "string",
+      "pattern": "^CVE-[0-9]{4}-[0-9]{4,19}$"
+    },
+    "name": {
+      "description": "The name of the vulnerability",
+      "type": "string"
+    },
+    "metadata":{
+    "description":"Metadata",
+    "type":"object",
+    "properties": {
+      "description": {
+          "description": "A short description of the vulnerability",
+          "type": "string"
+        },
+        "requiredAction": {
+          "description": "The required action to address the vulnerability",
+          "type": "string"
+        },
+        "vendorProject": {
+          "description": "The vendor or project name for the vulnerability",
+          "type": "string"
+        },
+        "product": {
+          "description": "The vulnerability product",
+          "type": "string"
+        }
+      },
+      "required": ["description", "requiredAction", "vendorProject", "product"]
+    }
+  },
+  "required": [
+    "_key",
+    "original_id",
+    "name"
+    ]
+}
+

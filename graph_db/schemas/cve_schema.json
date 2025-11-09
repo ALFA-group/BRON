@@ -37,11 +37,29 @@
                 "minimum": 0,
                 "maximum": 10
 
-            }
+            },
+            "impact": {
+                "description": "The CVSS impact. TODO schema for fields",
+                "type": "object"
+            },
+            "exploits" :{
+                "description": "Reference URLs with Exploit tag",
+                "type": "array",
+                "items": {
+                    "type":"string",
+                    "description": "URL to reference. TODO URL pattern"              
+                }
+            },
+            "cpes": {
+                "description": "Different CPEs, from node. TODO get schema",
+                "type": "array"
+                }
             },
             "required":[
                 "description",
-                "weight"
+                "weight",
+                "cpes",
+                "impact"
              ]         
        }
     },

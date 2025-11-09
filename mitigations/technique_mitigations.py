@@ -7,6 +7,7 @@ import json
 
 import arango
 import pandas as pd
+from tqdm import tqdm
 
 from graph_db.bron_arango import create_edge_document, get_schema, get_schemas, validate_entry
 from mitigations.capec_mitigations import clean_BRON_mitigation
@@ -15,25 +16,34 @@ import utils.mitigation_utils as mitigation_utils
 
 TECHNIQUE_MITIGATION_OUT_DATA_DIR = "data/mitigations/technique"
 TECHNIQUE_MITIGATION_BASENAME = "technique"
-TECHNIQUE_MITIGATION_EDGE_COLLECTION_NAMES = mitigation_utils.get_collection_names(
-    TECHNIQUE_MITIGATION_BASENAME
+TECHNIQUE_MITIGATION_EDGE_COLLECTION_NAMES = (
+    "technique_mitigation",
+    "technique_detection_strategy",
+    "technique_analytic",
+    "technique_data_component",
+    "TechniqueTechnique_mitigation",
+    "TechniqueTechnique_detection_strategy",
+    "Technique_analyticTechnique_detection_strategy",
+    "Technique_data_componentTechnique_analytic",
 )
-TECHNIQUE_MITIGATION_NAME_LOOKUP = {}
-TECHNIQUE_MITIGATION_BRON_DATA = {}
-mitigation_utils.get_mitigation_collection_names_wrapper(
-    TECHNIQUE_MITIGATION_EDGE_COLLECTION_NAMES,
-    TECHNIQUE_MITIGATION_NAME_LOOKUP,
-    TECHNIQUE_MITIGATION_BRON_DATA,
-    TECHNIQUE_MITIGATION_BASENAME,
-)
+TECHNIQUE_MITIGATION_EDGE_COLLECTION_NAMES = tuple(set(TECHNIQUE_MITIGATION_EDGE_COLLECTION_NAMES))
+
+TECHNIQUE_MITIGATION_NAME_LOOKUP = {
+    "TechniqueTechnique_mitigation": ("technique", "technique_mitigation"),
+    "TechniqueTechnique_detection_strategy": ("technique", "technique_detection_strategy"),
+    "Technique_analyticTechnique_detection_strategy": ("technique_analytic", "technique_detection_strategy"),
+    "Technique_data_componentTechnique_analytic": ("technique_data_component", "technique_analytic"),
+}
+TECHNIQUE_MITIGATION_BRON_DATA = dict([(k, []) for k in TECHNIQUE_MITIGATION_EDGE_COLLECTION_NAMES])
 
 
 def _make_bron_data(save_path: str, username: str, password: str, ip: str, validation: bool = True):
-    logging.info(f"Begin technique mitgations for BRON for {ip}")
+    logging.info(f"Begin technique mitgations for BRON for {ip} from {save_path}")
     client = arango.ArangoClient(hosts=f"http://{ip}:8529")
     db = client.db("BRON", username=username, password=password, auth_method="basic")
 
     file_path = os.path.join(save_path, f"technique_mitigation.jsonl")
+    assert os.path.exists(file_path), f"file {file_path} does not exist"
     df = pd.read_json(file_path, lines=True)
     mitigation_utils.check_duplicates(df, ["name", "id"])
 
@@ -42,7 +52,10 @@ def _make_bron_data(save_path: str, username: str, password: str, ip: str, valid
     if validation:
         schemas = get_schemas()
     cnt = 0
-    for row in df.iterrows():
+    assert datatype in TECHNIQUE_MITIGATION_EDGE_COLLECTION_NAMES, f"datatype {datatype} not in {TECHNIQUE_MITIGATION_EDGE_COLLECTION_NAMES}"
+    edge_name = "TechniqueTechnique_mitigation"
+    assert edge_name in TECHNIQUE_MITIGATION_EDGE_COLLECTION_NAMES, f"edge_name {edge_name} not in {TECHNIQUE_MITIGATION_EDGE_COLLECTION_NAMES}"
+    for row in tqdm(df.iterrows(), total=len(df), desc="Ingesting technique_mitigation nodes"):
         value = row[1]
         description = value["description"]
         entry = {
@@ -60,12 +73,13 @@ def _make_bron_data(save_path: str, username: str, password: str, ip: str, valid
         cnt += 1
 
     file_path = os.path.join(save_path, f"technique_mitigation_technique_mapping.jsonl")
+    assert os.path.exists(file_path), f"file {file_path} does not exist"
     df = pd.read_json(file_path, lines=True)
     edge_name = "TechniqueTechnique_mitigation"
     if validation:
         schema = get_schema(edge_name)
 
-    for row in df.iterrows():
+    for row in tqdm(df.iterrows(), total=len(df), desc="Ingesting technique_mitigation_technique_mapping edges"):
         value = row[1]
         result = value["technique_id"]
         # TODO hack for techniques
@@ -77,16 +91,17 @@ def _make_bron_data(save_path: str, username: str, password: str, ip: str, valid
         document = create_edge_document(_from, _to, schema, validation)
         TECHNIQUE_MITIGATION_BRON_DATA[edge_name].append(document)
 
-    file_path = os.path.join(save_path, f"technique_detection.jsonl")
+    file_path = os.path.join(save_path, f"technique_detection_strategy.jsonl")
+    assert os.path.exists(file_path), f"file {file_path} does not exist"
     df = pd.read_json(file_path, lines=True)
     mitigation_utils.check_duplicates(df, ["name", "id"])
     df = df.sort_values(by=["original_id"])
-    file_path = os.path.join(save_path, f"technique_technique_detection_component_mapping.jsonl")
+    file_path = os.path.join(save_path, f"technique_detection_strategy_technique_mapping.jsonl")
     df_map = pd.read_json(file_path, lines=True)
     cnt = 0
     for row in df.iterrows():
         value = row[1]
-        datatype = "technique_detection"   
+        datatype = "technique_detection_strategy"   
         _id = str(value["original_id"])
         description = value["description"]
         entry = {
@@ -103,16 +118,124 @@ def _make_bron_data(save_path: str, username: str, password: str, ip: str, valid
         TECHNIQUE_MITIGATION_BRON_DATA[datatype].append(entry)
         cnt += 1
 
-        edge_name = "TechniqueTechnique_detection"
-        results = df_map[df_map["technique_data_source_id"] == _id]["technique_id"]
-        schema = schemas[edge_name]
-        for result in results:
-            _to = f"{datatype}/{_id}"
-            _from = f"technique/{result}"
-            document = create_edge_document(_from, _to, schema, validation)
-            TECHNIQUE_MITIGATION_BRON_DATA[edge_name].append(document)
+    edge_name = "TechniqueTechnique_detection_strategy"
+    results = df_map[df_map["technique_detection_strategy_id"] == _id]["technique_id"]
+    schema = schemas[edge_name]
+    for result in results:
+        _to = f"{datatype}/{_id}"
+        _from = f"technique/{result}"
+        document = create_edge_document(_from, _to, schema, validation)
+        TECHNIQUE_MITIGATION_BRON_DATA[edge_name].append(document)
 
-    assert len(TECHNIQUE_MITIGATION_BRON_DATA[edge_name]) > 0
+    
+    # Ingest technique_detection_strategy_technique_mapping edges
+    file_path = os.path.join(save_path, f"technique_detection_strategy_technique_mapping.jsonl")
+    assert os.path.exists(file_path), f"file {file_path} does not exist"
+    df = pd.read_json(file_path, lines=True)
+    edge_name = "TechniqueTechnique_detection_strategy"
+    if validation:
+        schema = get_schema(edge_name)
+
+    for row in tqdm(df.iterrows(), total=len(df), desc="Ingesting technique_detection_strategy_technique_mapping edges"):
+        value = row[1]
+        technique_id = value["technique_id"]
+        if not technique_id.startswith("T"):
+            continue
+
+        _to = f'technique_detection_strategy/{value["technique_detection_strategy_id"]}'
+        _from = f"technique/{technique_id}"
+        document = create_edge_document(_from, _to, schema, validation)
+        TECHNIQUE_MITIGATION_BRON_DATA[edge_name].append(document)
+
+    # Ingest technique_analytic nodes
+    file_path = os.path.join(save_path, f"technique_analytic.jsonl")
+    assert os.path.exists(file_path), f"file {file_path} does not exist"
+    df = pd.read_json(file_path, lines=True)
+    mitigation_utils.check_duplicates(df, ["name", "id"])
+    df = df.sort_values(by=["original_id"])
+    datatype = "technique_analytic"
+    if validation:
+        schemas = get_schemas()
+    cnt = 0
+    assert datatype in TECHNIQUE_MITIGATION_BRON_DATA, f"datatype {datatype} not in {TECHNIQUE_MITIGATION_BRON_DATA}"
+    edge_name = "Technique_analyticTechnique_detection_strategy"
+    edge_schema = get_schema(edge_name)
+    assert edge_name in TECHNIQUE_MITIGATION_EDGE_COLLECTION_NAMES, f"edge_name {edge_name} not in {TECHNIQUE_MITIGATION_EDGE_COLLECTION_NAMES}"
+    for row in tqdm(df.iterrows(), total=len(df), desc="Ingesting technique_analytic nodes"):
+        value = row[1]
+        description = value.get("description", "")
+        entry = {
+            "_key": str(value["original_id"]),
+            "original_id": str(value["original_id"]),
+            "name": value["name"],
+            "datatype": datatype,
+            "metadata": {"description": description}
+        }
+        if validation:
+            schema = schemas[datatype]
+            validate_entry(entry, schema)
+
+        TECHNIQUE_MITIGATION_BRON_DATA[datatype].append(entry)
+        cnt += 1
+
+    # Ingest technique_analytic_technique_detection_strategy_mapping edges
+    file_path = os.path.join(save_path, f"technique_analytic_technique_detection_strategy_mapping.jsonl")
+    assert os.path.exists(file_path), f"file {file_path} does not exist"
+    df = pd.read_json(file_path, lines=True)
+    
+    for row in df.iterrows():
+        value = row[1]
+        _from = f'technique_analytic/{value["technique_analytic_id"]}'
+        _to = f'technique_detection_strategy/{value["technique_detection_strategy_id"]}'
+        document = create_edge_document(_from, _to, edge_schema, validation)
+        TECHNIQUE_MITIGATION_BRON_DATA[edge_name].append(document)
+
+    # Ingest technique_data_component nodes
+    file_path = os.path.join(save_path, f"technique_data_component.jsonl")
+    assert os.path.exists(file_path), f"file {file_path} does not exist"
+    df = pd.read_json(file_path, lines=True)
+    mitigation_utils.check_duplicates(df, ["name", "id"])
+    df = df.sort_values(by=["original_id"])
+    datatype = "technique_data_component"
+    if validation:
+        schemas = get_schemas()
+    cnt = 0
+    for row in tqdm(df.iterrows(), total=len(df), desc="Ingesting technique_data_component nodes"):
+        value = row[1]
+        description = value.get("description", "")
+        entry = {
+            "_key": str(value["original_id"]),
+            "original_id": str(value["original_id"]),
+            "name": value["name"],
+            "datatype": datatype,
+            "metadata": {"description": description}
+        }
+        if validation:
+            schema = schemas[datatype]
+            validate_entry(entry, schema)
+
+        TECHNIQUE_MITIGATION_BRON_DATA[datatype].append(entry)
+        cnt += 1
+
+    # Ingest technique_data_component_technique_analytic_mapping edges
+    file_path = os.path.join(save_path, f"technique_data_component_technique_analytic_mapping.jsonl")
+    assert os.path.exists(file_path), f"file {file_path} does not exist"
+    df = pd.read_json(file_path, lines=True)
+    edge_name = "Technique_data_componentTechnique_analytic"
+    if validation:
+        schema = get_schema(edge_name)
+
+    for row in df.iterrows():
+        value = row[1]
+        _from = f'technique_data_component/{value["technique_data_component_id"]}'
+        _to = f'technique_analytic/{value["technique_analytic_id"]}'
+        document = create_edge_document(_from, _to, schema, validation)
+        TECHNIQUE_MITIGATION_BRON_DATA[edge_name].append(document)
+
+    # Verify at least some edges were created
+    edge_collections = [k for k in TECHNIQUE_MITIGATION_BRON_DATA.keys() if any(c.isupper() for c in k)]
+    if edge_collections:
+        assert any(len(TECHNIQUE_MITIGATION_BRON_DATA[k]) > 0 for k in edge_collections), "No edges were created"
     client.close()
     for key, value in TECHNIQUE_MITIGATION_BRON_DATA.items():
         file_path = os.path.join(TECHNIQUE_MITIGATION_OUT_DATA_DIR, f"import_{key}.jsonl")

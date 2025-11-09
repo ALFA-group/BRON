@@ -48,10 +48,20 @@ def parse_capec_xml_to_csv(capec_xml_file: str, save_path: str) -> None:
             "Consequences": [],
         }
         data["Attack Patterns"].append(values)
-        d = el.findtext("./capec-3:Description", default="", namespaces=ns)
-        values["Description"] = d
-        d = el.findtext("./capec-3:Extended_Description", default="", namespaces=ns)
-        values["Extended_Description"] = d
+        # TODO fix
+        d = el.find("./capec-3:Description", ns)
+        if d is not None:
+            values["Description"] = "".join(d.itertext()).strip()
+        else:
+            values["Description"] = ""
+        if values["Description"] == "":
+            logging.warning(f"No description for CAPEC {el.attrib['ID']} {el.attrib['Name']}")
+
+        d = el.find("./capec-3:Extended_Description", ns)
+        if d is not None:
+            values["Extended_Description"] = "".join(d.itertext()).strip()
+        else:
+            values["Extended_Description"] = ""
         # TODO more text to get to bronsprak from CAPEC XML
         ms = el.findall("./capec-3:Mitigations/capec-3:Mitigation", ns)
         for m in ms:
@@ -184,9 +194,19 @@ def parse_cwe_xml_to_csv(cwe_file: str, save_path: str, download_path: str) -> N
         data["Weaknesses"].append(values)
         # TODO use findtext
         d = el.find(f"./{CWE_VERSION_TAG}:Description", ns)
-        values["Description"] = d.text if d is not None else ""
+        if d is not None:
+            values["Description"] = "".join(d.itertext()).strip()
+        else:
+            values["Description"] = ""
+        if values["Description"] == "":
+            logging.warning(f"No description for CWE {el.attrib['ID']} {el.attrib['Name']}")
+
         d = el.find(f"./{CWE_VERSION_TAG}:Extended_Description", ns)
-        values["Extended_Description"] = d.text if d is not None else ""
+        if d is not None:
+            values["Extended_Description"] = "".join(d.itertext()).strip()
+        else:
+            values["Extended_Description"] = ""
+
         ds = el.findall(f"./{CWE_VERSION_TAG}:Background_Details/{CWE_VERSION_TAG}:Background_Detail", ns)
         values["Background Details"] = ""
         if ds:

@@ -9,9 +9,11 @@ import argparse
 import logging
 import uuid
 
+import requests
 import arango
 from arango.http import DefaultHTTPClient
 import jsonschema
+import jsonschema.exceptions
 from tqdm import tqdm
 
 from utils.bron_utils import load_graph_network
@@ -35,9 +37,8 @@ DOWNLOAD_PATH = "data/BRON_collection_downloads"
 
 class NoTimeoutHttpClient(DefaultHTTPClient):
     """Extend the default arango http client, to remove timeouts for bulk data."""
-
-    REQUEST_TIMEOUT = None
-
+    # Set a longer timeout (5 minutes) instead of None
+    REQUEST_TIMEOUT = 300  # 5 minutes in seconds
 
 def get_edge_keys() -> List[Tuple[str, str]]:
     edge_keys = list(EDGE_KEYS)
@@ -113,6 +114,7 @@ def main(
     edge_file_handles = {}
     for edge_key in edge_keys:
         edge_collection_key = get_edge_collection_name(*edge_key)
+        # TODO store in data folde0r
         edge_file_handles[edge_collection_key] = open(f"{edge_collection_key}.json", "w")
         edge_files.append(f"{edge_collection_key}.json")
         logging.info(f"Done: {edge_collection_key}")
@@ -142,6 +144,10 @@ def main(
                 logging.error(e)
                 logging.error(f"{node}, {_}")
                 continue
+            except jsonschema.exceptions.ValidationError as e:
+                logging.error(e)
+                logging.error(f"{node}, {_}")
+                continue
             
         node_key = get_node_key(node[1]["datatype"])
         json.dump(document, node_file_handles[node_key])
@@ -153,25 +159,34 @@ def main(
     # Insert edges
     edges_nx = nx_bron_graph.edges()
     logging.info(f"Begin {len(edges_nx)} edges. Validation is {validation}")
-    for _, o_edge in enumerate(tqdm(edges_nx)):        
+    for _, o_edge in enumerate(tqdm(edges_nx)):    
         try:
             document, edge_collection_key = get_edge_document(o_edge, validation, schemas)
         except KeyError as e:
             # TODO hacky to handle with exception
             edge = order_edge(o_edge)
-            document, edge_collection_key  = get_edge_document(edge, validation, schemas)
+            try:
+                document, edge_collection_key  = get_edge_document(edge, validation, schemas)
+            except jsonschema.exceptions.ValidationError as e:
+                logging.error(e)
+                logging.error(f"{o_edge}, {schemas}")
+                continue
+        except jsonschema.exceptions.ValidationError as e:
+            logging.error(e)
+            logging.error(f"{o_edge}, {schemas}")
+            continue
             
         json.dump(document, edge_file_handles[edge_collection_key])        
         edge_file_handles[edge_collection_key].write("\n")        
 
     _ = [_.close() for _ in edge_file_handles.values()]
     for file_name in edge_files:        
-        assert os.path.getsize(file_name) > 0
+        assert os.path.getsize(file_name) > 0, f"{file_name} has {os.path.getsize(file_name)}"
         
     logging.info(f"Done: Edges to file")
 
 
-def get_edge_document(o_edge: Tuple[str, str], validation: bool, schemas: Dict[str, Any]) -> Tuple[Dict[str, str], str]:
+def get_edge_document(o_edge: Tuple[str, str], validation: bool, schemas: dict[str, Any]) -> Tuple[Dict[str, str], str]:
     edge = order_edge(o_edge)
     from_node_key = get_edge_key(edge[1])
     from_ = f"{from_node_key}/{edge[1]}"
@@ -193,6 +208,7 @@ def create_edge_document(from_: str, to_: str, schema: str, validation: bool) ->
     }
     if validation:
         validate_entry(document, schema)
+            
         
     #logging.info(document)
     return document
@@ -220,6 +236,15 @@ def get_edge_collection_name(from_collection: str, to_collection: str) -> str:
     return name
 
 
+def get_node_collections_from_edge_collection_name(edge_collection_name: str, schemas: Optional[Dict[str, Dict[str, Any]]]=None) -> Tuple[str, str]:
+    if schemas is None:
+        schemas = get_schemas()
+    schema = schemas.get(edge_collection_name)
+    _to = schema['properties']['_to']['pattern'].split('/')[0]
+    _from = schema['properties']['_from']['pattern'].split('/')[0]
+    return (_from, _to)
+    
+    
 def create_db(username: str, password: str, ip: str) -> None:
     host = HOST.format(ip)
     client = arango.ArangoClient(hosts=host)
@@ -308,7 +333,7 @@ def import_into_arango(
     assert collection.count() > 0
     logging.info(f"Imported {name} from {file_} to {DB} on {ip} collection {name} count {collection.count()}")
     client.close()
-
+    
 
 def arango_import(username: str, password: str, ip: str) -> None:
     create_db(username, password, ip)
@@ -361,14 +386,14 @@ def get_schemas() -> Dict[str, Dict[str, Any]]:
 
 
 def get_schema(collection: str) -> Optional[Dict[str, Any]]:
-    logging.info(f"Begin reading schema for {collection} from {SCHEMA_FOLER}")
+    logging.debug(f"Begin reading schema for {collection} from {SCHEMA_FOLER}")
     for (root, _, files) in os.walk(SCHEMA_FOLER):
         for _file in files:
             if _file == f"{collection}_schema.json":
                 file_path = os.path.join(root, _file)
                 with open(file_path, "r") as fd:
                     schema = json.load(fd)
-                    logging.info(f"Done found schema at {file_path}")
+                    logging.debug(f"Done found schema at {file_path}")
                     return schema
 
     return None

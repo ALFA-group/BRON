@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"Atlas_mitigationAtlas_technique",
+    "description":"A link between an ATLAS mitigation and an ATLAS Technique",
+    "type":"object",
+    "properties":{
+      "_from":{
+         "description":"The atlas mitigation identifier in BRON.",
+         "type":"string",
+         "pattern": "atlas_mitigation/AML.M\\d{4}"
+      },
+      "_to":{
+         "description":"The ATLAS technique identifier in BRON.",
+         "type":"string",
+         "pattern": "atlas_technique/AML.T\\d{4}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

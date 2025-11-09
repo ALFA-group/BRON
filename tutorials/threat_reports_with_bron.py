@@ -23,11 +23,11 @@ FIRE_EYE_URL = (
     "https://github.com/fireeye/red_team_tool_countermeasures/blob/master/CVEs_red_team_tools.md"
 )
 # TODO all in one regex
-ta_re_pattern = "TA00\d{2}"
+ta_re_pattern = r"TA00\d{2}"
 ta_prog = re.compile(ta_re_pattern)
-t_re_pattern = "(T\d{4}(\.\d{3})?)"
+t_re_pattern = r"(T\d{4}(\.\d{3})?)"
 t_prog = re.compile(t_re_pattern)
-cve_re_pattern = "CVE-\d{4}-\d{4,7}"
+cve_re_pattern = r"CVE-\d{4}-\d{4,7}"
 cve_prog = re.compile(cve_re_pattern)
 
 

@@ -1,0 +1,22 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "title":"KevCve",
+    "description":"A link between a known exploited vulnerability and a vulnerability",
+    "type":"object",
+    "properties":{
+      "_to":{
+         "description":"The vulnerability identifier in BRON.",
+         "type":"string",
+         "pattern": "cve/CVE-\\d{4}-\\d{4,7}"
+      },
+      "_from":{
+         "description":"The KEV identifier in BRON.",
+         "type":"string",
+         "pattern": "kev/KEV-CVE-\\d{4}-\\d{4,7}"
+      }
+ },
+    "required":[
+      "_from",
+      "_to"
+      ]
+  }

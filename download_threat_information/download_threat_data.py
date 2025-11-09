@@ -9,7 +9,8 @@ import sys
 import logging
 
 import requests
-
+import yaml
+from tqdm import tqdm
 
 # TODO how to check if there are updates, or different URLs
 # TODO add some verbosity
@@ -21,10 +22,11 @@ CAPEC_URL = "https://github.com/mitre/cti/raw/master/capec/2.1/stix-capec.json"
 CAPEC_XML_URL = "http://capec.mitre.org/data/xml/capec_latest.xml"
 # TODO are there better CAPEC views?
 CWE_XML_URL = "http://cwe.mitre.org/data/xml/cwec_latest.xml.zip"
-CVE_BASE_URL = "https://nvd.nist.gov/feeds/json/cve/1.1"
+CVE_BASE_URL = "https://nvd.nist.gov/feeds/json/cve/2.0"
+ATLAS_DATA_URL = "https://raw.githubusercontent.com/mitre-atlas/atlas-data/refs/heads/main/dist/ATLAS.yaml"
 LAST_YEAR = datetime.datetime.now().year + 1
 FIRST_YEAR = 2002
-RECENT_OFFSET = 1
+RECENT_OFFSET = 10
 CVE_ALL_YEARS = list(map(str, range(FIRST_YEAR, LAST_YEAR)))
 CVE_RECENT_YEARS = list(map(str, range(LAST_YEAR - RECENT_OFFSET, LAST_YEAR)))
 
@@ -36,6 +38,7 @@ THREAT_DATA_TYPES = {
     "CWE": "raw_CWE.zip",
     "CWE_XML": "raw_CWE_xml.zip",
     "CVE": "raw_CVE.json.gz",
+    "ATLAS": "raw_atlas.yaml",
 }
 BRON_META_DATA_PATH = "bron_meta_data.json"
 
@@ -73,11 +76,26 @@ def md5(file_path: str) -> str:
     return hash_md5.hexdigest()
 
 
+
+def _download_atlas():
+    response = requests.get(ATLAS_DATA_URL)
+    file_path = os.path.join(OUTPUT_FOLDER, THREAT_DATA_TYPES["ATLAS"])
+    data = response.text
+    yaml_data = yaml.safe_load(data)
+    with open(file_path, "w") as fd:
+        yaml.safe_dump(yaml_data, fd)
+
+    assert os.path.exists(file_path)
+    _write_meta_data(threat_data_type="ATLAS", file_path=file_path)
+    logging.info(f"Downloaded ATLAS from {ATLAS_DATA_URL} to {file_path}")
+
+
 def _download_attack():
     response = requests.get(ENTERPRISE_ATTACK_URL)
     file_path = os.path.join(OUTPUT_FOLDER, THREAT_DATA_TYPES["ATTACK"])
     with open(file_path, "w") as fd:
-        json.dump(response.json(), fd)
+        json_data = response.json()
+        json.dump(json_data, fd)
 
     # TODO make sure to remove file before for this assert to be meaningful (or assert timestamps)
     assert os.path.exists(file_path)
@@ -110,10 +128,11 @@ def _download_cwe_xml():
 
 
 def _download_cve(cve_years):
-    combined_cve = {"CVE_Items": []}
-    for year in cve_years:
+    logging.info(f"Begin download CVEs from {CVE_BASE_URL} for {cve_years}")
+    combined_cve = {"vulnerabilities": []}
+    for year in tqdm(cve_years, desc="Downloading CVEs"):
         # Download CVE data for each year
-        cve_url = os.path.join(CVE_BASE_URL, f"nvdcve-1.1-{year}.json.gz")
+        cve_url = os.path.join(CVE_BASE_URL, f"nvdcve-2.0-{year}.json.gz")
         response = requests.get(cve_url, stream=True)
         year_file_path = os.path.join(OUTPUT_FOLDER, f"raw_CVE_{year}.json.gz")
         with open(year_file_path, "wb") as fd:
@@ -124,7 +143,7 @@ def _download_cve(cve_years):
         cve_path = os.path.join(OUTPUT_FOLDER, f"raw_CVE_{year}.json.gz")
         with gzip.open(cve_path, "rt", encoding="utf-8") as f:
             cve_data = json.load(f)
-        combined_cve["CVE_Items"].extend(cve_data["CVE_Items"])
+        combined_cve["vulnerabilities"].extend(cve_data["vulnerabilities"])
     json_string = json.dumps(combined_cve)
     encoded = json_string.encode("utf-8")
     file_path = os.path.join(OUTPUT_FOLDER, THREAT_DATA_TYPES["CVE"])
@@ -141,6 +160,7 @@ def main(cve_years) -> None:
         os.makedirs(OUTPUT_FOLDER)
         logging.info(f"Created {OUTPUT_FOLDER}")
 
+    _download_atlas()
     _download_attack()
     _download_capec_xml()
     _download_cwe_xml()
@@ -196,6 +216,8 @@ if __name__ == "__main__":
             _download_cwe_xml()
         elif args.threat_data_type == "CVE":
             _download_cve(cve_years_)
+        elif args.threat_data_type == "ATLAS":
+            _download_atlas()            
         else:
             raise Exception(f"Bad threat data type: {args.threat_data_type}")
     else:
