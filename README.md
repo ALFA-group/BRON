@@ -6,7 +6,7 @@
 
 [![BRON February 2023](docs/figures/BRON_drawing.png)](docs/figures/BRON_drawing.png)
 
-Threat data from [MITRE ATT&CK](https://attack.mitre.org/), [CAPEC](https://capec.mitre.org/), [CWE](https://cwe.mitre.org/) , [CVE](https://nvd.nist.gov), [MITRE Engage](https://engage.mitre.org/), [MITRE D3FEND](https://d3fend.mitre.org/), [MITRE CAR](https://car.mitre.org/) , [exploitdb](https://exploit-db.com/) , [MITRE ATLAS](https://atlas.mitre.org/) data sources are linked together in a graph called BRON. The data types are linked with bidirectional edges. Orange nodes in figure have "offensive" information. Blue nodes in figure are "defensive" information.
+Threat data from [MITRE ATT&CK](https://attack.mitre.org/), [CAPEC](https://capec.mitre.org/), [CWE](https://cwe.mitre.org/) , [CVE](https://nvd.nist.gov), [MITRE Engage](https://engage.mitre.org/), [MITRE D3FEND](https://d3fend.mitre.org/), [MITRE CAR](https://car.mitre.org/) , [MITRE ATLAS](https://atlas.mitre.org/) data sources are linked together in a graph called BRON. The data types are linked with bidirectional edges. 
 
 ## Deployment
 See [graph_db](graph_db) for a public instance of graph data base implementaion [bron.alfa.csail.mit.edu](http://bron.alfa.csail.mit.edu:8529)
